@@ -1,0 +1,257 @@
+%%{
+/*
+ * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== ti_easylink_config.h.xdt ========
+ */
+
+// Get common utility functions
+const Common = system.getScript("/ti/easylink/easylink_common.js");
+
+// Get the device family from the device ID
+const devFamily = Common.device2DeviceFamily(system.deviceData.deviceId);
+
+// Get the EasyLink module
+const easylink = system.modules["/ti/easylink/easylink"].$static;
+
+// Get the CCFG module
+const ccfg = system.modules["/ti/devices/CCFG"].$static;
+
+// Get the random number generation function
+let randNumGenFxn = easylink.randNumGenFxn;
+
+// Remove the "0" mask if it's not needed
+let clientEventMask = "";
+if(easylink.clientEventMask.length > 1)
+{
+    let i = 0;
+    for(i = 0; i < easylink.clientEventMask.length; i++)
+    {
+        if(easylink.clientEventMask[i] != "0")
+        {
+            clientEventMask += easylink.clientEventMask[i] + "|";
+        }
+    }
+
+    // Remove the trailing "|"
+    clientEventMask = clientEventMask.substring(0, clientEventMask.length - 1);
+
+}
+else if(easylink.clientEventMask[0] === "0")
+{
+    clientEventMask = "0";
+}
+else
+{
+    clientEventMask = easylink.clientEventMask[0];
+}
+
+/*
+ * ======== convertAddress ========
+ * Convert a hex address to a uint8_t array in little endian notation
+ *
+ * @param oldAddress - String representation of address (e.g. "0xABCDEF")
+ * @returns newAddress - String representation of uint8_t array padded to
+ * easylink.addrSize length (e.g. "0xEF,0xCD,0xAB, 0x00,")
+ */
+function convertAddress(oldAddress)
+{
+    const desiredStringLength = easylink.addrSize * 2;
+    let newAddress = "";
+
+    let addrNoPref = oldAddress.substring(2); // Remove the 0x prefix
+
+    // Pad the address with zeros
+    while(addrNoPref.length < desiredStringLength)
+    {
+        addrNoPref = "0" + addrNoPref;
+    }
+
+    let i = desiredStringLength;
+    for(i = desiredStringLength; i > 0; i-=2)
+    {
+        newAddress = newAddress + "0x" + addrNoPref.substring(i-2,i);
+        if(i > 2)
+        {
+            newAddress += ",";
+        }
+    }
+
+    return(newAddress);
+}
+
+// Get the value of transmit address
+let useDefault = false;
+let defaultAddr = "0xAA"
+if(easylink.transmitAddr !== "NULL")
+{
+    useDefault = true;
+    defaultAddr = convertAddress(easylink.transmitAddr);
+}
+%%}
+
+/*
+ *  ======== ti_easylink_config.h ========
+ *  Configured EasyLink module definitions
+ *
+ *  DO NOT EDIT - This file is generated for the `Common.getDeviceOrLaunchPadName(false)`
+ *  by the SysConfig tool.
+ */
+
+#ifndef EASYLINK_CONFIG_H_
+#define EASYLINK_CONFIG_H_
+
+//*****************************************************************************
+//
+// If building with a C++ compiler, make all of the definitions in this header
+// have a C binding.
+//
+//*****************************************************************************
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+#include <stdint.h>
+#include <ti/drivers/rf/RF.h>
+
+#ifndef CCFG_FORCE_VDDR_HH
+% if(ccfg.forceVddr){
+// Force VDDR voltage to the factory HH setting (FCFG1..VDDR_TRIM_HH)
+#define CCFG_FORCE_VDDR_HH  0x1
+% } else {
+// Use default VDDR trim
+#define CCFG_FORCE_VDDR_HH  0x0
+% }
+#endif
+
+//! \brief Defines the address that will accompany each packet sent from this
+//! device when EASYLINK_USE_DEFAULT_ADDR is true. It can also be thought of as
+//! this device's own address. Organized in little endian format (e.g.an address
+//! of 0xABCD should be defined as {0xCD,0xAB})
+#define EASYLINK_DEFAULT_ADDR {`defaultAddr`}
+
+//! \brief When false, the Easylink stack expects the application to provide an
+//! accompanying address for each EasyLink_TxPacket passed to the
+//! EasyLink_transmit(), EasyLink_transmitAsync(), and
+//! EasyLink_transmitCcaAsync() APIs. Otherwise, these APIs will use the address
+//! defined in EASYLINK_DEFAULT_ADDR
+#define EASYLINK_USE_DEFAULT_ADDR `useDefault`
+
+//! \brief Defines the largest Tx/Rx payload that the interface can support
+#define EASYLINK_MAX_DATA_LENGTH            `easylink.maxDataLength`
+
+//! \brief Defines the Tx/Rx Max Address Size
+#define EASYLINK_ADDR_SIZE                  `easylink.addrSize`
+
+//! \brief Enables or disables address filtering
+#define EASYLINK_ENABLE_ADDR_FILTERING      `easylink.enableAddrFilter`
+
+%if(easylink.enableAddrFilter)
+%{
+//! \brief Defines the number of Rx address filters
+#define EASYLINK_NUM_ADDR_FILTER           `Common.stringToArray(easylink.addrFilters).length`
+
+//! \brief The table for setting the Rx address filters
+#define EASYLINK_ADDR_FILTER_TABLE \
+    {\
+%   let addressArray = _.map(Common.stringToArray(easylink.addrFilters), convertAddress);
+%   let i = 0;
+%   for(i = 0; i < addressArray.length; i++)
+%   {
+        `addressArray[i]`,\
+%   }
+    }
+%}
+%else
+%{
+//! \brief Defines the number of Rx Address filters
+#define EASYLINK_NUM_ADDR_FILTER           1
+
+//! \brief The table for setting the Rx Address Filters
+#define EASYLINK_ADDR_FILTER_TABLE          {0xAA}
+%}
+
+//! \brief Defines the time for the radio to return to idle after inactivity
+#define EASYLINK_IDLE_TIMEOUT               EasyLink_ms_To_RadioTime(`easylink.radioInactivityTimeout`)
+
+//! \brief Enables or disables the application to use multiple RF clients
+#define EASYLINK_ENABLE_MULTI_CLIENT        `easylink.enableMultiClientMode`
+
+//! \brief Defines the relative time from async RX start to timeout. A value of
+//! 0 means no timeout
+#define EASYLINK_ASYNC_RX_TIMEOUT           EasyLink_ms_To_RadioTime(`easylink.asyncRxTimeout`)
+
+//! \brief Minimum CCA back-off window in units of
+//! EASYLINK_CCA_BACKOFF_TIMEUNITS, as a power of 2
+#define EASYLINK_MIN_CCA_BACKOFF_WINDOW     `Math.log(easylink.minBackoffWindow)/Math.log(2)`
+
+//! \brief  Maximum CCA back-off window in units of
+//! EASYLINK_CCA_BACKOFF_TIMEUNITS, as a power of 2
+#define EASYLINK_MAX_CCA_BACKOFF_WINDOW     `Math.log(easylink.maxBackoffWindow)/Math.log(2)`
+
+//! \brief The back-off time units in microseconds
+#define EASYLINK_CCA_BACKOFF_TIMEUNITS      `easylink.backoffTimeunits`
+
+//! \brief RSSI threshold for Clear Channel Assessment (CCA)
+#define EASYLINK_CS_RSSI_THRESHOLD_DBM      `easylink.rssiThresholdDbm`
+
+//! \brief Time for which the channel RSSI must remain below the specified
+//! threshold for the channel to be considered idle
+#define EASYLINK_CHANNEL_IDLE_TIME_US		`easylink.chIdleTimeUs`
+%if(randNumGenFxn !== "rand")
+%{
+
+extern uint32_t `randNumGenFxn`(void);
+%}
+%if(easylink.clientEventCb !== "NULL")
+%{
+
+extern void `easylink.clientEventCb`(RF_Handle h, RF_ClientEvent event, void* arg);
+%}
+
+//! \brief EasyLink default parameter configuration
+#define EASYLINK_PARAM_CONFIG  \
+    {\
+     .ui32ModType           = `easylink.defaultPhy`,          \
+     .pClientEventCb        = `easylink.clientEventCb`,                         \
+     .nClientEventMask      = `clientEventMask`,                            \
+     .pGrnFxn               = (EasyLink_GetRandomNumber)`randNumGenFxn`\
+    }
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //EASYLINK_CONFIG_H_

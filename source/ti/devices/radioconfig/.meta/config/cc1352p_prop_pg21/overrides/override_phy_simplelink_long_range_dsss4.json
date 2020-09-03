@@ -1,0 +1,9 @@
+{
+    "overridebuffer": {
+        "Element32b": {
+            "_type": "HW_REG_OVERRIDE",
+            "_comment": "PHY: Configure DSSS SF=4 for payload data",
+            "$": "0x5068,0x030C"
+        }
+    }
+}

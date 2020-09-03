@@ -1,0 +1,56 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "MCE_RFE_OVERRIDE",
+                "_comment": "PHY: Use MCE RAM patch (mode 0), RFE RAM patch (mode 0)",
+                "$": "1,0,0,1,0,0"
+            },
+            {
+                "_type": "ADI_2HALFREG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramp time, PACTL2.RC=0x3 (in ADI0, set PACTL2[4:3]=0x3)",
+                "$": "0,16,0x8,0x8,17,0x1,0x1"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x19 (default: 0x2E)",
+                "$": "0x609C,0x0019"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Rx: Set RSSI offset to adjust reported RSSI by 4 dB (default: -2), trimmed for external bias and differential configuration",
+                "$": "0x00FB88A3"
+            },
+            {
+                "_type": "ADI_HALFREG_OVERRIDE",
+                "_comment": "Rx: Set anti-aliasing filter bandwidth to 0xD (in ADI0, set IFAMPCTL3[7:4]=0xD)",
+                "$": "0,61,0xF,0xF"
+            },
+            {
+                "_type": "HW32_ARRAY_OVERRIDE",
+                "_comment": "TX: Set FSCA divider bias to 1",
+                "$": "0x405C,1"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "TX: Set FSCA divider bias to 1",
+                "$": "0x08141131"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "OOK: Set duty cycle to compensate for PA ramping",
+                "$": "0x51E4,0x800A"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Set code length k=7 in viterbi",
+                "$": "0x5270,0x0002"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramping, set wait time before turning off (0x1A ticks of 16\/24 us = 17.3 us).",
+                "$": "0x6028,0x001A"
+            }
+        ]
+    }
+}

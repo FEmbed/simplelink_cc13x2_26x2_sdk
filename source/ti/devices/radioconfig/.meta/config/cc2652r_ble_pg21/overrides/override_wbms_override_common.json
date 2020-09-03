@@ -1,0 +1,31 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "wBMS: Set number of CRC bytes to 32",
+                "$": "0x00208113"
+            },
+            {
+                "_type": "HW32_ARRAY_OVERRIDE",
+                "_comment": "wBMS: Set CRC polyomial",
+                "$": "0x2004,1"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "wBMS: Set CRC polyomial",
+                "$": "0x04C11DB7"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "wBMS: Set CRC initialization value",
+                "$": "0xC0040051"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "wBMS: CRC initialization value",
+                "$": "0xFFFFFFFF"
+            }
+        ]
+    }
+}

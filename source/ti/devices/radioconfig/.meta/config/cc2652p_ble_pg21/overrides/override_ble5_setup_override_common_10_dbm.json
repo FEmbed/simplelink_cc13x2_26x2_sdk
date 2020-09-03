@@ -1,0 +1,41 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Reconfigure to 35 us pilot tone length for high output power PA",
+                "$": "0x6024,0x5B20"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Compensate for 35 us pilot tone length",
+                "$": "0x01640263"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set IPEAK = 7 and DCDC dither off for TX",
+                "$": "0x00F788D3"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Default to no CTE. ",
+                "$": "0x5328,0x0000"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Increase mid code calibration time to 5 us",
+                "$": "0x00058683"
+            },
+            {
+                "_type": "HW32_ARRAY_OVERRIDE",
+                "_comment": "Synth: Increase mid code calibration time to 5 us",
+                "$": "0x4004,1"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Increase mid code calibration time to 5 us",
+                "$": "0x38183C30"
+            }
+        ]
+    }
+}

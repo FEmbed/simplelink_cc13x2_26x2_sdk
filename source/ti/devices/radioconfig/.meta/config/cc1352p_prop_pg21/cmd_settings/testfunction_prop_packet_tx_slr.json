@@ -1,0 +1,75 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_PROP_TX",
+            "_function": "SendPacket",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_PROP_TX"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bFsOff",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bUseCrc",
+                    "$": "1"
+                },
+                {
+                    "_name": "pktConf.bVarLen",
+                    "$": "1"
+                },
+                {
+                    "_name": "pktLen",
+                    "$": "20"
+                },
+                {
+                    "_name": "syncWord",
+                    "_tfOverride": "no",
+                    "$": "0x00000000"
+                },
+                {
+                    "_name": "pPkt",
+                    "$": "0"
+                }
+            ]
+        }
+    }
+}

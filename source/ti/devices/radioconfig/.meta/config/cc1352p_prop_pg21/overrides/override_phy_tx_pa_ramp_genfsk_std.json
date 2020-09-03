@@ -1,0 +1,16 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramping, set wait time before turning off (0x1A ticks of 16\/24 us = 17.3 us).",
+                "$": "0x6028,0x001A"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Set TXRX pin to 0 in RX and high impedance in idle\/TX. ",
+                "$": "0x60A8,0x0401"
+            }
+        ]
+    }
+}

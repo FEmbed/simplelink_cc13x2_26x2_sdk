@@ -1,0 +1,108 @@
+%%{
+/*
+ * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== ti_easylink_oad_config.h.xdt ========
+ */
+// Get common utility functions
+const Common = system.getScript("/ti/easylink/easylink_common.js");
+
+// Get the EasyLink module
+const easylink = system.modules["/ti/easylink/easylink"].$static;
+
+// Get the device family from the device ID
+const devFamily = Common.device2DeviceFamily(system.deviceData.deviceId);
+%%}
+
+ /*
+ *  ======== ti_easylink_oad_config.h ========
+ *  Configured OAD module definitions
+ *
+ *  DO NOT EDIT - This file is generated for the `Common.getDeviceOrLaunchPadName(false)`
+ *  by the SysConfig tool.
+ */
+
+#ifndef OAD_CONFIG_H_
+#define OAD_CONFIG_H_
+//*****************************************************************************
+//
+// If building with a C++ compiler, make all of the definitions in this header
+// have a C binding.
+//
+//*****************************************************************************
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+#define STACK_LIBRARY // Image is an App & EasyLink stack combined
+
+#define OADClient_MAX_RETRIES    4   // Max number of retries for timed out
+                                     // packets to be used by client and server
+
+#define OADClient_BLOCK_REQ_POLL_DELAY    80   // Block response poll delay
+#define OAD_BLOCK_SIZE                    `easylink.blockSize`
+
+/* OADClient_BLOCK_REQ_RATE Guidance:
+ * Minimum block request rate = Tbr
+ * Time to fetch block from external flash = Tbf
+ * Time to transmit block = Tbtx
+ * Time for client to write block to external flash = Tbwr
+ * Block size (bytes) = N
+ *
+ * Tbr = Tbf + Tbtx + Tbwr
+ *
+ * Tbtx:
+ *    - 2-GFSK: ((8*N)+88) * (1/PHY_Rate)
+ *
+ *    - SLR: ((2*DSSS) * ((16*N*DSSS) + (28* DSSS) + ((M+1) * 64))) * (1/PHY_Rate)
+ *        - Spreading = DSS = 2 by default from SmartRF Studio
+ *        - M = 2
+ *
+ * Tbf = ((8*N) * (1/SPI_Rate)) + (N*Tfr) + Tc
+ *      - Tfr = Flash byte read time(hardware specific)
+ *      - Tc = Time for code overhead (e.g. CRC checking, DMA transfers from SPI, etc)
+ *
+ * Tbwr = ((8*N) * (1/SPI_Rate)) + (N*Tfw) + Tc
+ *      - Tfw = Flash byte write time (hardware specific)
+ *      - Tc = Time for code overhead (e.g. CRC checking, DMA transfers to SPI, etc)
+ */
+#define OADClient_BLOCK_REQ_RATE          `easylink.blockInterval`  // Block request rate
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //OAD_CONFIG_H_

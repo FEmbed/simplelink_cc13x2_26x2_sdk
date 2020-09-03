@@ -1,0 +1,187 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_PROP_RX_ADV",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_PROP_RX_ADV"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bFsOff",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bRepeatOk",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bRepeatNok",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bUseCrc",
+                    "$": "1"
+                },
+                {
+                    "_name": "pktConf.bCrcIncSw",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bCrcIncHdr",
+                    "$": "1"
+                },
+                {
+                    "_name": "pktConf.endType",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.filterOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bAutoFlushIgnored",
+                    "$": "1"
+                },
+                {
+                    "_name": "rxConf.bAutoFlushCrcErr",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bIncludeHdr",
+                    "$": "1"
+                },
+                {
+                    "_name": "rxConf.bIncludeCrc",
+                    "$": "1"
+                },
+                {
+                    "_name": "rxConf.bAppendRssi",
+                    "$": "1"
+                },
+                {
+                    "_name": "rxConf.bAppendTimestamp",
+                    "$": "1"
+                },
+                {
+                    "_name": "rxConf.bAppendStatus",
+                    "$": "1"
+                },
+                {
+                    "_name": "syncWord0",
+                    "_tfOverride": "no",
+                    "$": "0x930B51DE"
+                },
+                {
+                    "_name": "syncWord1",
+                    "_tfOverride": "no",
+                    "$": "0"
+                },
+                {
+                    "_name": "maxPktLen",
+                    "$": "512"
+                },
+                {
+                    "_name": "hdrConf.numHdrBits",
+                    "$": "0x18"
+                },
+                {
+                    "_name": "hdrConf.lenPos",
+                    "$": "0"
+                },
+                {
+                    "_name": "hdrConf.numLenBits",
+                    "$": "0x9"
+                },
+                {
+                    "_name": "addrConf.addrType",
+                    "$": "0"
+                },
+                {
+                    "_name": "addrConf.addrSize",
+                    "$": "0"
+                },
+                {
+                    "_name": "addrConf.addrPos",
+                    "$": "0"
+                },
+                {
+                    "_name": "addrConf.numAddr",
+                    "$": "0"
+                },
+                {
+                    "_name": "lenOffset",
+                    "$": "0xFC"
+                },
+                {
+                    "_name": "endTrigger.triggerType",
+                    "$": "1"
+                },
+                {
+                    "_name": "endTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "pAddr",
+                    "$": "0"
+                },
+                {
+                    "_name": "pQueue",
+                    "$": "0"
+                },
+                {
+                    "_name": "pOutput",
+                    "$": "0"
+                }
+            ]
+        }
+    }
+}

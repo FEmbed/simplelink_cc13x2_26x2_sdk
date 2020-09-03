@@ -1,0 +1,247 @@
+{
+    "setting": {
+        "Name": "1.25 kbps, SimpleLink Long Range (20 kchip\/s, 2-GFSK, conv. FEC r=1\/2 K=7, DSSS SF=8, Tx dev.: 5 kHz, Rx BW: 34 kHz)",
+        "Description": "1.25 kbps, SimpleLink Long Range PHY using 20 kchip\/s, 2-GFSK, 5-kHz deviation (h=0.5), convolutional FEC (rate=1\/2, K=7), DSSS spreading factor 8, and 34 kHz Rx bandwidth for 863-930 MHz frequency band. NOTE: This PHY format uses a fixed-length and fixed-value preamble and sync word -- this means that the API parameters for \"preamConf.nPreamBytes\", \"formatConf.nSwBits\" and \"syncWord\" can not be configured for this setting. The rest of the packet, which consists of the variable or fixed length payload data, an appended CRC-16 for the payload data, and 1 extra byte for trellis termination in the convolutional FEC decoder, is both FEC-encoded and spread into chips (i.e. 2*8=16 chips per data bit).",
+        "Frequency": "915",
+        "Patch": {
+            "Define": "RF_MODE_AUTO",
+            "Cpe": "rf_patch_cpe_prop",
+            "Mce": [],
+            "Rfe": []
+        },
+        "Command": [
+            {
+                "_name": "CMD_PROP_RADIO_DIV_SETUP_PA",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_PROP_RADIO_DIV_SETUP"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "modulation.modType",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "modulation.deviation",
+                        "$": "20"
+                    },
+                    {
+                        "_name": "symbolRate.preScale",
+                        "$": "15"
+                    },
+                    {
+                        "_name": "symbolRate.rateWord",
+                        "$": "13107"
+                    },
+                    {
+                        "_name": "symbolRate.decimMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "rxBw",
+                        "$": "76"
+                    },
+                    {
+                        "_name": "preamConf.nPreamBytes",
+                        "$": "2"
+                    },
+                    {
+                        "_name": "preamConf.preamMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.nSwBits",
+                        "$": "32"
+                    },
+                    {
+                        "_name": "formatConf.bBitReversal",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.bMsbFirst",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.fecMode",
+                        "$": "8"
+                    },
+                    {
+                        "_name": "formatConf.whitenMode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "config.frontEndMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.biasMode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "config.analogCfgMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.bNoFsPowerUp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "txPower",
+                        "$": "0xFFFF"
+                    },
+                    {
+                        "_name": "pRegOverride",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "centerFreq",
+                        "$": "915"
+                    },
+                    {
+                        "_name": "intFreq",
+                        "$": "0x8000"
+                    },
+                    {
+                        "_name": "loDivider",
+                        "$": "5"
+                    },
+                    {
+                        "_name": "pRegOverrideTxStd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverrideTx20",
+                        "$": "0"
+                    }
+                ],
+                "OverrideField": [
+                    {
+                        "_name": "pRegOverride",
+                        "Block": [
+                            "override_phy_simplelink_long_range_dsss8.json",
+                            "override_tc880_tc881_tc882.json",
+                            "override_prop_common.json"
+                        ]
+                    },
+                    {
+                        "_name": "pRegOverrideTxStd",
+                        "Block": [
+                            "override_txstd_placeholder.json",
+                            "override_phy_tx_pa_ramp_genfsk_std.json"
+                        ]
+                    },
+                    {
+                        "_name": "pRegOverrideTx20",
+                        "Block": [
+                            "override_tx20_placeholder.json",
+                            "override_phy_tx_pa_ramp_genfsk_hpa.json"
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "CMD_FS",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_FS"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "frequency",
+                        "$": "915"
+                    },
+                    {
+                        "_name": "fractFreq",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.bTxMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.refFreq",
+                        "$": "0"
+                    }
+                ]
+            }
+        ],
+        "TestFunc": {
+            "ContTX": "testfunction_prop_cont_tx_slr.json",
+            "ContRX": "testfunction_prop_cont_rx_slr.json",
+            "PacketTX": "testfunction_prop_packet_tx_slr.json",
+            "PacketRX": "testfunction_prop_packet_rx_slr.json"
+        }
+    }
+}

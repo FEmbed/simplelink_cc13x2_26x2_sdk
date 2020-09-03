@@ -1,0 +1,21 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ADI_2HALFREG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramp time, PACTL2.RC=0x2 (in ADI0, set PACTL2[4:3]=0x2)",
+                "$": "0,16,0x8,0x0,17,0x1,0x1"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x20 (default: 0x2E)",
+                "$": "0x609C,0x0020"
+            },
+            {
+                "_type": "ADI_HALFREG_OVERRIDE",
+                "_comment": "Rx: Set anti-aliasing filter bandwidth to 0x9 (in ADI0, set IFAMPCTL3[7:4]=0x9)",
+                "$": "0,61,0xF,0x9"
+            }
+        ]
+    }
+}

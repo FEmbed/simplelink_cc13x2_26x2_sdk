@@ -1,0 +1,26 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "CoEx: set the radio IOMUX to enable coex signals",
+                "$": "0x1110,0x3E10"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "CoEx: Enable CoEx",
+                "$": "0x000188f3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "CoEx: Enable 32 bit write for the pointer",
+                "$": "0xc0040371"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "CoEx: Place the pointer to the configuration struct at byte index 220",
+                "$": "&coexConfig"
+            }
+        ]
+    }
+}

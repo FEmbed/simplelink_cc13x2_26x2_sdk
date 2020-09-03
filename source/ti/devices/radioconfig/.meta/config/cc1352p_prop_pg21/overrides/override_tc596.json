@@ -1,0 +1,71 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "Two following overrides start from loop coefficient override",
+                "$": "0x40024029"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Enable IIR filter, filter BW setting = 1",
+                "$": "0x38000000"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set IIR clock divider 64\/2",
+                "$": "0x01608402"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set loop bandwidth after lock to 200 kHz (K2)",
+                "$": "0x04150583"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set loop bandwidth after lock to 200 kHz (K2)",
+                "$": "0x000405A3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set loop bandwidth after lock to 200 kHz (K3, LSB)",
+                "$": "0xCB2F0603"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set loop bandwidth after lock to 200 kHz (K3, MSB)",
+                "$": "0x00040623"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set Fref = 8 MHz",
+                "$": "0x000684A3"
+            },
+            {
+                "_type": "ADI_2HALFREG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramp time, PACTL2.RC=0x3 (in ADI0, set PACTL2[4:3]=0x3)",
+                "$": "0,16,0x8,0x8,17,0x1,0x1"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x17 (default: 0x2E)",
+                "$": "0x609C,0x0017"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Rx: Set RSSI offset to adjust reported RSSI by 0 dB (default: -2), trimmed for external bias and differential configuration",
+                "$": "0x000088A3"
+            },
+            {
+                "_type": "ADI_HALFREG_OVERRIDE",
+                "_comment": "Rx: Set anti-aliasing filter bandwidth to 0xF (in ADI0, set IFAMPCTL3[7:4]=0xD)",
+                "$": "0,61,0xF,0xF"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "TX: Reduce analog ramping wait time",
+                "$": "0x6028,0x001A"
+            }
+        ]
+    }
+}

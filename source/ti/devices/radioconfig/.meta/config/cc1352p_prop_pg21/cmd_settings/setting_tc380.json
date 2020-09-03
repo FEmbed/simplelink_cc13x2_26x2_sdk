@@ -1,0 +1,247 @@
+{
+    "setting": {
+        "Name": "WB-DSSS 240 kbps, 2-GFSK, 195 kHz deviation, 1x spreading (Preview)",
+        "Description": "1x Wideband Direct Sequence Spread Spectrum (WB-DSSS) 240 kbps, 2-GFSK, 195 kHz deviation, FEC K = 4 for the 902-928 MHz band (Preview)",
+        "Frequency": "915",
+        "Patch": {
+            "Define": "RF_MODE_AUTO",
+            "Cpe": "rf_patch_cpe_prop",
+            "Mce": "rf_patch_mce_wb_dsss",
+            "Rfe": []
+        },
+        "Command": [
+            {
+                "_name": "CMD_PROP_RADIO_DIV_SETUP_PA",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_PROP_RADIO_DIV_SETUP"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "modulation.modType",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "modulation.deviation",
+                        "$": "780"
+                    },
+                    {
+                        "_name": "symbolRate.preScale",
+                        "$": "15"
+                    },
+                    {
+                        "_name": "symbolRate.rateWord",
+                        "$": "314573"
+                    },
+                    {
+                        "_name": "symbolRate.decimMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "rxBw",
+                        "$": "94"
+                    },
+                    {
+                        "_name": "preamConf.nPreamBytes",
+                        "$": "5"
+                    },
+                    {
+                        "_name": "preamConf.preamMode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "formatConf.nSwBits",
+                        "$": "32"
+                    },
+                    {
+                        "_name": "formatConf.bBitReversal",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.bMsbFirst",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "formatConf.fecMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.whitenMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.frontEndMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.biasMode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "config.analogCfgMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.bNoFsPowerUp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "txPower",
+                        "$": "0xFFFF"
+                    },
+                    {
+                        "_name": "pRegOverride",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "centerFreq",
+                        "$": "915"
+                    },
+                    {
+                        "_name": "intFreq",
+                        "$": "0xC00"
+                    },
+                    {
+                        "_name": "loDivider",
+                        "$": "5"
+                    },
+                    {
+                        "_name": "pRegOverrideTxStd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverrideTx20",
+                        "$": "0"
+                    }
+                ],
+                "OverrideField": [
+                    {
+                        "_name": "pRegOverride",
+                        "Block": [
+                            "override_wb-dsss_spreading_1.json",
+                            "override_prop_common_sub1g.json",
+                            "override_prop_common.json"
+                        ]
+                    },
+                    {
+                        "_name": "pRegOverrideTxStd",
+                        "Block": [
+                            "override_txstd_placeholder.json",
+                            "override_phy_tx_pa_ramp_genfsk_std.json"
+                        ]
+                    },
+                    {
+                        "_name": "pRegOverrideTx20",
+                        "Block": [
+                            "override_tx20_placeholder.json",
+                            "override_phy_tx_pa_ramp_genfsk_hpa.json"
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "CMD_FS",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_FS"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "frequency",
+                        "$": "915"
+                    },
+                    {
+                        "_name": "fractFreq",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.bTxMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.refFreq",
+                        "$": "0"
+                    }
+                ]
+            }
+        ],
+        "TestFunc": {
+            "ContTX": "testfunction_prop_cont_tx_genfsk.json",
+            "ContRX": "testfunction_prop_cont_rx_genfsk.json",
+            "PacketTX": "testfunction_prop_packet_tx_genfsk.json",
+            "PacketRX": "testfunction_prop_packet_rx_genfsk.json"
+        }
+    }
+}

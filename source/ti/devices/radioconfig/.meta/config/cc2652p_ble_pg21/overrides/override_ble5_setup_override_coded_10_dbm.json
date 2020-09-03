@@ -1,0 +1,21 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Set pilot tone length to 20 us",
+                "$": "0x5320,0x0690"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Compensate syncTimeadjust",
+                "$": "0x07E502A3"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x1B (default: 0x2E)",
+                "$": "0x609C,0x001B"
+            }
+        ]
+    }
+}

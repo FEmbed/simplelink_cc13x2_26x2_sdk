@@ -1,0 +1,16 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "TXSTDPA",
+                "_comment": "TX Standard power override",
+                "$": "0x00000000"
+            },
+            {
+                "_type": "ANADIV",
+                "_comment": "The ANADIV radio parameter based on LO divider and front end settings",
+                "$": "0x00000000"
+            }
+        ]
+    }
+}

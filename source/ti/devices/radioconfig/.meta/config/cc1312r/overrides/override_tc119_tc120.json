@@ -1,0 +1,81 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 80 kHz (K2)",
+                "$": "0xA47E0583"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 80 kHz (K2)",
+                "$": "0x000005A3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 80 kHz (K3, LSB)",
+                "$": "0xEAE00603"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 80 kHz (K3, MSB)",
+                "$": "0x00010623"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set FREF = 8 MHz",
+                "$": "0x000684A3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set FREF dither = 9.6 MHz",
+                "$": "0x000584B3"
+            },
+            {
+                "_type": "ADI_2HALFREG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramp time, PACTL2.RC=0x3 (in ADI0, set PACTL2[4:3]=0x3)",
+                "$": "0,16,0x8,0x8,17,0x1,0x1"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Tx: Set wait time before turning off ramp to 0x1A (default: 0x1F)",
+                "$": "0x6028,0x001A"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x1E (default: 0x2E)",
+                "$": "0x609C,0x001E"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Rx: Set RSSI offset to adjust reported RSSI by -4 dB (default: -2), trimmed for external bias and differential configuration",
+                "$": "0x000488A3"
+            },
+            {
+                "_type": "ADI_HALFREG_OVERRIDE",
+                "_comment": "Rx: Set anti-aliasing filter bandwidth to 0x9 (in ADI0, set IFAMPCTL3[7:4]=0x9)",
+                "$": "0,61,0xF,0x9"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Enable FB2PLL, adjust for BW",
+                "$": "0x5320,0x3A07"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Enable first-order IIR filter based freq offset estimator",
+                "$": "0x50FC,0x0003"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Increase sync threshold from 0x1F to 0x23",
+                "$": "0x5114,0x2323"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set LNA IB offset to 0xF",
+                "$": "0x000F8883"
+            }
+        ]
+    }
+}

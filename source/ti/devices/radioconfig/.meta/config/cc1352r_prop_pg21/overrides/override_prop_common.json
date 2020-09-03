@@ -1,0 +1,9 @@
+{
+    "overridebuffer": {
+        "Element32b": {
+            "_type": "ELEMENT",
+            "_comment": "DC\/DC regulator: In Tx, use DCDCCTL5[3:0]=0x7 (DITHER_EN=0 and IPEAK=7).",
+            "$": "0x00F788D3"
+        }
+    }
+}

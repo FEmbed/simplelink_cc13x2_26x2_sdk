@@ -1,0 +1,174 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_BLE5_ADV_AUX",
+            "_function": "SendPacket",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_BLE5_ADV_AUX"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "channel",
+                    "$": "0x8C"
+                },
+                {
+                    "_name": "whitening.init",
+                    "$": "0xD1"
+                },
+                {
+                    "_name": "whitening.bOverride",
+                    "$": "0"
+                },
+                {
+                    "_name": "phyMode.mainMode",
+                    "$": "2"
+                },
+                {
+                    "_name": "phyMode.coding",
+                    "$": "1"
+                },
+                {
+                    "_name": "rangeDelay",
+                    "$": "0"
+                },
+                {
+                    "_name": "txPower",
+                    "$": "0x0000"
+                },
+                {
+                    "_name": "pParams",
+                    "$": "0"
+                },
+                {
+                    "_name": "pOutput",
+                    "$": "0"
+                },
+                {
+                    "_name": "pRxQ",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bAutoFlushIgnored",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bAutoFlushCrcErr",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bAutoFlushEmpty",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bIncludeLenByte",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bIncludeCrc",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bAppendRssi",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bAppendStatus",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig.bAppendTimestamp",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.advFilterPolicy",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.deviceAddrType",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.targetAddrType",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.bStrictLenFilter",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.bDirected",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.privIgnMode",
+                    "$": "0"
+                },
+                {
+                    "_name": "advConfig.rpaMode",
+                    "$": "0"
+                },
+                {
+                    "_name": "auxPtrTargetType",
+                    "$": "0"
+                },
+                {
+                    "_name": "auxPtrTargetTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "pAdvPkt",
+                    "$": "0"
+                },
+                {
+                    "_name": "pRspPkt",
+                    "$": "0"
+                },
+                {
+                    "_name": "pDeviceAddress",
+                    "$": "0"
+                },
+                {
+                    "_name": "pWhiteList",
+                    "$": "0"
+                }
+            ]
+        }
+    }
+}

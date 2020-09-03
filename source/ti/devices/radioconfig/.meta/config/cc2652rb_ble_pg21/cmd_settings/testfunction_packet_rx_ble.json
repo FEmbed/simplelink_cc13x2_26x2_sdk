@@ -1,0 +1,107 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_BLE_GENERIC_RX",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_BLE_GENERIC_RX"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "channel",
+                    "$": "0x8C"
+                },
+                {
+                    "_name": "whitening.init",
+                    "$": "0xD1"
+                },
+                {
+                    "_name": "whitening.bOverride",
+                    "$": "0"
+                },
+                {
+                    "_name": "pParams",
+                    "_tfOverride": "no",
+                    "$": "0"
+                },
+                {
+                    "_name": "pOutput",
+                    "_tfOverride": "no",
+                    "$": "0"
+                },
+                {
+                    "_name": "pRxQ",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConfig",
+                    "$": "0x78"
+                },
+                {
+                    "_name": "bRepeat",
+                    "$": "1"
+                },
+                {
+                    "_name": "accessAddress",
+                    "$": "0x8E89BED6"
+                },
+                {
+                    "_name": "crcInit0",
+                    "$": "0x55"
+                },
+                {
+                    "_name": "crcInit1",
+                    "$": "0x55"
+                },
+                {
+                    "_name": "crcInit2",
+                    "$": "0x55"
+                },
+                {
+                    "_name": "endTrigger",
+                    "$": "1"
+                },
+                {
+                    "_name": "endTime",
+                    "$": "1"
+                }
+            ]
+        }
+    }
+}

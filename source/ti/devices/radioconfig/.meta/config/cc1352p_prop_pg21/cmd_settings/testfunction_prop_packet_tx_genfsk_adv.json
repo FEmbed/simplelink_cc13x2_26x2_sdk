@@ -1,0 +1,115 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_PROP_TX_ADV",
+            "_function": "SendPacket",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_PROP_TX_ADV"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "2"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bFsOff",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bUseCrc",
+                    "$": "1"
+                },
+                {
+                    "_name": "pktConf.bCrcIncSw",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bCrcIncHdr",
+                    "$": "0"
+                },
+                {
+                    "_name": "numHdrBits",
+                    "$": "16"
+                },
+                {
+                    "_name": "pktLen",
+                    "$": "20"
+                },
+                {
+                    "_name": "startConf.bExtTxTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "startConf.inputMode",
+                    "$": "0"
+                },
+                {
+                    "_name": "startConf.source",
+                    "$": "0"
+                },
+                {
+                    "_name": "preTrigger.triggerType",
+                    "$": "4"
+                },
+                {
+                    "_name": "preTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "preTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "preTrigger.pastTrig",
+                    "$": "1"
+                },
+                {
+                    "_name": "preTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "syncWord",
+                    "_tfOverride": "no",
+                    "$": "0x0055904e"
+                },
+                {
+                    "_name": "pPkt",
+                    "$": "0"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,196 @@
+{
+    "setting": {
+        "Name": "wBMS, 2M PHY (2 Msym\/s GFSK, 2 Mbps data rate)",
+        "Description": "wBMS, LE 2M PHY (2 Msym\/s GFSK, 2 Mbps data rate) for the 2.4 GHz ISM band (Release Candidate).",
+        "Frequency": "2440",
+        "Patch": {
+            "Define": "RF_MODE_AUTO",
+            "Cpe": "rf_patch_cpe_bt5",
+            "Mce": [],
+            "Rfe": []
+        },
+        "Command": [
+            {
+                "_name": "CMD_BLE5_RADIO_SETUP",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_BLE5_RADIO_SETUP"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "defaultPhy.mainMode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "defaultPhy.coding",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "loDivider",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.frontEndMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.biasMode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "config.analogCfgMode",
+                        "$": "0x00"
+                    },
+                    {
+                        "_name": "config.bNoFsPowerUp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "txPower",
+                        "$": "0x001F"
+                    },
+                    {
+                        "_name": "pRegOverrideCommon",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverride1Mbps",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverride2Mbps",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverrideCoded",
+                        "$": "0"
+                    }
+                ],
+                "OverrideField": [
+                    {
+                        "_name": "pRegOverrideCommon",
+                        "Block": [
+                            "override_ble5_setup_override_common.json",
+                            "override_wbms_override_common.json"
+                        ]
+                    },
+                    {
+                        "_name": "pRegOverride1Mbps",
+                        "Block": "override_ble5_setup_override_1mbps.json"
+                    },
+                    {
+                        "_name": "pRegOverride2Mbps",
+                        "Block": "override_ble5_setup_override_2mbps.json"
+                    },
+                    {
+                        "_name": "pRegOverrideCoded",
+                        "Block": "override_ble5_setup_override_coded.json"
+                    }
+                ]
+            },
+            {
+                "_name": "CMD_FS",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_FS"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "frequency",
+                        "$": "2440"
+                    },
+                    {
+                        "_name": "fractFreq",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.bTxMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.refFreq",
+                        "$": "0"
+                    }
+                ]
+            }
+        ],
+        "TestFunc": {
+            "ContTX": "testfunction_prop_cont_tx_wbms.json",
+            "ContRX": "testfunction_prop_cont_rx_wbms.json",
+            "PacketTX": "testfunction_prop_packet_tx_wbms_adv.json",
+            "PacketRX": "testfunction_prop_packet_rx_wbms_adv.json"
+        }
+    }
+}

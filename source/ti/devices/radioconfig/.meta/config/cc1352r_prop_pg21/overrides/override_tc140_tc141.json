@@ -1,0 +1,56 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 40 kHz (K2)",
+                "$": "0x29200583"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 40 kHz (K2)",
+                "$": "0x000005A3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 40 kHz (K3, LSB)",
+                "$": "0xF5700603"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 40 kHz (K3, MSB)",
+                "$": "0x00000623"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set FREF = 4 MHz",
+                "$": "0x000C84A3"
+            },
+            {
+                "_type": "ADI_2HALFREG_OVERRIDE",
+                "_comment": "Tx: Configure PA ramp time, PACTL2.RC=0x3 (in ADI0, set PACTL2[4:3]=0x3)",
+                "$": "0,16,0x8,0x8,17,0x1,0x1"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Tx: Set wait time before turning off ramp to 0x1A (default: 0x1F)",
+                "$": "0x6028,0x001A"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x19 (default: 0x2E)",
+                "$": "0x609C,0x0019"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Rx: Set RSSI offset to adjust reported RSSI by -1 dB (default: -2), trimmed for external bias and differential configuration",
+                "$": "0x000188A3"
+            },
+            {
+                "_type": "ADI_HALFREG_OVERRIDE",
+                "_comment": "Rx: Set anti-aliasing filter bandwidth to 0xA (in ADI0, set IFAMPCTL3[7:4]=0xA)",
+                "$": "0,61,0xF,0xA"
+            }
+        ]
+    }
+}

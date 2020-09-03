@@ -1,0 +1,16 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set RF_FSCA.ANADIV.DIV_SEL_BIAS = 1. Bits [0:16, 24, 30] are don't care..",
+                "$": "0x4001405D"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set RF_FSCA.ANADIV.DIV_SEL_BIAS = 1. Bits [0:16, 24, 30] are don't care..",
+                "$": "0x08141131"
+            }
+        ]
+    }
+}
