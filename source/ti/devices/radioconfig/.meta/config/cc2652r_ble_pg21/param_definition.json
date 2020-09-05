@@ -266,17 +266,17 @@
                         "Tooltip": "Advertising address (Device address)."
                     },
                     {
-                        "_name": "frameControl",
+                        "_name": "wBMSHeader",
                         "_type": "composit",
                         "Access": "R",
                         "Option": {
                             "_name": "rfCommand",
                             "$": "CMD_PROP_TX_ADV"
                         },
-                        "Label": "Frame Control",
-                        "DefValue": "10 00",
+                        "Label": "wBMS Header",
+                        "DefValue": "14 10 00",
                         "CmdUpdate": "NO",
-                        "Tooltip": "Byte(1): Length Field (bit 0), Frame Type(1-4), Security Enable (5-6), Framgement Number (7). Byte(2): Framgement Number (0), PS(1), PS Mode(2), One Hop(3), Hop Req(4), Fwd Pck(5), Netw. Update(6), FC Extention(7)"
+                        "Tooltip": "Byte(1): Length Field. Byte(2): Length Field (bit 0), Frame Type(1-4), Security Enable (5-6), Framgement Number (7). Byte(3): Framgement Number (0), PS(1), PS Mode(2), One Hop(3), Hop Req(4), Fwd Pck(5), Netw. Update(6), FC Extention(7)"
                     },
                     {
                         "_name": "advData",

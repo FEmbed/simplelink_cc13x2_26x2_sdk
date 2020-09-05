@@ -1,5 +1,44 @@
 [
     {
+        "name": "phyType",
+        "displayName": "PHY Type",
+        "description": "Selects the PHY setting",
+        "options": [
+            {
+                "name": "ieee154",
+                "displayName": "IEEE 802.15.4, 250 kbps"
+            },
+            {
+                "name": "ieee154p10",
+                "displayName": "IEEE 802.15.4, 250 kbps, 10 dBm"
+            }
+        ],
+        "default": "ieee154"
+    },
+    {
+        "name": "parent",
+        "displayName": "Parent",
+        "default": "Stack",
+        "hidden": true
+    },
+    {
+        "name": "permission",
+        "displayName": "Permission",
+        "default": "None",
+        "hidden": true,
+        "options": [
+            {
+                "name": "None"
+            },
+            {
+                "name": "ReadWrite"
+            },
+            {
+                "name": "ReadOnly"
+            }
+        ]
+    },
+    {
         "name": "frequency",
         "displayName": "Channel - Frequency (MHz)",
         "description": "Channel",
@@ -91,7 +130,21 @@
         "name": "txPower",
         "displayName": "TX Power (dBm)",
         "description": "TX Power",
-        "default": "20",
+        "default": "14",
         "longDescription": ""
+    },
+    {
+        "name": "txPowerHi",
+        "displayName": "TX Power (dBm)",
+        "description": "TX Power",
+        "default": "20",
+        "hidden": true
+    },
+    {
+        "name": "highPA",
+        "displayName": "High PA",
+        "description": "Select if the High Power Amplifier on the device should be used",
+        "default": false,
+        "hidden": false
     }
 ]

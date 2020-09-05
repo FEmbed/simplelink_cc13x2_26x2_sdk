@@ -189,106 +189,25 @@ function getPaUsage(inst) {
 }
 
 /*
- *  ======== addPermission ========
- *  Add configurables for controlling access
+ *  ======== highPaOnChange ========
+ *  On change handler for highPA configurable
  *
- *  @param config - the configurable array to be extended with permission configurables
- *  @param callback - onChange callback
+ *  @param inst  - module instance
+ *  @param ui - module UI state
  */
-function addPermission(config, callback) {
-    config.push({
-        name: "permission",
-        displayName: "Permission",
-        default: "None",
-        onChange: callback,
-        hidden: true,
-        options: [
-            {name: "None"},
-            {name: "ReadWrite"},
-            {name: "ReadOnly"}
-        ]
-    });
-    // To aid in determining permissions
-    config.push({
-        name: "parent",
-        displayName: "Parent",
-        default: "Stack",
-        hidden: true
-    });
-}
-
-/*
- *  ======== addVisibilityConfig ========
- *  Add configurable to control visibility of RF parameters.
- *
- *  @param config - the configurable array to be extended with the visibility configurable
- *  @param callback - onChange callback
- */
-function addVisibilityConfig(config, callback) {
-    config.push({
-        name: "paramVisibility",
-        displayName: "Radio Parameter visibility",
-        default: true,
-        onChange: callback,
-        hidden: true
-    });
-}
-
-/*
- *  ======== addTxPowerConfigHigh ========
- *  Add a configurables for PA selection
- *
- *  @param config - the setting to apply the new configurables to
- */
-function addTxPowerConfigHigh(config) {
-    const txPowHi = {
-        name: "txPowerHi",
-        displayName: "TX Power (dBm)",
-        description: "The transmit power to use",
-        default: "0",
-        hidden: true
-    };
-
-    const highPa = {
-        name: "highPA",
-        displayName: "High PA",
-        description: "Select if the High Power Amplifier on the device should be used",
-        default: false,
-        onChange: (inst, ui) => {
-            // Update visibility of TX power configurables
-            if ("phyType" in inst) {
-                ui.txPower.hidden = inst.highPA;
-                ui.txPowerHi.hidden = !inst.highPA;
-            }
-            if ("phyType868" in inst) {
-                ui.txPower.hidden = inst.highPA || ui.phyType868.hidden;
-                ui.txPowerHi.hidden = !inst.highPA || ui.phyType868.hidden;
-            }
-            if ("phyType433" in inst) {
-                ui.txPower433.hidden = inst.highPA || ui.phyType433.hidden;
-                ui.txPower433Hi.hidden = !inst.highPA || ui.phyType433.hidden;
-            }
-        }
-    };
-
-    // Find position of "txPower"
-    let txPowerPos = 0;
-    // Currently only prop contains a group with name PHY Properties
-    const isProp = _.some(config, ["displayName", "PHY Properties"]);
-
-    if (isProp) {
-        const phyLayer = _.find(config, ["displayName", "PHY Properties"]);
-
-        txPowerPos = _.findIndex(phyLayer.config, ["name", "txPower"]);
-
-        // Insert before "txPower"
-        phyLayer.config.splice(txPowerPos, 0, highPa, txPowHi);
+function highPaOnChange(inst, ui) {
+    // Update visibility of TX power configurables
+    if ("phyType" in inst) {
+        ui.txPower.hidden = inst.highPA;
+        ui.txPowerHi.hidden = !inst.highPA;
     }
-    else {
-        txPowerPos = _.findIndex(config, ["name", "txPower"]);
-
-        // Insert before "txPower"
-        config.splice(txPowerPos, 0, highPa, txPowHi);
+    if ("phyType868" in inst) {
+        ui.txPower.hidden = inst.highPA || ui.phyType868.hidden;
+        ui.txPowerHi.hidden = !inst.highPA || ui.phyType868.hidden;
+    }
+    if ("phyType433" in inst) {
+        ui.txPower433.hidden = inst.highPA || ui.phyType433.hidden;
+        ui.txPower433Hi.hidden = !inst.highPA || ui.phyType433.hidden;
     }
 }
 
@@ -373,9 +292,7 @@ function modules() {
 
 exports = {
     reloadInstanceFromPhy: reloadInstanceFromPhy,
-    addTxPowerConfigHigh: addTxPowerConfigHigh,
-    addPermission: addPermission,
-    addVisibilityConfig: addVisibilityConfig,
+    highPaOnChange: highPaOnChange,
     pruneConfig: pruneConfig,
     getPaUsage: getPaUsage,
     validateRfParams: validateRfParams,

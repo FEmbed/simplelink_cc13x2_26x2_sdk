@@ -2,6 +2,11 @@
     "overridebuffer": {
         "Element32b": [
             {
+                "_type": "ELEMENT",
+                "_comment": "DC\/DC regulator: In Tx, use DCDCCTL5[3:0]=0x3 (DITHER_EN=0 and IPEAK=3).",
+                "$": "0x00F388D3"
+            },
+            {
                 "_type": "ADI_HALFREG_OVERRIDE",
                 "_comment": "Rx: Set anti-aliasing filter bandwidth to 0x5 (in ADI0, set IFAMPCTL3[7:4]=0x5)",
                 "$": "0,61,0xF,0x5"

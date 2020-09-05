@@ -1,5 +1,82 @@
 [
     {
+        "name": "phyType",
+        "displayName": "PHY Type",
+        "description": "Selects the PHY setting",
+        "options": [
+            {
+                "name": "bt5le1m",
+                "displayName": "Bluetooth 5, 1 Mbps"
+            },
+            {
+                "name": "bt5le1madvnc",
+                "displayName": "Bluetooth 5, 1 Mbps, BT4 compatible"
+            },
+            {
+                "name": "bt5le2m",
+                "displayName": "Bluetooth 5, 2 Mbps"
+            },
+            {
+                "name": "bt5lecodeds2",
+                "displayName": "Bluetooth 5, 500 kbps"
+            },
+            {
+                "name": "bt5lecodeds8",
+                "displayName": "Bluetooth 5, 125 kbps"
+            },
+            {
+                "name": "bt5le1mp10",
+                "displayName": "Bluetooth 5, 1 Mbps, 10 dBm"
+            },
+            {
+                "name": "bt5le1madvncp10",
+                "displayName": "Bluetooth 5, 1 Mbps, BT4 compatible, 10 dBm"
+            },
+            {
+                "name": "bt5le2mp10",
+                "displayName": "Bluetooth 5, 2 Mbps, 10 dBm"
+            },
+            {
+                "name": "bt5lecodeds2p10",
+                "displayName": "Bluetooth 5, 500 kbps, 10 dBm"
+            },
+            {
+                "name": "bt5lecodeds8p10",
+                "displayName": "Bluetooth 5, 125 kbps, 10 dBm"
+            }
+        ],
+        "default": "bt5le1m"
+    },
+    {
+        "name": "parent",
+        "displayName": "Parent",
+        "default": "Stack",
+        "hidden": true
+    },
+    {
+        "name": "permission",
+        "displayName": "Permission",
+        "default": "None",
+        "hidden": true,
+        "options": [
+            {
+                "name": "None"
+            },
+            {
+                "name": "ReadWrite"
+            },
+            {
+                "name": "ReadOnly"
+            }
+        ]
+    },
+    {
+        "name": "paramVisibility",
+        "displayName": "Radio Parameter visibility",
+        "default": true,
+        "hidden": true
+    },
+    {
         "name": "frequency",
         "displayName": "Channel - Frequency (MHz)",
         "description": "Channel",
@@ -217,8 +294,22 @@
         "name": "txPower",
         "displayName": "TX Power (dBm)",
         "description": "TX Power",
-        "default": "20",
+        "default": "14",
         "longDescription": ""
+    },
+    {
+        "name": "txPowerHi",
+        "displayName": "TX Power (dBm)",
+        "description": "TX Power",
+        "default": "20",
+        "hidden": true
+    },
+    {
+        "name": "highPA",
+        "displayName": "High PA",
+        "description": "Select if the High Power Amplifier on the device should be used",
+        "default": false,
+        "hidden": false
     },
     {
         "name": "packetLengthBle",

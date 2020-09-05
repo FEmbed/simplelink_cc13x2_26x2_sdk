@@ -17,14 +17,9 @@
                 "$": "0x60A8,0x0001"
             },
             {
-                "_type": "ADI_HALFREG_OVERRIDE",
-                "_comment": "Set VCTRIM to 0 for 20 dBm PA",
-                "$": "1,26,0xF,0x0"
-            },
-            {
-                "_type": "ADI_HALFREG_OVERRIDE",
-                "_comment": "Set VCTRIM to 0 for 20 dBm PA",
-                "$": "1,27,0x7,0x0"
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set IPEAK = 7 and DCDC dither off for TX",
+                "$": "0x00F788D3"
             }
         ]
     }

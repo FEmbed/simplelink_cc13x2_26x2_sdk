@@ -1,7 +1,7 @@
 {
     "setting": {
         "Name": "250 kbps, 2-GFSK, 125 kHz deviation",
-        "Description": "250 kbps, 2-GFSK, 125 kHz deviation",
+        "Description": "250 kbps, 2-GFSK, 125 kHz deviation.",
         "Frequency": "2440",
         "Patch": {
             "Define": "RF_MODE_PROPRIETARY_2_4",

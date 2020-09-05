@@ -75,7 +75,6 @@ exports = {
     getBoardName: getBoardName,
     getPhyType: getPhyType,
     getPhyGroup: getPhyGroup,
-    getDefaultFreqBand: getDefaultFreqBand,
     getCoexConfig: getCoexConfig,
     validateBasic: (inst, validation) => {
         validateNames(inst, validation);
@@ -281,15 +280,6 @@ function getPhyType(inst) {
     default:
     }
     return inst.phyType;
-}
-
-/*
- *  ======== getDefaultFreqBand ========
- *  Return the default frequency band of the current device
- *
- */
-function getDefaultFreqBand() {
-    return Device.includes("CC13") ? "868" : "2400";
 }
 
 /*

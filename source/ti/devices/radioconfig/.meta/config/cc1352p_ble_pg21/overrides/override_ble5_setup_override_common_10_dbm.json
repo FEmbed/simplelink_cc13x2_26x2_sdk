@@ -12,11 +12,6 @@
                 "$": "0x01640263"
             },
             {
-                "_type": "ELEMENT",
-                "_comment": "Bluetooth 5: Set IPEAK = 7 and DCDC dither off for TX",
-                "$": "0x00F788D3"
-            },
-            {
                 "_type": "HW_REG_OVERRIDE",
                 "_comment": "Bluetooth 5: Default to no CTE. ",
                 "$": "0x5328,0x0000"
@@ -35,6 +30,11 @@
                 "_type": "ELEMENT",
                 "_comment": "Synth: Increase mid code calibration time to 5 us",
                 "$": "0x38183C30"
+            },
+            {
+                "_type": "ADI_REG_OVERRIDE",
+                "_comment": "Set VCTRIM to 0 for 20 dBm PA",
+                "$": "1,26,0x00"
             }
         ]
     }

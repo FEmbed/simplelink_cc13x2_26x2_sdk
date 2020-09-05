@@ -1,5 +1,212 @@
 [
     {
+        "name": "freqBand",
+        "displayName": "Frequency Band",
+        "description": "Select the frequency band",
+        "hidden": false,
+        "options": [
+            {
+                "name": "868",
+                "displayName": "779 - 930 MHz"
+            },
+            {
+                "name": "433",
+                "displayName": "431 - 527 MHz"
+            },
+            {
+                "name": "2400",
+                "displayName": "2400 - 2480 MHz"
+            }
+        ],
+        "default": "868"
+    },
+    {
+        "name": "phyType868",
+        "displayName": "PHY Type",
+        "description": "Selects the PHY setting",
+        "hidden": false,
+        "options": [
+            {
+                "name": "2gfsk50kbps",
+                "displayName": "50 kbps, 2-GFSK"
+            },
+            {
+                "name": "2gfsk1mbps868",
+                "displayName": "1 Mbps, 2-GFSK, 350 kHz deviation (868 MHz)"
+            },
+            {
+                "name": "2gfsk1mbps915",
+                "displayName": "1 Mbps, 2-GFSK, 350 kHz deviation (915 MHz)"
+            },
+            {
+                "name": "2gfsk50kbps154g",
+                "displayName": "50 kbps, 2-GFSK, 15.4g"
+            },
+            {
+                "name": "2gfsk200kbps154g",
+                "displayName": "200 kbps, 2-GFSK, 15.4g"
+            },
+            {
+                "name": "slr5kbps2gfsk",
+                "displayName": "5 kbps, SimpleLink Long Range"
+            },
+            {
+                "name": "slr2500bps2gfsk",
+                "displayName": "2.5 kbps, SimpleLink Long Range"
+            },
+            {
+                "name": "ook48kbps",
+                "displayName": "4.8 kbps OOK (868 MHz)"
+            },
+            {
+                "name": "ook48kbps915",
+                "displayName": "4.8 kbps OOK (915 MHz)"
+            },
+            {
+                "name": "2gfsk50kbps915wsun",
+                "displayName": "50 kbps, 2-GFSK, 12.5 KHz dev., WiSUN PHY (915 MHz)"
+            },
+            {
+                "name": "2gfsk50kbps868wsun",
+                "displayName": "50 kbps, 2-GFSK, 12.5 KHz dev., WiSUN PHY (868 MHz)"
+            },
+            {
+                "name": "2gfsk100kbps50dev915wsun",
+                "displayName": "100 kbps, 2-GFSK, 50 KHz dev., WiSUN PHY (915 MHz)"
+            },
+            {
+                "name": "2gfsk100kbps50dev868wsun",
+                "displayName": "100 kbps, 2-GFSK, 50 Khz dev., WiSUN PHY (868 MHz)"
+            },
+            {
+                "name": "2gfsk100kbps25dev915wsun",
+                "displayName": "100 kbps, 2-GFSK, 25 KHz dev., WiSUN PHY, (915 MHz)"
+            },
+            {
+                "name": "2gfsk100kbps25dev868wsun",
+                "displayName": "100 kbps, 2-GFSK, 25 Khz dev., WiSUN PHY, (868 MHz)"
+            },
+            {
+                "name": "2gfsk200kbps100dev915wsun",
+                "displayName": "200 kbps, 2-GFSK, 100 KHz dev., WiSUN PHY, (915 MHz)"
+            },
+            {
+                "name": "2gfsk200kbps100dev868wsun",
+                "displayName": "200 kbps, 2-GFSK, 100 Khz dev., WiSUN PHY, (868 MHz)"
+            },
+            {
+                "name": "wbdsss480ksps240kbps",
+                "displayName": "WBDSSS 480 ksps, 240 kbps"
+            },
+            {
+                "name": "wbdsss480ksps120kbps",
+                "displayName": "WBDSSS 480 ksps, 120 kbps"
+            },
+            {
+                "name": "wbdsss480ksps60kbps",
+                "displayName": "WBDSSS 480 ksps, 60 kbps"
+            },
+            {
+                "name": "wbdsss480ksps30kbps",
+                "displayName": "WBDSSS 480 ksps, 30 kbps"
+            },
+            {
+                "name": "custom868",
+                "displayName": "Custom PHY Setting"
+            }
+        ],
+        "default": "2gfsk50kbps"
+    },
+    {
+        "name": "phyType433",
+        "displayName": "PHY Type",
+        "description": "Selects the PHY setting",
+        "hidden": true,
+        "options": [
+            {
+                "name": "2gfsk50kbps433mhz",
+                "displayName": "50 kbps, 2-GFSK"
+            },
+            {
+                "name": "2gfsk50kbps154g433mhz",
+                "displayName": "50 kbps, 2-GFSK, 15.4g"
+            },
+            {
+                "name": "2gfsk200kpbs433mhz",
+                "displayName": "200 kbps, 2-GFSK, 50 kHz deviation"
+            },
+            {
+                "name": "slr5kbps2gfsk433mhz",
+                "displayName": "5 kbps, SimpleLink Long Range"
+            },
+            {
+                "name": "slr2500bps2gfsk433mhz",
+                "displayName": "2.5 kbps, SimpleLink Long Range"
+            },
+            {
+                "name": "2gfsk48kpbs429mhz",
+                "displayName": "4.8 kbps, 2-GFSK, 2 kHz deviation"
+            },
+            {
+                "name": "ook48kbps433mhz",
+                "displayName": "4.8 kbps OOK"
+            },
+            {
+                "name": "custom433",
+                "displayName": "Custom PHY Setting"
+            }
+        ],
+        "default": "2gfsk50kbps433mhz"
+    },
+    {
+        "name": "phyType2400",
+        "displayName": "PHY Type",
+        "description": "Selects the PHY setting",
+        "hidden": true,
+        "options": [
+            {
+                "name": "2gfsk100kbps",
+                "displayName": "100 kbps, 2-GFSK, 50 kHz deviation"
+            },
+            {
+                "name": "2gfsk250kbps",
+                "displayName": "250 kbps, 2-GFSK, 125 kHz deviation"
+            },
+            {
+                "name": "2msk250kbps",
+                "displayName": "250 kbps MSK, 62.5 kHz deviation"
+            },
+            {
+                "name": "custom2400",
+                "displayName": "Custom PHY Setting"
+            }
+        ],
+        "default": "2gfsk100kbps"
+    },
+    {
+        "name": "parent",
+        "displayName": "Parent",
+        "default": "Stack",
+        "hidden": true
+    },
+    {
+        "name": "permission",
+        "displayName": "Permission",
+        "default": "None",
+        "hidden": true,
+        "options": [
+            {
+                "name": "None"
+            },
+            {
+                "name": "ReadWrite"
+            },
+            {
+                "name": "ReadOnly"
+            }
+        ]
+    },
+    {
         "displayName": "PHY Properties",
         "collapsed": true,
         "config": [
@@ -209,6 +416,20 @@
                 "longDescription": ""
             },
             {
+                "name": "txPowerHi",
+                "displayName": "TX Power (dBm)",
+                "description": "TX Power",
+                "default": "20",
+                "hidden": true
+            },
+            {
+                "name": "highPA",
+                "displayName": "High PA",
+                "description": "Select if the High Power Amplifier on the device should be used",
+                "default": false,
+                "hidden": false
+            },
+            {
                 "name": "txPower433",
                 "displayName": "TX Power (dBm)",
                 "description": "TX Power",
@@ -219,7 +440,7 @@
                 "name": "txPower433Hi",
                 "displayName": "TX Power (dBm)",
                 "description": "TX Power",
-                "default": "14",
+                "default": "20",
                 "hidden": true
             },
             {

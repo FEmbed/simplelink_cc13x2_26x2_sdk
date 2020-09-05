@@ -15,6 +15,11 @@
                 "_type": "HW_REG_OVERRIDE",
                 "_comment": "Set TXRX pin to 0 in RX and high impedance in idle\/TX. ",
                 "$": "0x60A8,0x0401"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Tx: Set DCDC settings IPEAK=3, dither = off",
+                "$": "0x00F388D3"
             }
         ]
     }

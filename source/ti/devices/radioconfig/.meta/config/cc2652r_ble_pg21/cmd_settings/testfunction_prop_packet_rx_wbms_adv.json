@@ -147,7 +147,7 @@
                 },
                 {
                     "_name": "lenOffset",
-                    "$": "0xFC"
+                    "$": "0xFD"
                 },
                 {
                     "_name": "endTrigger.triggerType",

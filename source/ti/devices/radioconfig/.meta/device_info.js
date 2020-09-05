@@ -39,7 +39,7 @@
 "use strict";
 
 // Module version
-const RADIO_CONFIG_VERSION = "1.6";
+const RADIO_CONFIG_VERSION = "1.7";
 
 // Common utility functions
 const Common = system.getScript("/ti/devices/radioconfig/radioconfig_common.js");
@@ -506,6 +506,16 @@ if (HighPaDevice) {
             name: "bt5le2mp10",
             description: "Bluetooth 5, 2 Mbps, 10 dBm",
             file: "setting_bt5_le_2m_10_dbm.json"
+        },
+        {
+            name: "bt5lecodeds2p10",
+            description: "Bluetooth 5, 500 kbps, 10 dBm",
+            file: "setting_bt5_le_coded_s2_10_dbm.json"
+        },
+        {
+            name: "bt5lecodeds8p10",
+            description: "Bluetooth 5, 125 kbps, 10 dBm",
+            file: "setting_bt5_le_coded_s8_10_dbm.json"
         }
     ];
     SettingsMapBLE = SettingsMapBLE.concat(settings10dbm);

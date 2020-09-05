@@ -1,5 +1,66 @@
 [
     {
+        "name": "freqBand",
+        "displayName": "Frequency Band",
+        "description": "Select the frequency band",
+        "hidden": false,
+        "options": [
+            {
+                "name": "2400",
+                "displayName": "2400 - 2480 MHz"
+            }
+        ],
+        "default": "2400"
+    },
+    {
+        "name": "phyType2400",
+        "displayName": "PHY Type",
+        "description": "Selects the PHY setting",
+        "hidden": false,
+        "options": [
+            {
+                "name": "2gfsk100kbps",
+                "displayName": "100 kbps, 2-GFSK, 50 kHz deviation"
+            },
+            {
+                "name": "2gfsk250kbps",
+                "displayName": "250 kbps, 2-GFSK, 125 kHz deviation"
+            },
+            {
+                "name": "2msk250kbps",
+                "displayName": "250 kbps MSK, 62.5 kHz deviation"
+            },
+            {
+                "name": "custom2400",
+                "displayName": "Custom PHY Setting"
+            }
+        ],
+        "default": "2gfsk100kbps"
+    },
+    {
+        "name": "parent",
+        "displayName": "Parent",
+        "default": "Stack",
+        "hidden": true
+    },
+    {
+        "name": "permission",
+        "displayName": "Permission",
+        "default": "None",
+        "hidden": true,
+        "options": [
+            {
+                "name": "None"
+            },
+            {
+                "name": "ReadWrite"
+            },
+            {
+                "name": "ReadOnly"
+            }
+        ]
+    },
+    {
         "displayName": "PHY Properties",
         "collapsed": true,
         "config": [

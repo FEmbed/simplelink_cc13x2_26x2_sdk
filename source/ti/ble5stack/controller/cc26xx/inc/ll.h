@@ -454,16 +454,16 @@ extern "C"
 #define LL_EXT_TX_POWER_3_DBM                          12
 #define LL_EXT_TX_POWER_4_DBM                          13
 #define LL_EXT_TX_POWER_5_DBM                          14
-// Add the extra power level step for CC1352P devices
 #if defined( CC13X2P )
-#define LL_EXT_TX_POWER_14_DBM                         15
-#define LL_EXT_TX_POWER_15_DBM                         16
-#define LL_EXT_TX_POWER_16_DBM                         17
-#define LL_EXT_TX_POWER_17_DBM                         18
-#define LL_EXT_TX_POWER_18_DBM                         19
-#define LL_EXT_TX_POWER_19_DBM                         20
-#define LL_EXT_TX_POWER_20_DBM                         21
-#endif
+// Add the extra power level step for CC1352P devices
+#define LL_EXT_TX_POWER_P2_14_DBM_P4_6_DBM             15
+#define LL_EXT_TX_POWER_P2_15_DBM_P4_7_DBM             16
+#define LL_EXT_TX_POWER_P2_16_DBM_P4_8_DBM             17
+#define LL_EXT_TX_POWER_P2_17_DBM_P4_9_DBM             18
+#define LL_EXT_TX_POWER_P2_18_DBM_P4_10_DBM            19
+#define LL_EXT_TX_POWER_P2_19_DBM                      20
+#define LL_EXT_TX_POWER_P2_20_DBM                      21
+#endif // CC13X2P
 #else // CC254x
 #define LL_EXT_TX_POWER_MINUS_23_DBM                   0
 #define LL_EXT_TX_POWER_MINUS_6_DBM                    1
@@ -2376,7 +2376,7 @@ extern llStatus_t LL_EnhancedTxTest( uint8 txChan,
  * @param       rxPhy  - Rx PHY to use.
  * @param       modIndex - LL_DTM_STANDARD_MODULATION_INDEX,
  *                         LL_DTM_STABLE_MODULATION_INDEX
- * @param       expectedCteLength - Expected CTE length in 8 µs units.
+ * @param       expectedCteLength - Expected CTE length in 8 ï¿½s units.
  * @param       expectedCteType - Expected CTE type as bitmask (bit 0 - Allow AoA CTE Response).
  * @param       slotDurations - Switching and sampling slots in 1 us or 2 us each (1 or 2).
  * @param       length - The number of Antenna IDs in the pattern (2 to 75).
@@ -2411,7 +2411,7 @@ extern llStatus_t LL_EnhancedCteRxTest( uint8 rxChan,
  * @param       payloadLen  - Byte length (0..37) in payload for each packet.
  * @param       payloadType - The type of pattern to transmit.
  * @param       txPhy       - Tx PHY to use.
- * @param       cteLength - CTE length in 8 µs units.
+ * @param       cteLength - CTE length in 8 ï¿½s units.
  * @param       cteType - CTE type as bitmask (bit 0 - Allow AoA CTE Response).
  * @param       length - The number of Antenna IDs in the pattern (2 to 75).
  * @param       pAntenna - List of Antenna IDs in the pattern.

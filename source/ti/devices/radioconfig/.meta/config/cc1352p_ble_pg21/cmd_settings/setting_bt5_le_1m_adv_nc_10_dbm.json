@@ -98,6 +98,10 @@
                         "$": "0"
                     },
                     {
+                        "_name": "pRegOverrideCoded",
+                        "$": "0"
+                    },
+                    {
                         "_name": "pRegOverrideTxStd",
                         "$": "0"
                     },
@@ -121,6 +125,10 @@
                     {
                         "_name": "pRegOverride2Mbps",
                         "Block": "override_ble5_setup_override_2mbps_10_dbm.json"
+                    },
+                    {
+                        "_name": "pRegOverrideCoded",
+                        "Block": "override_ble5_setup_override_coded_10_dbm.json"
                     },
                     {
                         "_name": "pRegOverrideTxStd",

@@ -1,7 +1,7 @@
 {
     "setting": {
         "Name": "100 kbps, 2-GFSK, 50 kHz deviation",
-        "Description": "100 kbps, 2-GFSK, 50 kHz deviation",
+        "Description": "100 kbps, 2-GFSK, 50 kHz deviation.",
         "Frequency": "2440",
         "Patch": {
             "Define": "RF_MODE_PROPRIETARY_2_4",
@@ -144,10 +144,7 @@
                 ],
                 "OverrideField": {
                     "_name": "pRegOverride",
-                    "Block": [
-                        "override_tc900.json",
-                        "override_prop_common.json"
-                    ]
+                    "Block": "override_tc900.json"
                 }
             },
             {

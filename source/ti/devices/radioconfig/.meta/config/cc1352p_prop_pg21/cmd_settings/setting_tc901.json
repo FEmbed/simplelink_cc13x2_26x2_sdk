@@ -140,36 +140,12 @@
                     {
                         "_name": "loDivider",
                         "$": "0"
-                    },
-                    {
-                        "_name": "pRegOverrideTxStd",
-                        "$": "0"
-                    },
-                    {
-                        "_name": "pRegOverrideTx20",
-                        "$": "0"
                     }
                 ],
-                "OverrideField": [
-                    {
-                        "_name": "pRegOverride",
-                        "Block": "override_tc901.json"
-                    },
-                    {
-                        "_name": "pRegOverrideTxStd",
-                        "Block": [
-                            "override_txstd_placeholder.json",
-                            "override_phy_tx_pa_ramp_genfsk_std.json"
-                        ]
-                    },
-                    {
-                        "_name": "pRegOverrideTx20",
-                        "Block": [
-                            "override_tx20_placeholder.json",
-                            "override_phy_tx_pa_ramp_genfsk_hpa.json"
-                        ]
-                    }
-                ]
+                "OverrideField": {
+                    "_name": "pRegOverride",
+                    "Block": "override_tc901.json"
+                }
             },
             {
                 "_name": "CMD_FS",

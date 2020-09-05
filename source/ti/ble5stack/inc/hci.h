@@ -673,28 +673,30 @@ extern "C"
  * @{
  */
 #if defined( CC26XX ) || defined( CC13XX )
-#define HCI_EXT_TX_POWER_MINUS_20_DBM                   LL_EXT_TX_POWER_MINUS_20_DBM    //!< -20 dBm
-#define HCI_EXT_TX_POWER_MINUS_18_DBM                   LL_EXT_TX_POWER_MINUS_18_DBM    //!< -18 dBm
-#define HCI_EXT_TX_POWER_MINUS_15_DBM                   LL_EXT_TX_POWER_MINUS_15_DBM    //!< -15 dBm
-#define HCI_EXT_TX_POWER_MINUS_12_DBM                   LL_EXT_TX_POWER_MINUS_12_DBM    //!< -12 dBm
-#define HCI_EXT_TX_POWER_MINUS_10_DBM                   LL_EXT_TX_POWER_MINUS_10_DBM    //!< -10 dBm
-#define HCI_EXT_TX_POWER_MINUS_9_DBM                    LL_EXT_TX_POWER_MINUS_9_DBM     //!< -9 dBm
-#define HCI_EXT_TX_POWER_MINUS_6_DBM                    LL_EXT_TX_POWER_MINUS_6_DBM     //!< -6 dBm
-#define HCI_EXT_TX_POWER_MINUS_5_DBM                    LL_EXT_TX_POWER_MINUS_5_DBM     //!< -5 dBm
-#define HCI_EXT_TX_POWER_MINUS_3_DBM                    LL_EXT_TX_POWER_MINUS_3_DBM     //!< -3 dBm
-#define HCI_EXT_TX_POWER_0_DBM                          LL_EXT_TX_POWER_0_DBM           //!< 0 dBm
-#define HCI_EXT_TX_POWER_1_DBM                          LL_EXT_TX_POWER_1_DBM           //!< 1 dBm
-#define HCI_EXT_TX_POWER_2_DBM                          LL_EXT_TX_POWER_2_DBM           //!< 2 dBm
-#define HCI_EXT_TX_POWER_3_DBM                          LL_EXT_TX_POWER_3_DBM           //!< 3 dBm
-#define HCI_EXT_TX_POWER_4_DBM                          LL_EXT_TX_POWER_4_DBM           //!< 4 dBm
-#define HCI_EXT_TX_POWER_5_DBM                          LL_EXT_TX_POWER_5_DBM           //!< 5 dBm
-#define HCI_EXT_TX_POWER_14_DBM                         LL_EXT_TX_POWER_14_DBM          //!< 14 dBm
-#define HCI_EXT_TX_POWER_15_DBM                         LL_EXT_TX_POWER_15_DBM          //!< 15 dBm
-#define HCI_EXT_TX_POWER_16_DBM                         LL_EXT_TX_POWER_16_DBM          //!< 16 dBm
-#define HCI_EXT_TX_POWER_17_DBM                         LL_EXT_TX_POWER_17_DBM          //!< 17 dBm
-#define HCI_EXT_TX_POWER_18_DBM                         LL_EXT_TX_POWER_18_DBM          //!< 18 dBm
-#define HCI_EXT_TX_POWER_19_DBM                         LL_EXT_TX_POWER_19_DBM          //!< 19 dBm
-#define HCI_EXT_TX_POWER_20_DBM                         LL_EXT_TX_POWER_20_DBM          //!< 20 dBm
+#define HCI_EXT_TX_POWER_MINUS_20_DBM                   LL_EXT_TX_POWER_MINUS_20_DBM            //!< -20 dBm
+#define HCI_EXT_TX_POWER_MINUS_18_DBM                   LL_EXT_TX_POWER_MINUS_18_DBM            //!< -18 dBm
+#define HCI_EXT_TX_POWER_MINUS_15_DBM                   LL_EXT_TX_POWER_MINUS_15_DBM            //!< -15 dBm
+#define HCI_EXT_TX_POWER_MINUS_12_DBM                   LL_EXT_TX_POWER_MINUS_12_DBM            //!< -12 dBm
+#define HCI_EXT_TX_POWER_MINUS_10_DBM                   LL_EXT_TX_POWER_MINUS_10_DBM            //!< -10 dBm
+#define HCI_EXT_TX_POWER_MINUS_9_DBM                    LL_EXT_TX_POWER_MINUS_9_DBM             //!< -9 dBm
+#define HCI_EXT_TX_POWER_MINUS_6_DBM                    LL_EXT_TX_POWER_MINUS_6_DBM             //!< -6 dBm
+#define HCI_EXT_TX_POWER_MINUS_5_DBM                    LL_EXT_TX_POWER_MINUS_5_DBM             //!< -5 dBm
+#define HCI_EXT_TX_POWER_MINUS_3_DBM                    LL_EXT_TX_POWER_MINUS_3_DBM             //!< -3 dBm
+#define HCI_EXT_TX_POWER_0_DBM                          LL_EXT_TX_POWER_0_DBM                   //!< 0 dBm
+#define HCI_EXT_TX_POWER_1_DBM                          LL_EXT_TX_POWER_1_DBM                   //!< 1 dBm
+#define HCI_EXT_TX_POWER_2_DBM                          LL_EXT_TX_POWER_2_DBM                   //!< 2 dBm
+#define HCI_EXT_TX_POWER_3_DBM                          LL_EXT_TX_POWER_3_DBM                   //!< 3 dBm
+#define HCI_EXT_TX_POWER_4_DBM                          LL_EXT_TX_POWER_4_DBM                   //!< 4 dBm
+#define HCI_EXT_TX_POWER_5_DBM                          LL_EXT_TX_POWER_5_DBM                   //!< 5 dBm
+#if defined( CC13X2P )
+#define HCI_EXT_TX_POWER_P2_14_DBM_P4_6_DBM             LL_EXT_TX_POWER_P2_14_DBM_P4_6_DBM      //!< P2: 14 dBm P4: 6 dBm
+#define HCI_EXT_TX_POWER_P2_15_DBM_P4_7_DBM             LL_EXT_TX_POWER_P2_15_DBM_P4_7_DBM      //!< P2: 15 dBm P4: 7 dBm
+#define HCI_EXT_TX_POWER_P2_16_DBM_P4_8_DBM             LL_EXT_TX_POWER_P2_16_DBM_P4_8_DBM      //!< P2: 16 dBm P4: 8 dBm
+#define HCI_EXT_TX_POWER_P2_17_DBM_P4_9_DBM             LL_EXT_TX_POWER_P2_17_DBM_P4_9_DBM      //!< P2: 17 dBm P4: 9 dBm
+#define HCI_EXT_TX_POWER_P2_18_DBM_P4_10_DBM            LL_EXT_TX_POWER_P2_18_DBM_P4_10_DBM     //!< P2: 18 dBm P4: 10 dBm
+#define HCI_EXT_TX_POWER_P2_19_DBM                      LL_EXT_TX_POWER_P2_19_DBM               //!< P2: 19 dBm
+#define HCI_EXT_TX_POWER_P2_20_DBM                      LL_EXT_TX_POWER_P2_20_DBM               //!< P2: 20 dBm
+#endif // CC13X2P
 #else // CC254x
 #define HCI_EXT_TX_POWER_MINUS_23_DBM                  LL_EXT_TX_POWER_MINUS_23_DBM //!< -23 dBm
 #define HCI_EXT_TX_POWER_MINUS_6_DBM                   LL_EXT_TX_POWER_MINUS_6_DBM  //!< -6 dBm

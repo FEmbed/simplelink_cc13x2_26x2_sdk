@@ -1,6 +1,6 @@
 {
     "setting": {
-        "Name": "100 kbps, 2-GFSK, 50 kHz deviation, 915 MHz",
+        "Name": "100 kbps, 2-GFSK, 50 kHz deviation, WiSUN, 915 MHz",
         "Description": "100 kbps, 2-GFSK, 50 kHz deviation WiSUN PHY.",
         "Frequency": "915",
         "Patch": {

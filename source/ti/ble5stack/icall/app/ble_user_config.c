@@ -129,54 +129,54 @@ txPwrTbl_t appTxPwrTbl = {
                            NUM_TX_POWER_VALUES,  // max
                            DEFAULT_TX_POWER};    // default
 
-#if defined(CC13X2P)
+#if defined(CC13X2P) && defined(CC13X2P_2_LAUNCHXL)
 
 // Tx Power Backoff Values (txPwrBackoff1MPhy,txPwrBackoff2MPhy ,txPwrBackoffCoded)
  const txPwrBackoffVal_t TxPowerBackoffTable[] =
-   { {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 0
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 1
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 2
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 3
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 4
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 5
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 6
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 7
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 8
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 9
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 10
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 11
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 12
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 13
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 14
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 15
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 16
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 17
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 18
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 19
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 20
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 21
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 22
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 23
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 24
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 25
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 26
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 27
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 28
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 29
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 30
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 31
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 32
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 33
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_17_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 34
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_18_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 35
-     {HCI_EXT_TX_POWER_19_DBM,HCI_EXT_TX_POWER_18_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 36
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 37
-     {HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM},   //max tx power for channel 38
-     {HCI_EXT_TX_POWER_14_DBM,HCI_EXT_TX_POWER_20_DBM,HCI_EXT_TX_POWER_20_DBM}};  //max tx power for channel 39
+   { {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 0
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 1
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 2
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 3
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 4
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 5
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 6
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 7
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 8
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 9
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 10
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 11
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 12
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 13
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 14
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 15
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 16
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 17
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 18
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 19
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 20
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 21
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 22
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 23
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 24
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 25
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 26
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 27
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 28
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 29
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 30
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 31
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 32
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 33
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_17_DBM_P4_9_DBM,HCI_EXT_TX_POWER_P2_20_DBM},    //max tx power for channel 34
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_18_DBM_P4_10_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 35
+     {HCI_EXT_TX_POWER_P2_19_DBM,HCI_EXT_TX_POWER_P2_18_DBM_P4_10_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 36
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 37
+     {HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM},   //max tx power for channel 38
+     {HCI_EXT_TX_POWER_P2_14_DBM_P4_6_DBM,HCI_EXT_TX_POWER_P2_20_DBM,HCI_EXT_TX_POWER_P2_20_DBM}};  //max tx power for channel 39
 
 txPwrBackoffTbl_t appTxPwrBackoffTbl = {TxPowerBackoffTable};
 
-#endif
+#endif // defined(CC13X2P) && defined(CC13X2P_2_LAUNCHXL)
 
 
 // BOOSTXL-AOA configurations
@@ -359,7 +359,11 @@ const boardConfig_t boardConfig =
 #endif // PHY_2MBPS_CFG | PHY_LR_CFG
   .txPwrTbl      = &appTxPwrTbl,
 #if defined(CC13X2P)
+#if defined(CC13X2P_2_LAUNCHXL)
   .txPwrBackoffTbl = &appTxPwrBackoffTbl,
+#else
+  .txPwrBackoffTbl = NULL,
+#endif // defined(CC13X2P_2_LAUNCHXL)
   .rfRegOverrideTxStdTblptr  = (regOverride_t*)pOverrides_bleTxStd,   // Default PA
   .rfRegOverrideTx20TblPtr   = (regOverride_t*)pOverrides_bleTx20   ,// High power PA
 #endif //CC13X2P
