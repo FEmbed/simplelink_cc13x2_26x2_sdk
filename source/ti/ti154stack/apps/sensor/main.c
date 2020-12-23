@@ -100,7 +100,6 @@
 #include <string.h>
 #ifdef OSAL_PORT2TIRTOS
 #include "macTask.h"
-#include"rom_jt_154.h"
 #else
 #include "api_mac.h"
 #include "icall.h"
@@ -114,7 +113,9 @@
 
 #include "mac_user_config.h"
 
+#ifndef CUI_DISABLE
 #include "cui.h"
+#endif
 
 #ifdef USE_ITM_DBG
 #include "itm.h"
@@ -258,7 +259,10 @@ void Main_assertHandler(uint8_t assertReason)
  */
 Void appTaskFxn(UArg a0, UArg a1)
 {
-#ifdef TIMAC_AGAMA_FPGA
+    /* The following code encapsulated in TI_154STACK_FPGA flag is used for
+     * internal FPGA evaluation of the 15.4 Stack and should not be used with
+     * TI hardware platforms. */
+#ifdef TI_154STACK_FPGA
     /* FPGA build disables POWER constraints */
     Power_setConstraint(PowerCC26XX_IDLE_PD_DISALLOW);
     Power_setConstraint(PowerCC26XX_SB_DISALLOW);
@@ -268,7 +272,6 @@ Void appTaskFxn(UArg a0, UArg a1)
     // configure RF Core SMI Command Link
     IOCPortConfigureSet(IOID_22, IOC_IOCFG0_PORT_ID_RFC_SMI_CL_OUT, IOC_STD_OUTPUT);
     IOCPortConfigureSet(IOID_21, IOC_IOCFG0_PORT_ID_RFC_SMI_CL_IN, IOC_STD_INPUT);
-
 #endif
 
 #ifndef OSAL_PORT2TIRTOS
@@ -373,7 +376,7 @@ int main(void)
     SPI_init();
 #endif
 
-#ifndef POWER_MEAS
+#if !defined(POWER_MEAS) && !defined(CUI_DISABLE)
     /* Initialize CUI UART */
     CUI_params_t cuiParams;
     CUI_paramsInit(&cuiParams);

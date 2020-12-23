@@ -85,7 +85,7 @@ uint8_t crcBuf[CRC32_BUF_SZ];
  */
 void *CRC32_memCpy(void *dest, const void *src, uint16_t len)
 {
-    if((dest == NULL))
+    if(dest == NULL)
     {
         return(NULL);
     }

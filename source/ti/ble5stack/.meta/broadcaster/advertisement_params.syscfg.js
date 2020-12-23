@@ -291,6 +291,12 @@ function validate(inst, validation)
         validation.logError("The name should not contain spaces", inst, "name");
     }
 
+    if(inst.secPhy == "GAP_ADV_SEC_PHY_2_MBPS")
+    {
+        validation.logWarning("If scanning or connection initiation on the 2M PHY is used, "
+        + "the max number of bonds that can be saved in NV is 21.", inst, "secPhy");
+    }
+
     if(inst.txPowerValue < Common.advParamsRanges.advParamTXPowerMinValue
          || inst.txPowerValue > Common.advParamsRanges.advParamTXPowerMaxValue)
     {

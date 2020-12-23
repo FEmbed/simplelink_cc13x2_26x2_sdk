@@ -66,6 +66,10 @@ let devSpecific = {
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "ECJPAKE", null,
+        [{name: "ECJPAKECC26X2"}], null);
+
     /* merge and overwrite base module attributes */
     return (Object.assign({}, base, devSpecific));
 }

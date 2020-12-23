@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -206,7 +206,11 @@ int clock_settime(clockid_t clock_id, const struct timespec *ts)
 /*
  *  ======== time ========
  */
+#if defined(__clang__) && defined(__TI_TIME_USES_64) && __TI_TIME_USES_64
+_CODE_ACCESS __time64_t __time64(__time64_t *tout)
+#else
 time_t time(time_t *tout)
+#endif
 {
     struct timespec ts;
 
@@ -330,5 +334,5 @@ static void _clock_gettimeMono(struct timespec *ts)
     remSecs = remTicks / configTICK_RATE_HZ;
     remTicks = remTicks - (remSecs * configTICK_RATE_HZ);
 
-    ts->tv_sec = secs + remSecs + (MAX_SECONDS * numRollovers);
+    ts->tv_sec = (time_t)secs + remSecs + (MAX_SECONDS * numRollovers);
     ts->tv_nsec = (unsigned long)(remTicks * (1000000000 / configTICK_RATE_HZ));}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,6 +72,13 @@ let config = [
             {
                 name: "SPI",
                 description: "SPI driver asserts SPI flash slave select."
+            },
+            {
+                name: "User",
+                description: "User application asserts SPI flash slave select."
+                + " The user application must include implementations to"
+                + " NVSSPI25X_initSpiCs, NVSSPI25X_deinitSpiCs,"
+                + " NVSSPI25X_assertSpiCs, and NVSSPI25X_deassertSpiCs"
             }
         ],
         onChange: updateConfigs
@@ -173,6 +180,17 @@ function moduleInstances(inst) {
                 moduleName: "/ti/drivers/SPI",
                 hardware: inst.$hardware ? inst.$hardware : null,
                 args: { mode: "Four Pin SS Active Low" }
+            }
+        );
+    }
+    else if (inst.manager == "NVS" && inst.slaveSelectManager == "User") {
+        modules.push(
+            {
+                name: "spiInstance",
+                displayName: "SPI Flash SPI Instance",
+                moduleName: "/ti/drivers/SPI",
+                hardware: inst.$hardware ? inst.$hardware : null,
+                requiredArgs: { mode: "Three Pin" }
             }
         );
     }

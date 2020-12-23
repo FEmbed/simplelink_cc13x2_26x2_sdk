@@ -131,7 +131,7 @@ extern "C" {
 /*!
  *  @brief      ECDHCC26X2 states
  *
- *  The ECDH operations are implemented using multiple invidividual
+ *  The ECDH operations are implemented using multiple individual
  *  PKA operations. Since state transitions for these operations are almost
  *  always predictable, the state transitions are encoded linearly in this enum.
  *  The FSM controller will increment the state counter and iterate through

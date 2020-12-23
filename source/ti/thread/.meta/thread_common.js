@@ -96,7 +96,7 @@ function getDeviceOrLaunchPadName(convertToBoard)
     }
 
     // Check if this is a standalone device without a LaunchPad
-    if(convertToBoard && !name.includes("LAUNCHXL"))
+    if(convertToBoard && !name.includes("_LAUNCHXL") && !name.includes("LP_"))
     {
         // Find the LaunchPad name in deviceToBoard dictionary
         let key = null;
@@ -119,19 +119,19 @@ const threadCCFGSettings = {
         forceVddr: true
     },
     CC1352P1_LAUNCHXL_CCFG_SETTINGS: {
-
     },
     CC1352P_2_LAUNCHXL_CCFG_SETTINGS: {
         forceVddr: true
     },
     CC1352P_4_LAUNCHXL_CCFG_SETTINGS: {
-
     },
     CC26X2R1_LAUNCHXL_CCFG_SETTINGS: {
-
     },
     CC2652RB_LAUNCHXL_CCFG_SETTINGS: {
-        
+    },
+    LP_CC2652PSIP_CCFG_SETTINGS: {
+    },
+    LP_CC265RPSIP_CCFG_SETTINGS: {
     }
 };
 

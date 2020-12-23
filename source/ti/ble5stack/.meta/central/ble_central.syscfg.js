@@ -127,7 +127,10 @@ function moduleInstances(inst)
             group: "centralConfig",
             displayName: "Connection Update Request Params",
             moduleName: "/ti/ble5stack/general/ble_conn_update_params",
-            collapsed: true
+            collapsed: true,
+            args: {
+                hideParamUpdateDelay: true
+            }
         });
     }
 

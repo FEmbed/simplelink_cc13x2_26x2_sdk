@@ -897,8 +897,10 @@ static uint_fast16_t getPowerMgrId(uint32_t baseAddr)
     switch (baseAddr) {
         case UART0_BASE:
             return (PowerCC26XX_PERIPH_UART0);
+#if (DeviceFamily_PARENT == DeviceFamily_PARENT_CC13X2_CC26X2)
         case UART1_BASE:
             return (PowerCC26X2_PERIPH_UART1);
+#endif
         default:
             return ((uint_fast16_t)(~0U));
     }

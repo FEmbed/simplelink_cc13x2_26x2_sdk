@@ -87,7 +87,10 @@ struct __RFC_STRUCT rfc_iqAutoCopyDef_s {
    } samplesConfig;
    uint8_t minReportSize;               //!<        Minimum value of CTETime for packets to report
    uint8_t maxReportSize;               //!<        Maximum value of CTETime for packets to report
-   uint8_t __dummy0;
+   uint8_t cteCopyLimitCount;           //!< \brief Number of CTE that should be recieved.
+                                        //!<        0x00: Do not copy any CTE, CTE will be flushed
+                                        //!<        0x01 - 0xFE: Copy CTE and decrement this counter
+                                        //!<        0xFF: Copy CTE and do not decrement this counter
    uint32_t* pSamplesQueue;             //!<        Pointer to queue for copying samples. 0: Do not copy samples
    uint8_t numPktCopied;                //!<        Number of packets copied. Updated by CM0.
    uint8_t numPktFlushed;               //!<        Number of packets not copied due to the settings in samplesConfig. Updated by CM0.

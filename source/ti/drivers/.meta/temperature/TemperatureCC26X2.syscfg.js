@@ -38,23 +38,22 @@
 "use strict";
 
 /* get Common /ti/drivers utility functions */
-let Common   = system.getScript("/ti/drivers/Common.js");
+let Common = system.getScript("/ti/drivers/Common.js");
 
 let intPriority = Common.newIntPri()[0];
 intPriority.name = "batmonInterruptPriority";
 intPriority.displayName = "Interrupt Priority";
 
 let config = [
-        intPriority
-    ];
-
+    intPriority
+];
 
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base Temperature configuration
  */
 let devSpecific = {
-    moduleStatic        : {
+    moduleStatic: {
         config: config
     },
 
@@ -72,6 +71,10 @@ let devSpecific = {
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    devSpecific = Common.addImplementationConfig(devSpecific, "Temperature", null,
+        [{name: "TemperatureCC26X2"}], null);
+
     return (Object.assign({}, base, devSpecific));
 }
 

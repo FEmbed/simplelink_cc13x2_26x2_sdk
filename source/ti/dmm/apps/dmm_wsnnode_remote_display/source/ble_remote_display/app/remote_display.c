@@ -76,7 +76,9 @@
 #include <rcosc_calibration.h>
 #endif //USE_RCOSC
 
+#ifndef CUI_DISABLE
 #include "cui.h"
+#endif /* CUI_DISABLE */
 
 #include "remote_display.h"
 
@@ -126,7 +128,9 @@
 #define RD_UPDATE_RD_DATA_EVT                8
 #define RD_UPDATE_NODE_STATS_EVT             9
 #define RD_CONN_EVT                          10
+#ifndef CUI_DISABLE
 #define RD_UI_INPUT_EVT                      11
+#endif /* CUI_DISABLE */
 
 // Internal Events for RTOS application
 #define RD_ICALL_EVT                         ICALL_MSG_EVENT_ID // Event_Id_31
@@ -294,6 +298,7 @@ static uint8 rpa[B_ADDR_LEN] = {0};
 
 static RemoteDisplayCbs_t remoteDisplayCbs;
 
+#ifndef CUI_DISABLE
 CUI_clientHandle_t remoteDisplayCuiHndl;
 uint32_t rdStatusLineStatus1;
 uint32_t rdStatusLineStatus2;
@@ -309,9 +314,12 @@ uint32_t rdStatusLineNodeData;
 #ifdef RD_DISPLAY_WSN_STATS
 uint32_t rdStatusLineWsnStats;
 #endif
+#endif /* CUI_DISABLE */
 
 #ifdef DMM_OAD
+#ifndef CUI_DISABLE
 static uint32_t rdStatusLineOad;
+#endif /* CUI_DISABLE */
 static uint8_t numPendingMsgs = 0;
 static bool oadWaitReboot = false;
 #endif
@@ -336,7 +344,9 @@ static void RemoteDisplay_passcodeCb(uint8_t *pDeviceAddr, uint16_t connHandle,
                                         uint32_t numComparison);
 static void RemoteDisplay_pairStateCb(uint16_t connHandle, uint8_t state,
                                          uint8_t status);
+#ifndef CUI_DISABLE
 static void RemoteDisplay_processPairState(rdPairStateData_t *pPairState);
+#endif /* CUI_DISABLE */
 static void RemoteDisplay_processPasscode(rdPasscodeData_t *pPasscodeData);
 static void RemoteDisplay_charValueChangeCB(uint8_t paramId);
 static status_t RemoteDisplay_enqueueMsg(uint8_t event, void *pData);
@@ -346,7 +356,9 @@ static void RemoteDisplay_clearPendingParamUpdate(uint16_t connHandle);
 static uint8_t RemoteDisplay_removeConn(uint16_t connHandle);
 static void RemoteDisplay_processParamUpdate(uint16_t connHandle);
 static uint8_t RemoteDisplay_clearConnListEntry(uint16_t connHandle);
+#ifndef CUI_DISABLE
 static void RemoteDisplay_processMenuUpdate(void);
+#endif /* CUI_DISABLE */
 
 // BLE5 PHY Switching Functions
 static void RemoteDisplay_connEvtCB(Gap_ConnEventRpt_t *pReport);
@@ -359,7 +371,9 @@ static status_t RemoteDisplay_setPhy(uint16_t connHandle, uint8_t allPhys,
                                         uint8_t txPhy, uint8_t rxPhy,
                                         uint16_t phyOpts);
 static void RemoteDisplay_updatePHYStat(uint16_t eventCode, uint8_t *pMsg);
+#ifndef CUI_DISABLE
 static void RemoteDisplay_cyclePhy(int32_t menuEntryIndex);
+#endif /* CUI_DISABLE */
 
 #ifdef DMM_OAD
 static void RemoteDisplay_processOadWriteCB(uint8_t event, uint16_t arg);
@@ -370,6 +384,7 @@ static void RemoteDisplay_processConnEvt(Gap_ConnEventRpt_t *pReport);
 // List to store connection handles for set phy command status's
 static List_List setPhyCommStatList;
 
+#ifndef CUI_DISABLE
 #define RD_MENU_TITLE " TI Remote Display "
 
 CUI_SUB_MENU(rdSetPhySubMenu, "<     SET PHY    >", 6, rdConfigureSubMenu)
@@ -388,6 +403,7 @@ CUI_SUB_MENU_END
 CUI_MAIN_MENU(remoteDisplayMainMenu, RD_MENU_TITLE, 1, RemoteDisplay_processMenuUpdate)
     CUI_MENU_ITEM_SUBMENU(rdConfigureSubMenu)
 CUI_MAIN_MENU_END
+#endif /* CUI_DISABLE */
 
 /*********************************************************************
  * EXTERN FUNCTIONS
@@ -622,6 +638,7 @@ static void RemoteDisplay_init(void)
   // Initialize array to store connection handle and RSSI values
   RemoteDisplay_initPHYRSSIArray();
 
+#ifndef CUI_DISABLE
   CUI_clientParams_t clientParams;
   CUI_clientParamsInit(&clientParams);
 
@@ -652,9 +669,12 @@ static void RemoteDisplay_init(void)
 #ifdef RD_DISPLAY_WSN_STATS
   CUI_statusLineResourceRequest(remoteDisplayCuiHndl, "WSN NODE STATS", false, &rdStatusLineWsnStats);
 #endif
+#endif /* CUI_DISABLE */
 
 #ifdef DMM_OAD
+#ifndef CUI_DISABLE
   CUI_statusLineResourceRequest(remoteDisplayCuiHndl, "OAD Status", false, &rdStatusLineOad);
+#endif /* CUI_DISABLE */
   // Open the OAD module and add the OAD service to the application
   if(OAD_SUCCESS != OAD_open(OAD_DEFAULT_INACTIVITY_TIME))
   {
@@ -767,6 +787,7 @@ static void RemoteDisplay_taskFxn(UArg a0, UArg a1)
               GAP_TerminateLinkReq(OAD_getactiveCxnHandle(),
                                    HCI_DISCONNECT_REMOTE_USER_TERM);
           }
+#ifndef CUI_DISABLE
           else if (status == OAD_DL_COMPLETE)
           {
               CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineOad, CUI_COLOR_GREEN "Completed" CUI_COLOR_RESET);
@@ -784,9 +805,12 @@ static void RemoteDisplay_taskFxn(UArg a0, UArg a1)
                                        (uint32_t)((100 * dispInfo.currBlock) / dispInfo.totBlocks));
               }
           }
+#endif /* CUI_DISABLE */
           else
           {
+#ifndef CUI_DISABLE
               CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineOad, CUI_COLOR_RED "Stopped" CUI_COLOR_RESET);
+#endif /* CUI_DISABLE */
               /* update DMM policy */
               DMMPolicy_updateStackState(DMMPolicy_StackRole_BlePeripheral, DMMPOLICY_BLE_CONNECTED);
           }
@@ -860,6 +884,7 @@ static uint8_t RemoteDisplay_processStackMsg(ICall_Hdr *pMsg)
           {
             case HCI_LE_SET_PHY:
             {
+#ifndef CUI_DISABLE
               if (pMyMsg->cmdStatus == HCI_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE)
               {
                 CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLinePhyStatus, "PHY Change failure, peer does not support this");
@@ -868,6 +893,7 @@ static uint8_t RemoteDisplay_processStackMsg(ICall_Hdr *pMsg)
               {
                 CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLinePhyStatus, "PHY Update Status Event: 0x%x", pMyMsg->cmdStatus);
               }
+#endif /* CUI_DISABLE */
 
               RemoteDisplay_updatePHYStat(HCI_LE_SET_PHY, (uint8_t *)pMsg);
               break;
@@ -887,6 +913,7 @@ static uint8_t RemoteDisplay_processStackMsg(ICall_Hdr *pMsg)
           // A Phy Update Has Completed or Failed
           if (pPUC->BLEEventCode == HCI_BLE_PHY_UPDATE_COMPLETE_EVENT)
           {
+#ifndef CUI_DISABLE
             if (pPUC->status != SUCCESS)
             {
               CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLinePhyStatus, "PHY Change failure");
@@ -899,8 +926,8 @@ static uint8_t RemoteDisplay_processStackMsg(ICall_Hdr *pMsg)
                                          (pPUC->rxPhy == PHY_UPDATE_COMPLETE_EVENT_1M) ? "1M" :
                                          (pPUC->rxPhy == PHY_UPDATE_COMPLETE_EVENT_2M) ? "2M" :
                                          (pPUC->rxPhy == PHY_UPDATE_COMPLETE_EVENT_CODED) ? "CODED" : "Unexpected PHY Value");
-
             }
+#endif /* CUI_DISABLE */
 
             RemoteDisplay_updatePHYStat(HCI_BLE_PHY_UPDATE_COMPLETE_EVENT, (uint8_t *)pMsg);
           }
@@ -937,16 +964,20 @@ static uint8_t RemoteDisplay_processGATTMsg(gattMsgEvent_t *pMsg)
     // violated. All subsequent ATT requests or indications will be dropped.
     // The app is informed in case it wants to drop the connection.
 
+#ifndef CUI_DISABLE
     // Display the opcode of the message that caused the violation.
     CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus1, "FC Violated: %d", pMsg->msg.flowCtrlEvt.opcode);
+#endif /* CUI_DISABLE */
   }
   else if (pMsg->method == ATT_MTU_UPDATED_EVENT)
   {
 #ifdef DMM_OAD
     OAD_setBlockSize(pMsg->msg.mtuEvt.MTU);
 #endif
+#ifndef CUI_DISABLE
     // MTU size updated
     CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus1, "MTU Size: %d", pMsg->msg.mtuEvt.MTU);
+#endif /* CUI_DISABLE */
   }
 
   // Free message payload. Needed only for ATT Protocol messages
@@ -980,7 +1011,9 @@ static void RemoteDisplay_processAppMsg(rdEvt_t *pMsg)
       break;
 
     case RD_PAIR_STATE_EVT:
+#ifndef CUI_DISABLE
       RemoteDisplay_processPairState((rdPairStateData_t*)(pMsg->pData));
+#endif /* CUI_DISABLE */
       break;
 
     case RD_PASSCODE_EVT:
@@ -1012,14 +1045,16 @@ static void RemoteDisplay_processAppMsg(rdEvt_t *pMsg)
     {
       // Get node data and update CUI status line
       RemoteDisplay_syncRDAttr();
+#ifndef CUI_DISABLE
       uint16_t newNodeDataValue;
       RemoteDisplay_GetParameter(RDPROFILE_NODE_DATA_CHAR, &newNodeDataValue);
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineNodeData, "0x%02x", newNodeDataValue);
+#endif /* CUI_DISABLE */
       break;
     }
 
 
-#ifdef RD_DISPLAY_WSN_STATS
+#if defined(RD_DISPLAY_WSN_STATS) && !defined(CUI_DISABLE)
     case RD_UPDATE_NODE_STATS_EVT:
     {
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineWsnStats, "dataSendSuccess:%d, dataSendFail:%d dataTxSchError:%d, ackRxTimeout:%d, ackRxSchError:%d, ackRxAbort:%d ",
@@ -1032,13 +1067,15 @@ static void RemoteDisplay_processAppMsg(rdEvt_t *pMsg)
 
       break;
     }
-#endif // RD_DISPLAY_WSN_STATS
+#endif /* defined(RD_DISPLAY_WSN_STATS) && !defined(CUI_DISABLE) */
 
+#ifndef CUI_DISABLE
     case RD_UI_INPUT_EVT:
     {
         CUI_processMenuUpdate();
         break;
     }
+#endif /* CUI_DISABLE */
 
     case RD_CONN_EVT:
       RemoteDisplay_processConnEvt((Gap_ConnEventRpt_t *)(pMsg->pData));
@@ -1095,7 +1132,9 @@ static void RemoteDisplay_processGapMessage(gapEventHdr_t *pMsg)
         // Set Device Info Service Parameter
         DevInfo_SetParameter(DEVINFO_SYSTEM_ID, DEVINFO_SYSTEM_ID_LEN, systemId);
 
+#ifndef CUI_DISABLE
         CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineIda, "Initialized");
+#endif /* CUI_DISABLE */
 
         // Setup and start Advertising
         // For more information, see the GAP section in the User's Guide:
@@ -1126,8 +1165,10 @@ static void RemoteDisplay_processGapMessage(gapEventHdr_t *pMsg)
         status = GapAdv_enable(advHandleLegacy, GAP_ADV_ENABLE_OPTIONS_USE_MAX , 0);
         REMOTEDISPLAY_ASSERT(status == SUCCESS);
 
+#ifndef CUI_DISABLE
         // Display device address
         CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineIda, "%s Addr: %s", (addrMode <= ADDRMODE_RANDOM) ? "Dev" : "ID", Util_convertBdAddr2Str(pPkt->devAddr));
+#endif /* CUI_DISABLE */
 
         if (addrMode > ADDRMODE_RANDOM)
         {
@@ -1148,16 +1189,19 @@ static void RemoteDisplay_processGapMessage(gapEventHdr_t *pMsg)
 
       // Display the amount of current connections
       uint8_t numActive = linkDB_NumActive();
+#ifndef CUI_DISABLE
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus2, "Num Conns: %d", (uint16_t)numActive);
+#endif /* CUI_DISABLE */
 
       if (pPkt->hdr.status == SUCCESS)
       {
         // Add connection to list and start RSSI
         RemoteDisplay_addConn(pPkt->connectionHandle);
 
+#ifndef CUI_DISABLE
         // Display the address of this connection
         CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus1, "%s Addr: %s", (addrMode <= ADDRMODE_RANDOM) ? "Dev" : "ID", Util_convertBdAddr2Str(pPkt->devAddr));
-
+#endif /* CUI_DISABLE */
       }
 
       DMMPolicy_updateStackState(DMMPolicy_StackRole_BlePeripheral, DMMPOLICY_BLE_HIGH_BANDWIDTH);
@@ -1188,8 +1232,10 @@ static void RemoteDisplay_processGapMessage(gapEventHdr_t *pMsg)
 
       // Display the amount of current connections
       uint8_t numActive = linkDB_NumActive();
+#ifndef CUI_DISABLE
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus1, "Device Disconnected!");
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus2, "Num Conns: %d", (uint16_t)numActive);
+#endif /* CUI_DISABLE */
 
       // Remove the connection from the list and disable RSSI if needed
       RemoteDisplay_removeConn(pPkt->connectionHandle);
@@ -1245,15 +1291,19 @@ static void RemoteDisplay_processGapMessage(gapEventHdr_t *pMsg)
       if(pPkt->status == SUCCESS)
       {
         paramUpdateFailCnt = 0;
+#ifndef CUI_DISABLE
         // Display the address of the connection update
         CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus2, "Link Param Updated: %s", Util_convertBdAddr2Str(linkInfo.addr));
+#endif /* CUI_DISABLE */
       }
       else
       {
         paramUpdateFailCnt++;
 
+#ifndef CUI_DISABLE
         // Display the address of the connection update failure
         CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineStatus2, "Link Param Update Failed 0x%x %s", pPkt->opcode, Util_convertBdAddr2Str(linkInfo.addr));
+#endif /* CUI_DISABLE */
 
         if(paramUpdateFailCnt < MAX_PARAM_UPDATE_ATTEMPTS)
         {
@@ -1367,8 +1417,9 @@ static void RemoteDisplay_processCharValueChangeEvt(uint8_t paramId)
     case RDPROFILE_NODE_REPORT_INTERVAL_CHAR:
       RemoteDisplay_GetParameter(RDPROFILE_NODE_REPORT_INTERVAL_CHAR, &newReportIntreval);
 
+#ifndef CUI_DISABLE
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineCharStats, "Report Interval Char: %d", newReportIntreval);
-
+#endif /* CUI_DISABLE */
 
       if (remoteDisplayCbs.setRDAttrCb != NULL) {
           remoteDisplayCbs.setRDAttrCb(RemoteDisplayAttr_NodeReportInterval, &newReportIntreval,
@@ -1379,8 +1430,9 @@ static void RemoteDisplay_processCharValueChangeEvt(uint8_t paramId)
     case RDPROFILE_CONC_LED_CHAR:
       RemoteDisplay_GetParameter(RDPROFILE_CONC_LED_CHAR, &newConLed);
 
+#ifndef CUI_DISABLE
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineCharStats, "Conc LED Toggle Char: %d", newConLed);
-
+#endif /* CUI_DISABLE */
 
       if (remoteDisplayCbs.setRDAttrCb != NULL) {
           remoteDisplayCbs.setRDAttrCb(RemoteDisplayAttr_ConcLed, &newConLed,
@@ -1424,8 +1476,10 @@ static void RemoteDisplay_updateRPA(void)
 
   if (memcmp(pRpaNew, rpa, B_ADDR_LEN))
   {
+#ifndef CUI_DISABLE
     // If the RPA has changed, update the display
     CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineRpa, "RP Addr: %s", Util_convertBdAddr2Str(pRpaNew));
+#endif /* CUI_DISABLE */
     memcpy(rpa, pRpaNew, B_ADDR_LEN);
   }
 }
@@ -1461,6 +1515,7 @@ static void RemoteDisplay_clockHandler(UArg arg)
   }
 }
 
+#ifndef CUI_DISABLE
 /*********************************************************************
  * @fn      RemoteDisplay_cyclePhy
  *
@@ -1475,6 +1530,7 @@ static void RemoteDisplay_cyclePhy(int32_t menuEntryIndex)
     RemoteDisplay_doSetConnPhy(menuEntryIndex);
   }
 }
+#endif /* CUI_DISABLE */
 
 /*********************************************************************
  * @fn      RemoteDisplay_advCallback
@@ -1515,11 +1571,15 @@ static void RemoteDisplay_processAdvEvent(rdGapAdvEventData_t *pEventData)
       {
         DMMPolicy_updateStackState(DMMPolicy_StackRole_BlePeripheral, DMMPOLICY_BLE_ADV);
       }
+#ifndef CUI_DISABLE
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineAdvState, "Adv Set %d Enabled", *(uint8_t *)(pEventData->pBuf));
+#endif /* CUI_DISABLE */
       break;
 
     case GAP_EVT_ADV_END_AFTER_DISABLE:
+#ifndef CUI_DISABLE
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineAdvState, "Adv Set %d Disabled", *(uint8_t *)(pEventData->pBuf));
+#endif /* CUI_DISABLE */
       break;
 
     case GAP_EVT_ADV_START:
@@ -1530,8 +1590,10 @@ static void RemoteDisplay_processAdvEvent(rdGapAdvEventData_t *pEventData)
 
     case GAP_EVT_ADV_SET_TERMINATED:
     {
+#ifndef CUI_DISABLE
       GapAdv_setTerm_t *advSetTerm = (GapAdv_setTerm_t *)(pEventData->pBuf);
       CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineAdvState, "Adv Set %d disabled after conn %d", advSetTerm->handle, advSetTerm->connHandle);
+#endif /* CUI_DISABLE */
     }
     break;
 
@@ -1613,6 +1675,7 @@ static void RemoteDisplay_passcodeCb(uint8_t *pDeviceAddr,
   }
 }
 
+#ifndef CUI_DISABLE
 /*********************************************************************
  * @fn      RemoteDisplay_processPairState
  *
@@ -1668,6 +1731,7 @@ static void RemoteDisplay_processPairState(rdPairStateData_t *pPairData)
       break;
   }
 }
+#endif /* CUI_DISABLE */
 
 /*********************************************************************
  * @fn      RemoteDisplay_processPasscode
@@ -1681,7 +1745,9 @@ static void RemoteDisplay_processPasscode(rdPasscodeData_t *pPasscodeData)
   // Display passcode to user
   if (pPasscodeData->uiOutputs != 0)
   {
-    CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineConnection, "Passcode: %d", B_APP_DEFAULT_PASSCODE);
+#ifndef CUI_DISABLE
+      CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineConnection, "Passcode: %d", B_APP_DEFAULT_PASSCODE);
+#endif /* CUI_DISABLE */
   }
 
   // Send passcode response
@@ -2027,7 +2093,9 @@ static void RemoteDisplay_processConnEvt(Gap_ConnEventRpt_t *pReport)
 
   if (connIndex >= MAX_NUM_BLE_CONNS)
   {
-    CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLinePhyStatus, "Connection handle is not in the connList !!!");
+#ifndef CUI_DISABLE
+      CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLinePhyStatus, "Connection handle is not in the connList !!!");
+#endif /* CUI_DISABLE */
     return;
   }
 
@@ -2062,6 +2130,7 @@ static void RemoteDisplay_connEvtCB(Gap_ConnEventRpt_t *pReport)
   }
 }
 
+#ifndef CUI_DISABLE
 /**
  *  @brief Send process menu event.
  */
@@ -2069,6 +2138,7 @@ static void RemoteDisplay_processMenuUpdate(void)
 {
   RemoteDisplay_enqueueMsg(RD_UI_INPUT_EVT, NULL);
 }
+#endif /* CUI_DISABLE */
 
 /*********************************************************************
  * @fn      RemoteDisplay_doSetConnPhy
@@ -2154,7 +2224,9 @@ static void RemoteDisplay_processCmdCompleteEvt(hciEvt_CmdComplete_t *pMsg)
         uint8_t index = RemoteDisplay_getConnIndex(handle);
         if (index >= MAX_NUM_BLE_CONNS)
         {
+#ifndef CUI_DISABLE
           CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLinePhyStatus, "Connection handle is not in the connList !!!");
+#endif /* CUI_DISABLE */
           return;
         }
 
@@ -2242,7 +2314,9 @@ static void RemoteDisplay_processCmdCompleteEvt(hciEvt_CmdComplete_t *pMsg)
           } // end of if (connList[index].phyCngRq == FALSE)
         } // end of if (rssi != LL_RSSI_NOT_AVAILABLE)
 
+#ifndef CUI_DISABLE
         CUI_statusLinePrintf(remoteDisplayCuiHndl, rdStatusLineRssiStatus, "RSSI:%d dBm, AVG RSSI:%d dBm", (uint32_t)(rssi), connList[index].rssiAvg);
+#endif /* CUI_DISABLE */
 
 	      } // end of if (status == SUCCESS)
       break;

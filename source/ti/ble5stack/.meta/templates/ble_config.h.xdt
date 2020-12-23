@@ -128,18 +128,18 @@ extern void setBondManagerParameters();
 
 // Minimum connection interval (units of 1.25ms) if automatic parameter update
 // request is enabled
-#define DEFAULT_UPDATE_MIN_CONN_INTERVAL      `(ble.connUpdateParamsCentral.upMinConnInt)/1.25`
+#define DEFAULT_UPDATE_MIN_CONN_INTERVAL      `(ble.connUpdateParamsCentral.reqMinConnInt)/1.25`
 
 // Maximum connection interval (units of 1.25ms) if automatic parameter update
 // request is enabled
-#define DEFAULT_UPDATE_MAX_CONN_INTERVAL      `(ble.connUpdateParamsCentral.upMaxConnInt)/1.25`
+#define DEFAULT_UPDATE_MAX_CONN_INTERVAL      `(ble.connUpdateParamsCentral.reqMaxConnInt)/1.25`
 
 // Slave latency to use if automatic parameter update request is enabled
-#define DEFAULT_UPDATE_SLAVE_LATENCY          `ble.connUpdateParamsCentral.upSlaveLat`
+#define DEFAULT_UPDATE_SLAVE_LATENCY          `ble.connUpdateParamsCentral.reqSlaveLat`
 
 // Supervision timeout value (units of 10ms) if automatic parameter update
 // request is enabled
-#define DEFAULT_UPDATE_CONN_TIMEOUT           `(ble.connUpdateParamsCentral.upConnTo)/10`
+#define DEFAULT_UPDATE_CONN_TIMEOUT           `(ble.connUpdateParamsCentral.reqConnTo)/10`
 
 %}
 %
@@ -181,23 +181,28 @@ extern void setBondManagerParameters();
 // Pass parameter updates to the app for it to decide.
 #define DEFAULT_PARAM_UPDATE_REQ_DECISION       `ble.paramUpdateReq`
 
+% if (ble.sendParamsUpdateReq){
+// Pass parameter updates to the app for it to decide.
+#define DEFAULT_SEND_PARAM_UPDATE_REQ
+
 // Delay (in ms) after connection establishment before sending a parameter update requst
-#define SEND_PARAM_UPDATE_DELAY                 `ble.paramUpdateDelay`
+#define SEND_PARAM_UPDATE_DELAY                 `ble.connUpdateParamsPeripheral.paramUpdateDelay`
 
 // Minimum connection interval (units of 1.25ms) if automatic parameter update
 // request is enabled
-#define DEFAULT_DESIRED_MIN_CONN_INTERVAL      `(ble.connUpdateParamsPeripheral.upMinConnInt)/1.25`
+#define DEFAULT_DESIRED_MIN_CONN_INTERVAL      `(ble.connUpdateParamsPeripheral.reqMinConnInt)/1.25`
 
 // Maximum connection interval (units of 1.25ms) if automatic parameter update
 // request is enabled
-#define DEFAULT_DESIRED_MAX_CONN_INTERVAL      `(ble.connUpdateParamsPeripheral.upMaxConnInt)/1.25`
+#define DEFAULT_DESIRED_MAX_CONN_INTERVAL      `(ble.connUpdateParamsPeripheral.reqMaxConnInt)/1.25`
 
 // Slave latency to use if automatic parameter update request is enabled
-#define DEFAULT_DESIRED_SLAVE_LATENCY          `ble.connUpdateParamsPeripheral.upSlaveLat`
+#define DEFAULT_DESIRED_SLAVE_LATENCY          `ble.connUpdateParamsPeripheral.reqSlaveLat`
 
 // Supervision timeout value (units of 10ms) if automatic parameter update
 // request is enabled
-#define DEFAULT_DESIRED_CONN_TIMEOUT           `(ble.connUpdateParamsPeripheral.upConnTo)/10`
+#define DEFAULT_DESIRED_CONN_TIMEOUT           `(ble.connUpdateParamsPeripheral.reqConnTo)/10`
+%}
 
 %}
 %

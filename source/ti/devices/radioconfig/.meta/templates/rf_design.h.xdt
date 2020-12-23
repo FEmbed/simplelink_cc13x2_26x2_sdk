@@ -50,8 +50,8 @@ const frontendCode = mod.generateFrontEndCode(inst);
 //   RF Frontend configuration
 // *********************************************************************************
 %
-// Which launchpad the RF design is based on
-#define `inst.rfDesign.replace(/-/g, "_")`
+// RF design based on: `inst.rfDesign`
+#define `inst.rfDesign.replace(/-|\s+/g, "_").replace(/,/, "").toUpperCase()`
 
 % if (useHpa) {
 // High-Power Amplifier supported

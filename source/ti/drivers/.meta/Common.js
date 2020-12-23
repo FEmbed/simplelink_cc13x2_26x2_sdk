@@ -36,6 +36,9 @@
  */
 
 exports = {
+    /* function to configure device-specific implementation */
+    addImplementationConfig: addImplementationConfig,
+
     boardName: boardName,  /* get /ti/boards name */
 
     /* CC32XX specific function to convert package pin to device pin */
@@ -69,8 +72,6 @@ exports = {
     newIntPri: newIntPri,         /* create a common 'intPriority' config */
 
     newSwiPri: newSwiPri,         /* create a common 'swiPriority' config */
-
-    padToSig : padToSig,           /* Temporary function to convert PAD to SIG */
 
     print: print,                 /* debug: print specified object */
     printModule: printModule,     /* debug: print module configs and methods */
@@ -126,6 +127,93 @@ let deferred = {
     logWarning: function (inst, field, msg) {this.warn.push({inst: inst, field: field, msg: msg});},
     logInfo:    function (inst, field, msg) {this.info.push({inst: inst, field: field, msg: msg});}
 };
+
+/*!
+ *  ======== addImplementationConfig ========
+ *  Displays device-specific driver impelementation. This function is intended
+ *  to be called in the extend function of the <driver><device>.syscfg.js file.
+ *
+ *  @param[in] base: The base exports object needing to be modified
+ *  @param[in] driver: A string formatted how the driver name is intended to
+ *  be displayed in the UI
+ *  @param[in] defaultOption: The default driver implementation. If there is
+ *  only one implementation, this param can be passed in as null since the
+ *  information will be extracted from the options param
+ *  @param[in] options: an array in the format of {name: "driverImplementation"}
+ *  for each available implementation. Separate each implementation with a comma
+ *  @param[in] longDescription: String with a driver-specific description that
+ *  will to be added to the base long description. The value of this param is
+ *  null if no extra description is desired.
+ *  @return The modified base exports object
+ */
+function addImplementationConfig(base, driver, defaultOption=null, options,
+    longDescription=null)
+{
+    if ((options.length > 1) && (defaultOption == null)) {
+        throw new Error("Common.js, addImplementationConfig(): Invalid params" +
+            " passed in!");
+    }
+
+    let description = "Displays " + driver + " delegates available for the " +
+        system.deviceData.deviceId + " device.";
+
+    let implementationCountDescription = `
+Since there is only one delegate, it is a read-only value that cannot be changed.
+`;
+
+    let readOnly = false;
+    if (options.length == 1) {
+        readOnly = true;
+
+        /* If there's only one option, set that option to be the default */
+        defaultOption = options[0].name;
+    }
+    else if (options.length > 1) {
+        implementationCountDescription = `
+Since there is more than one delegate for this module, this option allows you to
+choose which driver you would like to use.
+`;
+    }
+
+    let baseDescription = description + "\n\n" + implementationCountDescription +
+`Please refer to the [__TI-Drivers implementation matrix__][0] for all
+available drivers and documentation.
+
+[0]: /drivers/doxygen/html/index.html#drivers
+`;
+
+    /* Add driver-specific description onto the base description */
+    if (longDescription != null) {
+        baseDescription = baseDescription.concat(longDescription);
+    }
+
+    let config = [{
+        name: driver.toLowerCase() + "Implementation",
+        displayName: driver + " Implementation",
+        default: defaultOption,
+        options: options,
+        readOnly: readOnly,
+        description: description,
+        longDescription : baseDescription
+    }];
+
+    /* Determine if base contains a module static */
+    if (base.moduleStatic && base.moduleStatic.config) {
+        base.moduleStatic.config = config.concat(base.moduleStatic.config);
+    }
+    else {
+        let globalName = base.displayName.toLowerCase() + "Global";
+        let globalDisplayName = base.displayName + " Global";
+
+        base.moduleStatic = {
+            name: globalName,
+            displayName: globalDisplayName,
+            config: config
+        };
+    }
+
+    return (base);
+}
 
 /*
  *  ======== init ========
@@ -241,20 +329,29 @@ function device2Family(device, mod)
     let DEV2FAMILY = [
         {prefix: "CC13.2",   family: "CC26X2"},
         {prefix: "CC26.2",   family: "CC26X2"},
+        {prefix: "CC13.1",   family: "CC26X1"},
+        {prefix: "CC26.1",   family: "CC26X1"},
         {prefix: "CC13",     family: "CC26XX"},
         {prefix: "CC26",     family: "CC26XX"},
         {prefix: "CC32",     family: "CC32XX"},
-        {prefix: "MSP432E",  family: "MSP432E4"},
-        {prefix: "dragon",   family: "MTXX"}
+        {prefix: "MSP432E",  family: "MSP432E4"}
     ];
 
-    /* Agama (CC26X2) specific module delegates */
+    /* Agama Classic (CC26X2 and CC26X2F6) specific module delegates */
     let cc26x2Mods = {
-        "ECDH" : 1,
-        "ECDSA" : 1,
-        "ECJPAKE" : 1,
-        "SHA2" : 1,
-        "Temperature" : 1
+        "ECDH" :        "CC26X2",
+        "ECDSA" :       "CC26X2",
+        "ECJPAKE" :     "CC26X2",
+        "SHA2" :        "CC26X2",
+        "Temperature" : "CC26X2"
+    };
+
+    /* Agama Lite (CC26X1) specific module delegates */
+    let cc26x1Mods = {
+        "ECDH" :        "CC26X1",
+        "ECDSA" :       "CC26X1",
+        "SHA2" :        "CC26X1",
+        "Temperature" : "CC26X2"
     };
 
     /* deviceId is the directory name within the pinmux/deviceData */
@@ -266,8 +363,16 @@ function device2Family(device, mod)
         if (deviceId.match(d2f.prefix)) {
             /* trap Agama specific mods */
             if (d2f.family == "CC26X2") {
-                if (cc26x2Mods[mod] == 1) {
-                    return ("CC26X2");
+                if (mod in cc26x2Mods) {
+                    return (cc26x2Mods[mod]);
+                }
+                else {
+                    return ("CC26XX");
+                }
+            }
+            else if (d2f.family == "CC26X1") {
+                if (mod in cc26x1Mods) {
+                    return (cc26x1Mods[mod]);
                 }
                 else {
                     return ("CC26XX");
@@ -818,59 +923,6 @@ function pinToName(pinNum)
 }
 
 /*
- *  ======== padToSig ========
- * Translate pad to signal
- */
-function padToSig(pad)
-{
-
-    let map = {
-        "121" : "SIG0068",
-        "130" : "SIG0075",
-        "129" : "SIG0074",
-        "80"  : "SIG0055",
-        "79"  : "SIG0054",
-        "127" : "SIG0072",
-        "163" : "SIG0097",
-        "145" : "SIG0084",
-        "144" : "SIG0083",
-        "87"  : "SIG0053",
-        "81"  : "SIG0056",
-        "60"  : "SIG0038",
-        "123" : "SIG0070",
-        "125" : "SIG0071",
-        "14"  : "SIG0001",
-        "167" : "SIG0099",
-        "135" : "SIG0073",
-        "151" : "SIG0087",
-        "122" : "SIG0069",
-        "165" : "SIG0098",
-        "146" : "SIG0085",
-        "117" : "SIG0064",
-        "153" : "SIG0089",
-        "154" : "SIG0090",
-        "147" : "SIG0086",
-        "152" : "SIG0088",
-        "30"  : "SIG0014",
-        "59"  : "SIG0037",
-        "61"  : "SIG0039",
-        "69"  : "SIG0046",
-        "38"  : "SIG0021",
-        "111" : "SIG0060",
-        "110" : "SIG0059",
-        "112" : "SIG0061",
-        "113" : "SIG0062",
-        "115" : "SIG0063"
-    };
-
-    if (pad) {
-        return (map[pad]);
-    }
-
-    return (null);
-}
-
-/*
  *  ======== print ========
  *  Print specified obj
  */
@@ -1246,24 +1298,25 @@ function setDefaults(inst, signal, type)
 
     /* apply any settings to the instance */
     for (let cfg in settings) {
-        try {
-            inst[cfg] = settings[cfg];
+        /* ensure cfg is in inst */
+        if (inst.$uiState[cfg] != null) {
+            /* assign it as specified by the HW (unless cfg is readonly) */
+            if (!inst.$uiState[cfg].readOnly) {
+                inst[cfg] = settings[cfg];
+            }
         }
-        catch (x) {
-            let msg = "signal '" + signal.name
-                + "' of component " + comp.name + ": ";
-
-            if (cfg in settings) {
-                msg += x.message + " for " + inst.$name;
-                console.log("error: " + msg);
-                //throw new Error(msg); /* throw results in a nasty SysConfig fail that only serves to scare the user */
-
+        else {
+            /* if comp references a bogus cfg setting throw "bad board file" */
+            let cname = comp.name;
+            let parents = comp.$parents;
+            for (; parents.length > 0; parents = parents[0]) {
+                cname = parents[0].name + "." + cname;
             }
-            else {
-                msg += "specified an unknown setting (" + cfg + ") for "
-                    + inst.$name;
-                throw new Error(msg); /* needed to detect bogus board data */
-            }
+            let msg = "invalid board data: signal '" + signal.name
+                + "' of component '" + cname + "' "
+                + "specified an unknown setting (" + cfg + " = " + settings[cfg]
+                + ") for " + inst.$name;
+            throw new Error(msg); /* needed to detect bogus board data */
         }
     }
 }
@@ -1351,8 +1404,8 @@ function addNameConfig(config, modName, prefix)
 {
     let baseName = modName.split('/').pop();                 // GPIO
     let fullName = modName.replace(/\//g, '_').substring(1); // ti_drivers_GPIO
-    //let docsDir =  modName.split('/').slice(0, -1).join(""); // tidrivers
-    let docsDir = "tidrivers"; // Since this function is tidrivers specific
+    //let docsDir =  modName.split('/').slice(0, -1).join(""); // drivers
+    let docsDir = "drivers"; // Since this function is drivers specific
 
     let nameCfg = {
         name: "$name",
@@ -1496,28 +1549,49 @@ function genBoardHeader(instances, mod, includeBanner=true)
         }
     }
 
+    /* Add configuration count define */
+    let displayName = instances[0].$module.displayName;
+    line = "#define CONFIG_TI_DRIVERS_" + displayName.toUpperCase() + "_COUNT";
+    lines.push(line);
+
+    /* Is this line length greater than the previous max */
+    if (line.length > maxLineLength) {
+        maxLineLength = line.length;
+    }
+
     /*
      * No comment was included in this original implementation. Not sure
      * what wizardry is going on here.
      */
     maxLineLength = ((maxLineLength + 3) & 0xfffc) + 4;
 
-    /* Modulate lines based on max line length, append instance number */
+    /*
+     * Modulate lines based on max line length and append instance number.
+     * Occurs for all lines except the last one (config count define) as
+     * it is formatted differently.
+     */
     let instanceNum = 0;
-    for (let i = 0; i < lines.length; i++) {
+    let lastLine = lines.length - 1;
+    for (let i = 0; i < lastLine; i++) {
         let inst = instances[instanceNum];
 
         /* If this instance has a comment, assume 1 comment per instance */
         if (pinResources[instanceNum] && pinResources[instanceNum] != null) {
             i++;
         }
+
+        /* Pad and add symbolic name. ie `extern const uint8_t CONFIG_INDEX` */
         lines[i] += padding.substring(0, maxLineLength - lines[i].length);
         lines[i++] += getSymbolicName(inst) + ";";
 
-        /* Add symbolic name ie `extern const uint8_t CONFIG_INDEX` */
+        /* Pad and add instance number to config define. ie `#define CONFIG_ADC_0 0` */
         lines[i] += padding.substring(0, maxLineLength - lines[i].length);
         lines[i] += instanceNum++;
     }
+
+    /* Pad and add the number of instances to the config count define */
+    lines[lastLine] += padding.substring(0, maxLineLength - lines[lastLine].length);
+    lines[lastLine] += instanceNum;
 
     if (includeBanner === true) {
         lines = banner.concat(lines);

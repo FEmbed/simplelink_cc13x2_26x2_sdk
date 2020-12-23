@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,8 +70,9 @@ extern "C" {
  *
  *  nortos:   16
  *  SysBIOS:  28
+ *  FreeRTOS: 80
  */
-#define SemaphoreP_STRUCT_SIZE   (28)
+#define SemaphoreP_STRUCT_SIZE   (80)
 
 /*!
  *  @brief    SemaphoreP structure.

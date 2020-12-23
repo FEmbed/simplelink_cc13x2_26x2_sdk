@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ioc.c
-*  Revised:        2020-02-14 11:30:20 +0100 (Fri, 14 Feb 2020)
-*  Revision:       56760
+*  Revised:        2020-07-16 14:41:29 +0200 (Thu, 16 Jul 2020)
+*  Revision:       58010
 *
 *  Description:    Driver for the IOC.
 *
@@ -562,6 +562,8 @@ IOCPinTypeSsiMaster(uint32_t ui32Base, uint32_t ui32Rx,
             IOCPortConfigureSet(ui32Clk, IOC_PORT_MCU_SSI0_CLK, IOC_STD_OUTPUT);
         }
     }
+    // Handle SSI1_BASE / SPI1_BASE last with a hard else to keep Agama and
+    // Chameleon code in ROM identical to this source
     else
     {
         if(ui32Rx != IOID_UNUSED)
@@ -620,6 +622,8 @@ IOCPinTypeSsiSlave(uint32_t ui32Base, uint32_t ui32Rx,
             IOCPortConfigureSet(ui32Clk, IOC_PORT_MCU_SSI0_CLK, IOC_STD_INPUT);
         }
     }
+    // Handle SSI1_BASE / SPI1_BASE last with a hard else to keep Agama and
+    // Chameleon code in ROM identical to this source
     else
     {
         if(ui32Rx != IOID_UNUSED)

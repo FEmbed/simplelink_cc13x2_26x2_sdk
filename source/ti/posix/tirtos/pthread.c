@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2015-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -246,6 +246,7 @@ int pthread_cancel(pthread_t pthread)
         /* Set this task's priority to -1 to stop it from running. */
         Task_setPri(thread->task, -1);
 
+        /* Re-enable the scheduler to allow cleanup functions to block. */
         Task_restore(key);
 
         /* Pop and execute the cleanup handlers */
@@ -266,6 +267,7 @@ int pthread_cancel(pthread_t pthread)
         }
     }
     else {
+        /* Re-enable the scheduler */
         Task_restore(key);
     }
 

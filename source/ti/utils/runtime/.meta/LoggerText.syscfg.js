@@ -94,12 +94,12 @@ let config = [
     },
     {
         name: "numEntries",
-        displayName: "Number of messages",
+        displayName: "Number of Messages",
         default: 100
     },
     {
         name: "textLen",
-        displayName: "Message size (bytes)",
+        displayName: "Message Size (Bytes)",
         default: 40
     }
 ];

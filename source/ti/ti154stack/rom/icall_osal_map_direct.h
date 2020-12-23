@@ -63,7 +63,7 @@
 
 #include "comdef.h"
 
-#include <ti/sysbios/knl/Clock.h>
+#include <ti/drivers/dpl/ClockP.h>
 
 #include <stdlib.h>
 
@@ -188,7 +188,7 @@
 #define MAP_osal_isbufset                               OsalPort_isBufSet
 #define MAP_osal_offsetof                               OsalPort_OFFSET_OF
 
-#define MAP_osal_GetSystemClock()                       ((Clock_getTicks() * Clock_tickPeriod) / 1000)
+#define MAP_osal_GetSystemClock()                       ((ClockP_getSystemTicks() * ClockP_getSystemTickPeriod()) / 1000)
 #define MAP_osal_start_timerEx                          OsalPortTimers_startTimer
 #define MAP_osal_start_reload_timer                     OsalPortTimers_startReloadTimer
 #define MAP_osal_stop_timerEx                           OsalPortTimers_stopTimer
@@ -196,10 +196,10 @@
 
 #define MAP_osal_rand                                   OsalPort_rand
 
-#define MAP_ICall_getTicks                              Clock_getTicks
+#define MAP_ICall_getTicks                              ClockP_getSystemTicks
 #define MAP_ICall_setTimer                              OsalPort_setTimer
 #define MAP_ICall_stopTimer                             OsalPort_stopTimer
-#define MAP_ICall_getTickPeriod()                       Clock_tickPeriod
+#define MAP_ICall_getTickPeriod()                       ClockP_getSystemTickPeriod()
 
 #define MAP_ICall_malloc                                OsalPort_malloc
 #define MAP_ICall_free                                  OsalPort_free

@@ -1,5 +1,5 @@
 #
-#  ======== makefile ======== 
+#  ======== makefile ========
 #
 
 CORESDK_INSTALL_DIR ?= $(abspath ../../..)
@@ -20,6 +20,7 @@ include $(CORESDK_INSTALL_DIR)/imports.mak
 #
 XDCARGS= \
     ti.targets.arm.elf.M4F=\"$(CCS_ARMCOMPILER)\" \
+    ti.targets.arm.clang.M4F=\"$(TICLANG_ARMCOMPILER)\" \
     gnu.targets.arm.M4F=\"$(GCC_ARMCOMPILER)\" \
     iar.targets.arm.M4F=\"$(IAR_ARMCOMPILER)\" \
     CC26XXWARE=$(CORESDK_INSTALL_DIR)

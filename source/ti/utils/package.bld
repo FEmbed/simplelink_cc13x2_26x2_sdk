@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Texas Instruments Incorporated
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,5 +39,8 @@ var Pkg = xdc.useModule('xdc.bld.PackageContents');
 
 Pkg.otherFiles = [
     ".meta/Common.js",
+    ".meta/JSON.syscfg.js",
+    ".meta/RTOS.syscfg.js",
+    ".meta/tiutils.component.js",
     "package.bld"
 ];

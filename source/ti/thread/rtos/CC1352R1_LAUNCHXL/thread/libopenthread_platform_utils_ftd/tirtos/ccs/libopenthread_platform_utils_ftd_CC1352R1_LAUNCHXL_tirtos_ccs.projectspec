@@ -72,7 +72,6 @@
         description="this is the openthread platform utils library">
 
         <property name="isHybrid" value="true"/>
-        <group id="libopenthread_platform_utils_ftd_CC1352R1_LAUNCHXL_tirtos_ccs.SIMPLELINK_CC13X2_26X2_SDK.thread.TI"/>
         <file path="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/third_party/openthread/examples/platforms/utils/code_utils.h" openOnCreation="false" excludeFromBuild="false" action="link" targetDirectory="examples/platforms/utils">
         </file>
         <file path="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/third_party/openthread/examples/platforms/utils/encoding.h" openOnCreation="false" excludeFromBuild="false" action="link" targetDirectory="examples/platforms/utils">

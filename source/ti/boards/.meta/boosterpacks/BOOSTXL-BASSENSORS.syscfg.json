@@ -44,7 +44,7 @@
     "headerType": "BoosterPack 40 pin",
     "components": {
         "BOOSTXL_BASSENSORS_I2C": {
-            "displayName": "BAS Sensors BoosterPack I2C",
+            "displayName": "BAS Sensors I2C",
             "description": "BAS Sensors BoosterPack I2C bus",
             "longDescription": "BAS Sensors BoosterPack I2C bus",
             "definition": "/ti/boards/components/i2c.json",
@@ -71,7 +71,7 @@
             "partNum": "TI-TMP116",
             "displayName": "TMP116 Temperature Sensor",
             "description": "Accurate Digital Temperature Sensor With NV Memory",
-            "longDescription": "The [__TMP116__](http://www.ti.com/product/TMP116) family (TMP116, TMP116N) consist of low-power, high-precision temperature sensors with integrated EEPROM memory. The TMP116 provides a 16-bit temperature result with a resolution of 0.0078&deg;C and an accuracy of up to &plusmn;0.2&deg;C with no calibration. The TMP116 is compatible with the I2C- and SMBus interface, has programmable alert functionality, and supports up to four devices on a single bus.",
+            "longDescription": "The [__TMP116__](http://www.ti.com/product/TMP116) family (TMP116, TMP116N) consist of low-power, high-precision temperature sensors with integrated EEPROM memory. The TMP116 provides a 16-bit temperature result with a resolution of 0.0078&deg;C and an accuracy of up to &plusmn;0.2&deg;C with no calibration. The TMP116 is compatible with the I2C and SMBus interface, has programmable alert functionality, and supports up to four devices on a single bus.",
             "settings": {
                 "address":  72,  /* 0x48 */
                 "maxSpeed": 400  /* 400 kbit/s */
@@ -80,6 +80,7 @@
                 "I2C": {
                     "link": "BOOSTXL_BASSENSORS_I2C"
                 },
+
                 "ALERT": {
                     "type": "SENSOR_INT",
                     "displayName": "TMP116 Interrupt",
@@ -95,6 +96,7 @@
                         }
                     }
                 },
+
                 "POWER": {
                     "type": "SENSOR_POWER",
                     "displayName": "TMP116 Power",
@@ -105,7 +107,8 @@
                             "type": "DOUT",
                             "settings": {
                                 "mode": "Output",
-                                "initialOutputState": "High"
+                                "initialOutputState": "High",
+                                "outputStrength": "High"
                             },
                             "connection": 28
                         }
@@ -116,7 +119,7 @@
 
         "OPT3001": {
             "type": "OPT3001",
-            "displayName": "OPT3001 Sensor",
+            "displayName": "OPT3001 Ambient Light Sensor",
             "description": "Digital ambient light sensor (ALS) with high-precision human-eye response",
             "longDescription": "The [__OPT3001__](http://www.ti.com/product/OPT3001) is a sensor that measures the intensity of visible light. The spectral response of the sensor tightly matches the photopic response of the human eye and includes significant infrared rejection.",
             "settings": {
@@ -127,6 +130,7 @@
                 "I2C": {
                     "link": "BOOSTXL_BASSENSORS_I2C"
                 },
+
                 "ALERT": {
                     "type": "SENSOR_INT",
                     "displayName": "OPT3001 Interrupt",
@@ -142,6 +146,7 @@
                         }
                     }
                 },
+
                 "POWER": {
                     "type": "SENSOR_POWER",
                     "displayName": "OPT3001 Power",
@@ -152,7 +157,8 @@
                             "type": "DOUT",
                             "settings": {
                                 "mode": "Output",
-                                "initialOutputState": "High"
+                                "initialOutputState": "High",
+                                "outputStrength": "High"
                             },
                             "connection": 27
                         }
@@ -174,6 +180,7 @@
                 "I2C": {
                     "link": "BOOSTXL_BASSENSORS_I2C"
                 },
+
                 "ALERT": {
                     "type": "SENSOR_INT",
                     "displayName": "HDC2010 Interrupt",
@@ -189,6 +196,7 @@
                         }
                     }
                 },
+
                 "POWER": {
                     "type": "SENSOR_POWER",
                     "displayName": "HDC2010 Power",
@@ -199,7 +207,8 @@
                             "type": "DOUT",
                             "settings": {
                                 "mode": "Output",
-                                "initialOutputState": "Low"
+                                "initialOutputState": "Low",
+                                "outputStrength": "High"
                             },
                             "connection": 6
                         }
@@ -221,6 +230,7 @@
                     "longDescription": "DRV5055 analog output",
                     "connections" : { "INPUT": 2 }
                 },
+
                 "POWER": {
                     "type": "SENSOR_POWER",
                     "displayName": "DRV5055 Power",
@@ -231,7 +241,8 @@
                             "type": "DOUT",
                             "settings": {
                                 "mode": "Output",
-                                "initialOutputState": "Low"
+                                "initialOutputState": "Low",
+                                "outputStrength": "High"
                             },
                             "connection": 24
                         }

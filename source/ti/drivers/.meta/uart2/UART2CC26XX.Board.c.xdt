@@ -80,6 +80,12 @@
 
 `driver`_Object uart2CC26X2Objects[`countDef`];
 
+% for (let i = 0; i < instances.length; i++) {
+%     let inst = instances[i];
+static unsigned char uart2RxRingBuffer`i`[`inst.rxRingBufferSize`];
+static unsigned char uart2TxRingBuffer`i`[`inst.txRingBufferSize`];
+% }
+
 static const `driver`_HWAttrs uart2CC26X2HWAttrs[`countDef`] = {
 % for (let i = 0; i < instances.length; i++) {
 %     let inst        = instances[i];
@@ -100,7 +106,7 @@ static const `driver`_HWAttrs uart2CC26X2HWAttrs[`countDef`] = {
 %
 %     let flowName;
 %     if (inst.flowControl) {
-%         flowName = 'UART2CC26X2_FLOWCTRL_HARDWARE';
+%         flowName = 'UART2_FLOWCTRL_HARDWARE';
 %         if ('ctsPin' in uart) {
 %             ctsPinName = 'IOID' + uart.ctsPin.$solution.devicePinName.substring(3);
 %         }
@@ -109,7 +115,7 @@ static const `driver`_HWAttrs uart2CC26X2HWAttrs[`countDef`] = {
 %         }
 %     }
 %     else {
-%         flowName = 'UART2CC26X2_FLOWCTRL_NONE';
+%         flowName = 'UART2_FLOWCTRL_NONE';
 %     }
   {
     .baseAddr           = `peripheral.name`_BASE,
@@ -120,6 +126,10 @@ static const `driver`_HWAttrs uart2CC26X2HWAttrs[`countDef`] = {
     .ctsPin             = `ctsPinName`,
     .rtsPin             = `rtsPinName`,
     .flowControl        = `flowName`,
+    .rxBufPtr           = uart2RxRingBuffer`i`,
+    .rxBufSize          = sizeof(uart2RxRingBuffer`i`),
+    .txBufPtr           = uart2TxRingBuffer`i`,
+    .txBufSize          = sizeof(uart2TxRingBuffer`i`),
     .rxChannelMask      = 1 << UDMA_CHAN_`peripheral.name`_RX,
     .txChannelMask      = 1 << UDMA_CHAN_`peripheral.name`_TX,
     .txIntFifoThr       = `driver`_`map[inst.txInterruptFifoThreshold]`,
@@ -132,7 +142,6 @@ const UART2_Config UART2_config[`countDef`] = {
 % for (let i = 0; i < instances.length; i++) {
 %     let inst    = instances[i];
     {   /* `inst.$name` */
-        .fxnTablePtr = &`driver`_fxnTable,
         .object      = &uart2CC26X2Objects[`inst.$name`],
         .hwAttrs     = &uart2CC26X2HWAttrs[`inst.$name`]
     },

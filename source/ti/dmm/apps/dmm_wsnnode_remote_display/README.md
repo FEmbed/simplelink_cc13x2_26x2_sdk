@@ -11,6 +11,7 @@
     * [Node Report Interval (UUID: 1182)](#NodeReportIntervalCharacteristic)
     * [Concetrator LED Identify (UUID: 1183)](#ConcetratorLEDIdentify)
     * [Node Address (UUID: 1184)](#NodeAddress)
+    * [Disabling Common User Interface](#DisableCUI)
 * [Switching to SLR mode](#SwitchingtoSLRmode)
 * [BLE Multi-Connections](#BLEMultiConnections)
 * [DMM Limitations](#DmmLimitations)
@@ -281,6 +282,16 @@ This characteristic has read and write properties. Reading the chracteristic
 shows the node address reported by the concentrator. Writing to the
 characteristics will cause a new node with that address to appear on the
 concentrator's display.
+
+## <a name="DisableCUI"></a>Disabling Common User Interface
+
+The common user interface (CUI) is a UART based interface that allows users to control and receive updates regarding the application. For various reasons, including reducing the memory footprint, the user is able to disable the common user interface (CUI). To disable the CUI, the following variable must be defined in the `dmm_wsnnode_remote_display_app.opts`:
+
+```
+-DCUI_DISABLE
+```
+
+> Please Note: particular features that are dependednt on the CUI wil be unavailable when this feature is enabled.
 
 ## <a name="SwitchingtoSLRmode"></a>Switching to SLR Mode
 

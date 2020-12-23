@@ -200,9 +200,10 @@ bool SM_ECC_genLocalKeyPair(SM_ECC_securityDeviceDescriptor_t *secDevice)
 
     /* Generate local key-pair */
     ECDH_OperationGeneratePublicKey_init(&opGenLocalPublicKey);
-    opGenLocalPublicKey.curve            = &ECCParams_NISTP256;
-    opGenLocalPublicKey.myPrivateKey     = &secDevice->localPrivateKey;
-    opGenLocalPublicKey.myPublicKey      = &secDevice->localPublicKey;
+    opGenLocalPublicKey.curve               = &ECCParams_NISTP256;
+    opGenLocalPublicKey.myPrivateKey        = &secDevice->localPrivateKey;
+    opGenLocalPublicKey.myPublicKey         = &secDevice->localPublicKey;
+    opGenLocalPublicKey.publicKeyDataFormat = ECDH_PUBLIC_KEY_DATA_FORMAT_OCTET_STRING;
 
     /* Generate local public key based on the local private key */
     operationResult = ECDH_generatePublicKey(ECDH_handle, &opGenLocalPublicKey);
@@ -254,10 +255,12 @@ bool SM_ECC_genSharedSecretKey(SM_ECC_securityDeviceDescriptor_t *secDevice)
 
     /* Generate shared secret from local private and foreign public keys */
     ECDH_OperationComputeSharedSecret_init(&opGenSharedSecretKey);
-    opGenSharedSecretKey.curve              = &ECCParams_NISTP256;
-    opGenSharedSecretKey.myPrivateKey       = &secDevice->localPrivateKey;
-    opGenSharedSecretKey.theirPublicKey     = &foreignPublicKey;
-    opGenSharedSecretKey.sharedSecret       = &secDevice->sharedSecretKey;
+    opGenSharedSecretKey.curve                  = &ECCParams_NISTP256;
+    opGenSharedSecretKey.myPrivateKey           = &secDevice->localPrivateKey;
+    opGenSharedSecretKey.theirPublicKey         = &foreignPublicKey;
+    opGenSharedSecretKey.sharedSecret           = &secDevice->sharedSecretKey;
+    opGenSharedSecretKey.publicKeyDataFormat    = ECDH_PUBLIC_KEY_DATA_FORMAT_OCTET_STRING;
+    opGenSharedSecretKey.sharedSecretDataFormat = ECDH_PUBLIC_KEY_DATA_FORMAT_OCTET_STRING;
 
     /* Compute the shared secret and copy it to sharedSecretKeyingMaterial */
     operationResult = ECDH_computeSharedSecret(ECDH_handle, &opGenSharedSecretKey);

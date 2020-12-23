@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,13 +85,14 @@ let base = {
     displayName : "DMA",
     description : "On-chip DMA resource allocation",
     defaultInstanceName : "CONFIG_DMA_",
+    alwaysShowLongDescription : true,
     longDescription : `
 The DMA module provides support to other drivers that
 need to allocate exclusive access to a DMA resource to support
 CPU-less peripheral data transfers. There is no user API for this module.
 See [__Driver configurations reference__][1] for more information.
 
-[1]: /tidrivers/syscfg/html/ConfigDoc.html#DMA_Configuration_Options "Configuration options reference"
+[1]: /drivers/syscfg/html/ConfigDoc.html#DMA_Configuration_Options "Configuration options reference"
 `,
     maxInstances : 1,
     moduleStatic : {

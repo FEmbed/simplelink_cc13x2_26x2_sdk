@@ -53,7 +53,9 @@ const ti154stackCCFGSettings = {
     CC1352P_2_LAUNCHXL_CCFG_SETTINGS: {},
     CC1352P_4_LAUNCHXL_CCFG_SETTINGS: {},
     CC26X2R1_LAUNCHXL_CCFG_SETTINGS: {},
-    CC2652RB_LAUNCHXL_CCFG_SETTINGS: {}
+    CC2652RB_LAUNCHXL_CCFG_SETTINGS: {},
+    LP_CC2652RSIP_CCFG_SETTINGS: {},
+    LP_CC2652PSIP_CCFG_SETTINGS: {}
 };
 
 // Dictionary mapping a device name to default LaunchPad
@@ -61,6 +63,8 @@ const deviceToBoard = {
     CC1352R: "CC1352R1_LAUNCHXL",
     CC1352P: "CC1352P1_LAUNCHXL",
     CC1312R: "CC1312R1_LAUNCHXL",
+    CC2652R1FSIP: "LP_CC2652RSIP",
+    CC2652P1FSIP: "LP_CC2652PSIP",
     CC2652R1: "CC26X2R1_LAUNCHXL",
     CC2652RB: "CC2652RB_LAUNCHXL"
 };
@@ -161,7 +165,8 @@ function is433MHzDevice(inst)
  */
 function isHighPADevice()
 {
-    return(getLaunchPadFromDevice().includes("CC1352P"));
+    let board = getLaunchPadFromDevice();
+    return(board.includes("CC1352P") || board.includes("CC2652PSIP"));
 }
 
 /*!

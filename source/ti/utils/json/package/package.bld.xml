@@ -28,6 +28,18 @@
         <srcFile name="package/lib/lib/ccs/m4f/json_release/source/json_engine.oem4f.dep" src="source/json_engine.c"/>
         <srcFile name="package/lib/lib/ccs/m4f/json_release/source/parse_common.oem4f.dep" src="source/parse_common.c"/>
         <srcFile name="package/lib/lib/ccs/m4f/json_release/source/utils.oem4f.dep" src="source/utils.c"/>
+        <srcFile name="lib/ticlang/m4f/json_debug.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_debug/package/package_ti.utils.json.om4f.dep" src="package/package_ti.utils.json.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_debug/source/json.om4f.dep" src="source/json.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_debug/source/json_engine.om4f.dep" src="source/json_engine.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_debug/source/parse_common.om4f.dep" src="source/parse_common.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_debug/source/utils.om4f.dep" src="source/utils.c"/>
+        <srcFile name="lib/ticlang/m4f/json_release.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_release/package/package_ti.utils.json.om4f.dep" src="package/package_ti.utils.json.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_release/source/json.om4f.dep" src="source/json.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_release/source/json_engine.om4f.dep" src="source/json_engine.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_release/source/parse_common.om4f.dep" src="source/parse_common.c"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/json_release/source/utils.om4f.dep" src="source/utils.c"/>
         <srcFile name="lib/gcc/m4f/json_debug.a.mak" src="package.bld"/>
         <srcFile name="package/lib/lib/gcc/m4f/json_debug/package/package_ti.utils.json.om4fg.dep" src="package/package_ti.utils.json.c"/>
         <srcFile name="package/lib/lib/gcc/m4f/json_debug/source/json.om4fg.dep" src="source/json.c"/>
@@ -61,7 +73,23 @@
             platform="ti.platforms.tiva:TM4C1294NCPDT:1"
             isa="v7M4"
             suffix="em4f"
-            rootDir="/db/vendors/ti/arm/20.2.1.LTS/Linux"
+            rootDir="/scratch/xlibrary/.conan/data/ticodegen/20.2.1.LTS-0/library-msp/ga/package/be241241e9d4718e5bab4eb33935bbb69606bb0c"
+            os="undefined"
+            rts="ti.targets.arm.rtsarm">
+            <model endian="little"
+                codeModel="thumb2"
+                dataModel="undefined"/>
+        </target>
+        <target name="ti.targets.arm.clang.M4F"
+            version="ti.targets.arm.clang.M4F{1,0,1.0,0"
+            rawVersion="TI Arm Clang Compiler 1.0.0+STSTarget: arm-ti-none-eabi
+Thread model: posix
+InstalledDir: /scratch/xlibrary/.conan/data/tiarmllvm/1.0.0.STS-0/library-msp/ga/package/be241241e9d4718e5bab4eb33935bbb69606bb0c/bin
+"
+            platform="ti.platforms.cortexM:MTL1_VSOC:1"
+            isa="v7M4"
+            suffix="m4f"
+            rootDir="/scratch/xlibrary/.conan/data/tiarmllvm/1.0.0.STS-0/library-msp/ga/package/be241241e9d4718e5bab4eb33935bbb69606bb0c"
             os="undefined"
             rts="ti.targets.arm.rtsarm">
             <model endian="little"
@@ -74,7 +102,7 @@
             platform="ti.platforms.tiva:TM4C1294NCPDT"
             isa="v7M4"
             suffix="m4fg"
-            rootDir="/db/vendors/arm/gcc-arm-none-eabi-9-2019-q4-major"
+            rootDir="/scratch/xlibrary/.conan/data/arm-none-eabi-gcc/9.2019.q4.major-0/library-msp/ga/package/44fcf6b9a7fb86b2586303e3db40189d3b511830"
             os="undefined"
             rts="gnu.targets.arm.rtsv7M">
             <model endian="little"
@@ -87,7 +115,7 @@
             platform="ti.platforms.tiva:TM4C1294NCPDT:1"
             isa="v7M4"
             suffix="rm4f"
-            rootDir="/db/vendors/iar/arm/8.50.1/Linux"
+            rootDir="/scratch/xlibrary/.conan/data/iarcodegen/8.50.1.245-0/library-msp/ga/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9"
             os="undefined"
             rts="iar.targets.arm.rts">
             <model endian="little"
@@ -104,6 +132,14 @@
         pname="lib/ccs/m4f/json_release.a"
         profile="release"
         target="ti.targets.arm.elf.M4F"/>
+    <library name="lib/ticlang/m4f/json_debug"
+        pname="lib/ticlang/m4f/json_debug.a"
+        profile="debug"
+        target="ti.targets.arm.clang.M4F"/>
+    <library name="lib/ticlang/m4f/json_release"
+        pname="lib/ticlang/m4f/json_release.a"
+        profile="release"
+        target="ti.targets.arm.clang.M4F"/>
     <library name="lib/gcc/m4f/json_debug"
         pname="lib/gcc/m4f/json_debug.a"
         profile="debug"
@@ -129,7 +165,7 @@
     </tests>
     <releases relDir="package/rel/">
     <release name="ti_utils_json"
-        pname="../../../../exports/ti_utils_json.zip"
+        pname="ti_utils_json.zip"
         label="default"
     >
         <file name="package/package.bld.xml"/>
@@ -148,6 +184,8 @@
         <file name="source/parse_common.c"/>
         <file name="source/utils.c"/>
         <file name="lib/ccs/m4f/json_release.a"/>
+        <file name="lib/ticlang/m4f/json_debug.a"/>
+        <file name="lib/ticlang/m4f/json_release.a"/>
         <file name="lib/gcc/m4f/json_debug.a"/>
         <file name="lib/gcc/m4f/json_release.a"/>
         <file name="lib/iar/m4f/json_debug.a"/>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -157,9 +157,9 @@ peripherals on an I2S bus.
 * [Examples][2]
 * [Configuration Options][3]
 
-[1]: /tidrivers/doxygen/html/_i2_s_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_i2_s_8h.html#ti_drivers_I2S_Examples "C usage examples"
-[3]: /tidrivers/syscfg/html/ConfigDoc.html#I2S_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_i2_s_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_i2_s_8h.html#ti_drivers_I2S_Examples "C usage examples"
+[3]: /drivers/syscfg/html/ConfigDoc.html#I2S_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName: "CONFIG_I2S_",
     config: Common.addNameConfig(config, "/ti/drivers/I2S", "CONFIG_I2S_"),

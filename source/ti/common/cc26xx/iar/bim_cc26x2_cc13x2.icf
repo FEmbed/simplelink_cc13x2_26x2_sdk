@@ -69,7 +69,7 @@ if ( isdefinedsymbol(CC2650) )
   define symbol FLASH_SIZE          = 0x00020000; // 128K
   define symbol ROM_SIZE            = 0x0001C000; // 115K
 }
-else if ( isdefinedsymbol(CC2642) )
+else if ( isdefinedsymbol(CC2642) || isdefinedsymbol(CC13X2) || isdefinedsymbol(CC26X2) )
 {
   define symbol RAM_SIZE            = 0x00014000; // 80K
   define symbol FLASH_SIZE          = 0x00058000; // 352K
@@ -97,7 +97,7 @@ if ( isdefinedsymbol(CC2650) )
 {
   define symbol PAGE_SIZE           = 0x1000;
 }
-else if ( isdefinedsymbol(CC2642) )
+else if ( isdefinedsymbol(CC2642) || isdefinedsymbol(CC13X2) || isdefinedsymbol(CC26X2) )
 {
   define symbol PAGE_SIZE           = 0x2000;
 }
@@ -118,7 +118,7 @@ if ( isdefinedsymbol(CC2650) )
 {
   define symbol PAGE_MASK           = 0xFFFFF000;
 }
-else if ( isdefinedsymbol(CC2642) )
+else if ( isdefinedsymbol(CC2642) || isdefinedsymbol(CC13X2) || isdefinedsymbol(CC26X2) )
 {
   define symbol PAGE_MASK           = 0xFFFFE000;
 }

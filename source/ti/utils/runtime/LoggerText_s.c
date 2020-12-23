@@ -45,9 +45,9 @@
 
 
 /*
- *  ======== LoggerText_write ========
+ *  ======== LoggerText_event ========
  */
-void LoggerText_write(LoggerText_Handle hndl, char *text)
+void LoggerText_event(LoggerText_Handle hndl, char *text)
 {
     uint32_t serial;
     uint64_t timestamp;

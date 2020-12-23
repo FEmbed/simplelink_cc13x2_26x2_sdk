@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,7 @@ let base = {
     displayName : "ECJPAKE",
     description : "Elliptic Curve Password Authenticated Key Exchange by"
         + " Juggling Driver",
+    alwaysShowLongDescription : true,
     longDescription : `
 The [__ECJPAKE driver__][1] provides a key agreement
 scheme that establishes a secure channel over an insecure network.
@@ -76,10 +77,10 @@ certificate authorities.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration Options][4]
-[1]: /tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#ti_drivers_ECJPAKE_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#ti_drivers_ECJPAKE_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#ECJPAKE_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#ti_drivers_ECJPAKE_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#ti_drivers_ECJPAKE_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#ECJPAKE_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
     defaultInstanceName : "CONFIG_ECJPAKE_",

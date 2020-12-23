@@ -40,11 +40,18 @@ const Common = system.getScript("/ti/drivers/Common.js");
 const numPins = 48;
 const device = system.deviceData.deviceId;
 const isBAW = device.match(/CC2652RB/) !== null;
+const isSIP = device.match(/CC2652.*SIP/) !== null;
 
 const templateModule = [{
     name: "ccfgTemplate",
     moduleName: "/ti/devices/CCFGTemplate"
 }];
+
+const templateInitModule =[{
+    name: "ccfgTemplate",
+    moduleName: "/ti/devices/CCFGTemplateInit"
+}];
+
 let templateModuleInstance = templateModule;
 
 const moduleDesc = `
@@ -110,7 +117,7 @@ const config = [
     },
     {
         name: "rtcIncrement",
-        displayName: "RTC increment",
+        displayName: "RTC Increment",
         description: "RTC increment for the external LF clock frequency",
         readOnly: false,
         hidden: true,
@@ -119,8 +126,8 @@ const config = [
     },
     {
         name: "xoscCapArray",
-        displayName: "Enable XOSC Cap array modification",
-        description: "Enable modification (delta) to XOSC cap-array",
+        displayName: "XOSC Cap Array Modification",
+        description: "Enables modification (delta) to XOSC cap-array",
         default: false,
         readOnly: false,
         hidden: false,
@@ -197,6 +204,40 @@ const config = [
         hidden: true,
         default: 0x7F
     },
+    // RF temperature compensation
+    {
+        name: "enableXoscHfComp",
+        displayName: "RF Temperature Compensation",
+        description: "Compensate XOSC_HF frequency for temperature during radio transmissions.",
+        longDescription: "Compensate XOSC_HF frequency for temperature during radio transmissions. This improves the accuracy of the XOSC_HF over temperature. This should only be enabled if the selected XOSC_HF source is not accurate enough for a selected stack. It is primarily needed when using HPOSC or when the IO Link Wireless stack with a regular 48 MHz crystal that does not fullfil the PPM requirements of the IOLW stack over the entire temperature range.",
+        readOnly: isBAW,
+        hidden: false,
+        default: isBAW ? true : false,
+        onChange: (inst, ui) => {
+            ui.useFcfgXoscHfInsertion.hidden = (inst.enableXoscHfComp === false) || isBAW || !isSIP;
+            ui.xoscSinglePointCalibration.hidden = (inst.useFcfgXoscHfInsertion === true) || (inst.enableXoscHfComp === false) || isBAW;
+        }
+    },
+    {
+        name: "useFcfgXoscHfInsertion",
+        displayName: "Use FCFG XOSC_HF Calibration",
+        description: "Use XOSC_HF single point temperature calibration measurement stored in FCFG.",
+        longDescription: "Some devices, such as the SIP modules, have an XOSC_HF single point temperature calibration measurement programmed into FCFG. It is recommended to use this setting if it is available. It may be deselected to provide application-specified calibration measurements for debug purposes.",
+        readOnly: false,
+        hidden: true,
+        default: isSIP,
+        onChange: (inst, ui) => {
+            ui.xoscSinglePointCalibration.hidden = (inst.useFcfgXoscHfInsertion === true);
+        }
+    },
+    {
+        name: "xoscSinglePointCalibration",
+        displayName: "XOSC Single Point Calibration",
+        description: "XOSC_HF single point temperature calibration measurement used to characterize the XOSC_HF.",
+        readOnly: false,
+        hidden: true,
+        default: ""
+    },
     // Bootloader
     {
         name: "enableBootloader",
@@ -221,7 +262,8 @@ const config = [
     {
         name: "enableBootloaderBackdoor",
         displayName: "Enable Bootloader Backdoor",
-        description: "When enabling the Bootloader Backdoor, the "
+        description: "Enables bootloader backdoor",
+        longDescription: "When enabling the Bootloader Backdoor, the "
             + "Bootloader can be activated externally by pulling a pin, "
             + "even when a valid flash image is present. "
             + "Note, enabling the backdoor allows an external host to "
@@ -266,7 +308,7 @@ const config = [
     // Alternative IEEE 802.15.4 MAC address
     {
         name: "configureIEEE",
-        displayName: "Configure IEEE MAC address",
+        displayName: "Configure IEEE MAC Address",
         description: "Configure alternative IEEE 802.15.4 MAC address",
         readOnly: false,
         hidden: false,
@@ -277,7 +319,7 @@ const config = [
     },
     {
         name: "addressIEEE",
-        displayName: "IEEE MAC address",
+        displayName: "IEEE MAC Address",
         description: "Alternative IEEE 802.15.4 MAC address",
         textType: "mac_address_64",
         readOnly: false,
@@ -287,7 +329,7 @@ const config = [
     // Alternative BLE address
     {
         name: "configureBLE",
-        displayName: "Configure BLE address",
+        displayName: "Configure BLE Address",
         description: "Configure alternative Bluetooth Low Energy MAC address",
         readOnly: false,
         hidden: false,
@@ -298,7 +340,7 @@ const config = [
     },
     {
         name: "addressBLE",
-        displayName: "BLE address",
+        displayName: "BLE Address",
         description: "Alternative BLE address",
         textType: "mac_address_64",
         readOnly: false,
@@ -383,10 +425,17 @@ const config = [
     },
     {
         name: "enableCodeGeneration",
+        description: "Enables or disables generation of ti_devices_config.c.",
+        longDescription: `This configurable may be used to enable or disable
+generation of the ti_devices_config.c file. To support early initialization
+on some devices, this module will continue to generate functions to
+__Board_init()__ inside the ti_drivers_config.c file. Additionally, any
+necessary headers will be generated inside the ti_drivers_config.h file.
+`,
         hidden: true,
         default: true,
         onChange: (inst, ui) => {
-                templateModuleInstance = inst.enableCodeGeneration ? templateModule : [];
+                templateModuleInstance = inst.enableCodeGeneration ? templateModule : templateInitModule;
         }
     }
 ];
@@ -401,6 +450,16 @@ const config = [
 function validate(inst, validation) {
     const MIN_DIO = 1;
     const MAX_DIO = numPins;
+
+    // Check that the single point insertion value exists
+    if (inst.enableXoscHfComp === true &&
+        inst.useFcfgXoscHfInsertion === false &&
+        !isBAW &&
+        inst.xoscSinglePointCalibration === "") {
+        Common.logError(validation, inst, "xoscSinglePointCalibration",
+            "No XOSC_HF calibration temperature measurement provided!");
+        return;
+    }
 
     // DIO check Ext Clk DIO
     if (inst.extClkDio < MIN_DIO || inst.extClkDio > MAX_DIO) {
@@ -459,6 +518,7 @@ function modules(inst) {
 const CCFGModule = {
     displayName: "Device Configuration",
     description: "Customer Configuration",
+    alwaysShowLongDescription : true,
     longDescription: moduleDesc,
     maxInstances: 1,
     moduleStatic: {

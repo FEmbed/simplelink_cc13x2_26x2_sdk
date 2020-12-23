@@ -71,8 +71,9 @@ extern "C" {
  *
  *  nortos:   32 (biggest of the HW-specific ClockP instance structs)
  *  SysBIOS:  40
+ *  FreeRTOS: 68
  */
-#define ClockP_STRUCT_SIZE   (40)
+#define ClockP_STRUCT_SIZE   (68)
 
 /*!
  *  @brief    ClockP structure.
@@ -166,7 +167,7 @@ extern ClockP_Handle ClockP_construct(ClockP_Struct *clockP,
  *  @param  clockP  Pointer to a ClockP_Struct object that was passed to
  *                  ClockP_construct().
  *
- *  @return
+ *  The clock object must be stopped before calling destruct.
  */
 extern void ClockP_destruct(ClockP_Struct *clockP);
 
@@ -190,6 +191,8 @@ extern ClockP_Handle ClockP_create(ClockP_Fxn clockFxn,
  *  @brief  Function to delete a clock.
  *
  *  @param  handle  A ClockP_Handle returned from ::ClockP_create
+ *
+ *  The clock object must be stopped before calling delete.
  */
 extern void ClockP_delete(ClockP_Handle handle);
 
@@ -275,6 +278,29 @@ extern void ClockP_setTimeout(ClockP_Handle handle, uint32_t timeout);
 
 /*!
  *  @brief  Function to start a clock.
+ *
+ *  @remark In some implementations, it may not always be possible to
+ *          to start a ClockP object with maximum timeout. This situation can
+ *          occur when a very fast tick period is used, and when ClockP_start()
+ *          is called (by another ISR, by a higher-priority SwiP, or within a
+ *          clock function) while ClockP is in-process of servicing its timeout
+ *          queue. In this case the timeout of the newly-started object may
+ *          occur in the near future rather than in the far future. For
+ *          one-shot objects there will be a single early timeout; for periodic
+ *          objects there will be an early timeout, but the next timeout will
+ *          occur correctly offset from the first timeout. This condition is
+ *          due to a ClockP tick count wrap, and only occurs when there is a
+ *          very fast ClockP tick period such that there are virtual ClockP
+ *          tick period increments between the last timer interrupt to the
+ *          invocation of ClockP_start(). For example, if the ClockP tick
+ *          period is 10 usec, and if the ClockP tick count is 0x10000005 when
+ *          the interrupt occurs, and if there are 3 intervening tick periods
+ *          (30 usec) before the call to ClockP_start() in a clock function,
+ *          then the future timeout will be computed as
+ *          0x10000005 + 3 + 0xFFFFFFFF = 0x10000007, only 2 ticks in the
+ *          future. In this case, the maximum timeout should be limited to
+ *          0xFFFFFFFD to achieve the maximum delay from the last timer
+ *          interrupt.
  *
  *  @param  handle  A ClockP_Handle returned from ::ClockP_create
  */

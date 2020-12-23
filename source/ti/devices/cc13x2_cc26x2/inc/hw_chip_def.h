@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_chip_def.h
-*  Revised:        2020-03-03 17:54:43 +0100 (Tue, 03 Mar 2020)
-*  Revision:       56918
+*  Revised:        2020-06-29 18:59:15 +0200 (Mon, 29 Jun 2020)
+*  Revision:       57865
 *
 *  Description:    Defines for device properties.
 *

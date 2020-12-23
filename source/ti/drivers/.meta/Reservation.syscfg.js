@@ -131,10 +131,10 @@ function getTimerInstParams(timerId)
     timerArgs.resourceName += String(timerId);
 
     let timerRes = {
-        name       : "timer" + timerId,
-        moduleName : "/ti/drivers/Reservation",
-        args       : timerArgs,
-        hidden     : true /* hides the configuration in the client's view */
+        name         : "timer" + timerId,
+        moduleName   : "/ti/drivers/Reservation",
+        requiredArgs : timerArgs,
+        hidden       : true /* hides the configuration in the client's view */
     };
 
     return (timerRes);

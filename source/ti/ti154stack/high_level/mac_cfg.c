@@ -56,8 +56,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "hal_types.h"
-#include "mac_api.h"
 #include "mac_spec.h"
 #include "mac_security_pib.h"
 #include "mac_pib.h"
@@ -558,6 +556,16 @@ const FH_PibTbl_t FH_PibTbl[] =
     {offsetof(FHPIB_DB_t, macMaxTempNodes), sizeof(uint16_t), 0, 10},
 
 };
+#else
+/*!
+ FH PIB default
+ */
+const FHPIB_DB_t FHPIB_defaults = {0};
+
+/*!
+ FH PIB table
+ */
+const FH_PibTbl_t FH_PibTbl[1];
 #endif
 
 #if defined(COMBO_MAC) || !defined(FREQ_2_4G)
@@ -650,4 +658,6 @@ uint16 macBeaconMargin[] =
  0
 };
 #endif
+#else
+uint16 macBeaconMargin[1];
 #endif

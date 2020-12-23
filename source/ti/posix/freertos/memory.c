@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@
  *  ======== memory.c ========
  */
 
-#if defined(__ti__)
+#if defined(__ti__) && !defined(__clang__)
 
 #pragma FUNC_EXT_CALLED(malloc);
 #pragma FUNC_EXT_CALLED(memalign);

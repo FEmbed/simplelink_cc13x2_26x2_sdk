@@ -246,11 +246,21 @@ Some important settings in the TI 15.4-Stack module include:
 
 More information about the configuration and feature options can be found in the TI 15.4-Stack documentation under **Example Applications > Configuration Parameters**.
 
+### Disabling Common User Interface
+
+The common user interface (CUI) is a UART based interface that allows users to control and receive updates regarding the application. For various reasons, including reducing the memory footprint, the user is able to disable the common user interface (CUI). To disable the CUI, the following variable must be defined in the project-specific .opts file:
+
+```
+-DCUI_DISABLE
+```
+
+> Please Note: particular features that are dependednt on the CUI wil be unavailable when this feature is enabled.
+
 ### Multi-Page NV Configuration
 
 By default, this project is configured to use two pages of NV. A maximum of five NV pages are supported. In order to modify the NV pages, update the following:
-* `NVOCMP_NVPAGES=2` in the project-specific .opt file
-* `NVOCMP_NVPAGES=2` in the linker command file
+* `NVOCMP_NVPAGES=2` in the project-specific .opts file
+* `NVOCMP_NVPAGES=2` in the linker options
 * SysConfig NVS module:
    * Set Region Size based on the formula `NVOCMP_NVPAGES * 0x2000`
    * Set Region Base based on the formula `0x56000 - (NVOCMP_NVPAGES * 0x2000)`

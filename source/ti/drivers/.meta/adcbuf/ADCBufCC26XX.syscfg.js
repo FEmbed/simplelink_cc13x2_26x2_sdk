@@ -97,7 +97,7 @@ __Decoupling__, or __Ground__ channel(s).
         },
         {
             name: "acquireADCSem",
-            displayName: "Acquire ADC semaphore",
+            displayName: "Acquire ADC Semaphore",
             description: "Specifies if the ADC semaphore is acquired in ADCBuf_open()",
             longDescription: "The ADC semaphore is used to prevent the sensor"
                 + " controller and the application processor from simultaneously"
@@ -173,9 +173,10 @@ function validate(inst, vo)
         }
     }
 
-    if (inst.channels > MAXCHANNELS || !Number.isInteger(inst.channels)) {
+    if (inst.channels < 0 || inst.channels > MAXCHANNELS ||
+        !Number.isInteger(inst.channels)) {
         logError(vo, inst, "channels", "Channels must be an integer between"
-            + " 0 and " + MAXCHANNELS);
+            + " 1 and " + MAXCHANNELS);
     }
 }
 
@@ -289,6 +290,10 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "ADCBuf", null,
+        [{name: "ADCBufCC26X2"}], null);
+
     /* merge and overwrite base module attributes */
     let result = Object.assign({}, base, devSpecific);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -305,7 +305,7 @@
  *  |#PIN_INV_INOUT     |#PIN_BM_INV_INOUT | Both    | Invert input/output              |
  *  |#PIN_IRQ_DIS (*)   |#PIN_BM_IRQ       | Both    | Disable pin interrupts           |
  *  |#PIN_IRQ_NEGEDGE   |#PIN_BM_IRQ       | Both    | Pin interrupts on negative edges |
- *  |#PIN_IRQ_POSEDGE   |#PIN_BM_IRQ       | Both    | Pin interrupts on negative edges |
+ *  |#PIN_IRQ_POSEDGE   |#PIN_BM_IRQ       | Both    | Pin interrupts on positive edges |
  *  |#PIN_IRQ_BOTHEDGES |#PIN_BM_IRQ       | Both    | Pin interrupts on both edges     |
  *  |                   |#PIN_BM_ALL       |         | Mask for *all* options           |
  *

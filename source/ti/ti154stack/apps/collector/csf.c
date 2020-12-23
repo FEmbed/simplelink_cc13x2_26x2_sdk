@@ -70,7 +70,10 @@
 
 #include "util_timer.h"
 #include "mac_util.h"
+
+#ifndef CUI_DISABLE
 #include "cui.h"
+#endif /* CUI_DISABLE */
 
 #include "macconfig.h"
 
@@ -165,8 +168,10 @@
 /*! NV driver item ID for reset reason */
 #define NVID_RESET {NVINTF_SYSID_APP, CSF_NV_RESET_REASON_ID, 0}
 
+#ifndef CUI_DISABLE
 /* Mask of all supported channels for input validation */
 static const uint8_t validChannelMask[APIMAC_154G_CHANNEL_BITMAP_SIZ] = CUI_VALID_CHANNEL_MASK;
+#endif /* CUI_DISABLE */
 
 /******************************************************************************
  External variables
@@ -253,19 +258,22 @@ Cllc_states_t savedCllcState = Cllc_states_initWaiting;
 /* Permit join setting */
 bool permitJoining = false;
 
-CUI_clientHandle_t csfCuiHndl;
 #if !defined(POWER_MEAS)
 static LED_Handle gGreenLedHandle;
 static LED_Handle gRedLedHandle;
 #endif /* !POWER_MEAS */
 static Button_Handle gRightButtonHandle;
 static Button_Handle gLeftButtonHandle;
+
+#ifndef CUI_DISABLE
+CUI_clientHandle_t csfCuiHndl;
 uint32_t collectorStatusLine;
 uint32_t deviceStatusLine;
 uint32_t numJoinDevStatusLine;
 #ifdef LPSTK
 uint32_t lpstkDataStatusLine;
 #endif
+#endif /* CUI_DISABLE */
 
 static uint16_t SelectedSensor;
 static uint32_t reportInterval;
@@ -284,7 +292,9 @@ static void processPCTrickleTimeoutCallback(UArg a0);
 static void processJoinTimeoutCallback(UArg a0);
 static void processConfigTimeoutCallback(UArg a0);
 static void processIdentifyTimeoutCallback(UArg a0);
+#ifndef CUI_DISABLE
 static uint16_t getNumActiveDevices(void);
+#endif /* CUI_DISABLE */
 #if defined(USE_DMM)
 static void processProvisioningCallback(UArg a0);
 #endif /* USE_DMM */
@@ -301,6 +311,7 @@ static uint16_t getTheFirstDevice(void);
 #endif
 #endif
 
+#ifndef CUI_DISABLE
 static void updateCollectorStatusLine(bool restored, Llc_netInfo_t *pNetworkInfo);
 static uint8_t moveCursorLeft(uint8_t col, uint8_t left_boundary, uint8_t right_boundary, uint8_t skip_space);
 static uint8_t moveCursorRight(uint8_t col, uint8_t left_boundary, uint8_t right_boundary, uint8_t skip_space);
@@ -328,16 +339,19 @@ static void sensorDisassocAction(int32_t menuEntryInex);
 static void sensorDeviceTypeRequestAction(int32_t menuEntryInex);
 #endif /* DEVICE_TYPE_MSG */
 static void processMenuUpdate(void);
+
+static void uintToString (uint32_t value, char * str, uint8_t base, uint8_t num_of_digists, bool pad0, bool reverse);
+#endif /* CUI_DISABLE */
+
 #ifndef POWER_MEAS
 static void sendToggleAndUpdateUser(uint16_t shortAddr);
 #endif
-static void uintToString (uint32_t value, char * str, uint8_t base, uint8_t num_of_digists, bool pad0, bool reverse);
-
 
 /* POWER_MEAS protects the UART in these functions */
 static void formNwkAndUpdateUser(void);
 static void openCloseNwkAndUpdateUser(bool openNwkRequest);
 
+#ifndef CUI_DISABLE
 /* Menu */
 #define SFF_MENU_TITLE " TI Collector "
 
@@ -404,6 +418,7 @@ CUI_MAIN_MENU(csfMainMenu, SFF_MENU_TITLE, 3, processMenuUpdate)
     CUI_MENU_ITEM_SUBMENU(commissionSubMenu)
     CUI_MENU_ITEM_SUBMENU(appSubMenu)
 CUI_MAIN_MENU_END
+#endif /* CUI_DISABLE */
 
 /******************************************************************************
  Public Functions
@@ -416,7 +431,9 @@ CUI_MAIN_MENU_END
  */
 void Csf_init(void *sem)
 {
+#ifndef CUI_DISABLE
     CUI_clientParams_t clientParams;
+#endif /* CUI_DISABLE */
 #ifdef NV_RESTORE
     /* Save off the NV Function Pointers */
     pNV = &Main_user1Cfg.nvFps;
@@ -425,6 +442,7 @@ void Csf_init(void *sem)
     /* Save off the semaphore */
     collectorSem = sem;
 
+#ifndef CUI_DISABLE
     /* Open UI for key and LED */
     CUI_clientParamsInit(&clientParams);
 
@@ -446,10 +464,15 @@ void Csf_init(void *sem)
 #endif /* SECURE_MANAGER_DEBUG2 */
 
     csfCuiHndl = CUI_clientOpen(&clientParams);
+#endif /* CUI_DISABLE */
 
 #ifdef FEATURE_SECURE_COMMISSIONING
-    /* Intialize the security manager and register callbacks */
+#ifndef CUI_DISABLE
+    /* Initialize the security manager and register callbacks */
     SM_init(collectorSem, csfCuiHndl);
+#else
+    SM_init(collectorSem);
+#endif /* CUI_DISABLE */
 #endif //FEATURE_SECURE_COMMISSIONING
 
     /* Initialize Keys */
@@ -479,6 +502,7 @@ void Csf_init(void *sem)
     LED_startBlinking(gRedLedHandle, 500, 3);
 #endif /* POWER_MEAS */
 
+#ifndef CUI_DISABLE
     CUI_registerMenu(csfCuiHndl, &csfMainMenu);
 
     CUI_statusLineResourceRequest(csfCuiHndl, "Status", false, &collectorStatusLine);
@@ -491,6 +515,7 @@ void Csf_init(void *sem)
 #if !defined(AUTO_START)
     CUI_statusLinePrintf(csfCuiHndl, collectorStatusLine, "Waiting...");
 #endif /* AUTO_START */
+#endif /* CUI_DISABLE */
 
 #if defined(MT_CSF)
     {
@@ -517,7 +542,9 @@ void Csf_init(void *sem)
         /* Did we reset because of assert? */
         if(resetReseason > 0)
         {
+#ifndef CUI_DISABLE
             CUI_statusLinePrintf(csfCuiHndl, collectorStatusLine, "Restarting...");
+#endif /* CUI_DISABLE */
 
             /* Tell the collector to restart */
             Csf_events |= CSF_KEY_EVENT;
@@ -584,7 +611,9 @@ void Csf_processEvents(void)
 
     if(Csf_events & COLLECTOR_UI_INPUT_EVT)
     {
+#ifndef CUI_DISABLE
         CUI_processMenuUpdate();
+#endif /* CUI_DISABLE */
 
         /* Clear the event */
         Util_clearEvent(&Csf_events, COLLECTOR_UI_INPUT_EVT);
@@ -619,8 +648,10 @@ void Csf_processEvents(void)
             {
                 if(Csf_sendDisassociateMsg(SelectedSensorAddr.addr.shortAddr) != 0)
                 {
+#ifndef CUI_DISABLE
                     CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "Disassociate Sensor Error - Addr=0x%04x not found",
                                          SelectedSensorAddr.addr.shortAddr);
+#endif /* CUI_DISABLE */
                 }
                 break;
             }
@@ -695,7 +726,9 @@ void Csf_networkUpdate(bool restored, Llc_netInfo_t *pNetworkInfo)
         }
 
         started = true;
+#ifndef CUI_DISABLE
         updateCollectorStatusLine(restored, pNetworkInfo);
+#endif /* CUI_DISABLE */
 #ifndef POWER_MEAS
         LED_stopBlinking(gGreenLedHandle);
         LED_setOn(gRedLedHandle, LED_BRIGHTNESS_MAX);
@@ -735,12 +768,17 @@ ApiMac_assocStatus_t Csf_deviceUpdate(ApiMac_deviceDescriptor_t *pDevInfo,
 #ifdef NV_RESTORE
         status = ApiMac_assocStatus_panAtCapacity;
 
+#ifndef CUI_DISABLE
         CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "Failed - 0x%04x ", pDevInfo->shortAddress);
+#endif /* CUI_DISABLE */
 #else
         status = ApiMac_assocStatus_success;
+#ifndef CUI_DISABLE
         CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "Joined - 0x%04x ", pDevInfo->shortAddress);
+#endif /* CUI_DISABLE */
 #endif
     }
+#ifndef CUI_DISABLE
     else if (true == newDevice) {
         CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "Joined - 0x%04x ", pDevInfo->shortAddress);
     }
@@ -749,6 +787,7 @@ ApiMac_assocStatus_t Csf_deviceUpdate(ApiMac_deviceDescriptor_t *pDevInfo,
     }
 
     CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
+#endif /* CUI_DISABLE */
 #if defined(MT_CSF)
     MTCSF_deviceUpdateIndCB(pDevInfo, pCapInfo);
 #endif
@@ -766,7 +805,9 @@ ApiMac_assocStatus_t Csf_deviceUpdate(ApiMac_deviceDescriptor_t *pDevInfo,
 void Csf_deviceNotActiveUpdate(ApiMac_deviceDescriptor_t *pDevInfo,
 bool timeout)
 {
+#ifndef CUI_DISABLE
     CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "!Responding - 0x%04x ", pDevInfo->shortAddress);
+#endif /* CUI_DISABLE */
 #if defined(MT_CSF)
     MTCSF_deviceNotActiveIndCB(pDevInfo, timeout);
 #endif /* endif for MT_CSF */
@@ -781,16 +822,15 @@ bool timeout)
 void Csf_deviceConfigUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
                             Smsgs_configRspMsg_t *pMsg)
 {
+#ifndef CUI_DISABLE
     CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "ConfigRsp - 0x%04x ", pSrcAddr->addr.shortAddr);
     CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
+#endif /* CUI_DISABLE */
 
 #if defined(MT_CSF)
     MTCSF_configResponseIndCB(pSrcAddr, rssi, pMsg);
 #endif /* endif for MT_CSF */
 }
-
-
-
 
 /*!
  The application calls this function to indicate that a device
@@ -804,6 +844,7 @@ void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
 #ifndef POWER_MEAS
     LED_toggle(gGreenLedHandle);
 #endif /* endif for POWER_MEAS */
+#ifndef CUI_DISABLE
     if(pMsg->frameControl & Smsgs_dataFields_bleSensor)
     {
         CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "ADDR:%2x%2x%2x%2x%2x%2x, UUID:0x%04x, "
@@ -825,7 +866,7 @@ void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
 #endif
     }
     CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
-
+#endif /* CUI_DISABLE */
 
 #if defined(MT_CSF)
     MTCSF_sensorUpdateIndCB(pSrcAddr, rssi, pMsg);
@@ -840,19 +881,23 @@ void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
  */
 void Csf_deviceDisassocUpdate(uint16_t shortAddr)
 {
+#ifndef CUI_DISABLE
     CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "Disassociate Sensor - Addr=0x%04x", shortAddr);
     CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
+#endif /* CUI_DISABLE */
 #ifdef FEATURE_SECURE_COMMISSIONING
+#ifndef CUI_DISABLE
     CUI_deRegisterMenu(csfCuiHndl, &smPassKeyMenu);
     CUI_registerMenu(csfCuiHndl, &csfMainMenu);
     CUI_menuNav(csfCuiHndl, &csfMainMenu, csfMainMenu.numItems - 1);
+#endif /* CUI_DISABLE */
 #ifdef USE_DMM
     RemoteDisplay_updateSmState(SMCOMMISSIONSTATE_IDLE);
 #endif /* USE_DMM */
 #endif /* FEATURE_SECURE_COMMISSIONING */
 }
 
-#if defined(DEVICE_TYPE_MSG)
+#if defined(DEVICE_TYPE_MSG) && !defined(CUI_DISABLE)
 /*!
  * @brief       The application calls this function to print out the reported
  *              device type
@@ -908,9 +953,10 @@ void Csf_deviceSensorDeviceTypeResponseUpdate(uint8_t deviceFamilyID, uint8_t de
 
     CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "Sensor - Device=%s, DeviceFamilyID=%i, DeviceTypeID=%i",
                          deviceStr, deviceFamilyID, deviceTypeID);
+
 }
 
-#endif /* DEVICE_TYPE_MSG */
+#endif /* CUI_DISABLE && DEVICE_TYPE_MSG */
 
 
 /*!
@@ -928,8 +974,8 @@ void Csf_identifyLED(uint8_t identifyTime)
 #endif
 
     /* Setup timer */
-    Timer_setTimeout(identifyClkHandle, identifyTime * MSEC_PER_SEC);
-    Timer_start(&identifyClkStruct);
+    UtilTimer_setTimeout(identifyClkHandle, identifyTime * MSEC_PER_SEC);
+    UtilTimer_start(&identifyClkStruct);
 }
 
 /*!
@@ -1001,7 +1047,7 @@ void Csf_stateChangeUpdate(Cllc_states_t state)
 void Csf_initializeTrackingClock(void)
 {
     /* Initialize the timers needed for this application */
-    trackingClkHandle = Timer_construct(&trackingClkStruct,
+    trackingClkHandle = UtilTimer_construct(&trackingClkStruct,
                                         processTrackingTimeoutCallback,
                                         TRACKING_INIT_TIMEOUT_VALUE,
                                         0,
@@ -1017,7 +1063,7 @@ void Csf_initializeTrackingClock(void)
 void Csf_initializeBroadcastClock(void)
 {
     /* Initialize the timers needed for this application */
-    broadcastClkHandle = Timer_construct(&broadcastClkStruct,
+    broadcastClkHandle = UtilTimer_construct(&broadcastClkStruct,
                                         processBroadcastTimeoutCallback,
                                         TRACKING_INIT_TIMEOUT_VALUE,
                                         0,
@@ -1033,14 +1079,14 @@ void Csf_initializeBroadcastClock(void)
 void Csf_initializeTrickleClock(void)
 {
     /* Initialize trickle timer */
-    tricklePAClkHandle = Timer_construct(&tricklePAClkStruct,
+    tricklePAClkHandle = UtilTimer_construct(&tricklePAClkStruct,
                                          processPATrickleTimeoutCallback,
                                          TRICKLE_TIMEOUT_VALUE,
                                          0,
                                          false,
                                          0);
 
-    tricklePCClkHandle = Timer_construct(&tricklePCClkStruct,
+    tricklePCClkHandle = UtilTimer_construct(&tricklePCClkStruct,
                                          processPCTrickleTimeoutCallback,
                                          TRICKLE_TIMEOUT_VALUE,
                                          0,
@@ -1056,7 +1102,7 @@ void Csf_initializeTrickleClock(void)
 void Csf_initializeJoinPermitClock(void)
 {
     /* Initialize join permit timer */
-    joinClkHandle = Timer_construct(&joinClkStruct,
+    joinClkHandle = UtilTimer_construct(&joinClkStruct,
                                     processJoinTimeoutCallback,
                                     JOIN_TIMEOUT_VALUE,
                                     0,
@@ -1072,7 +1118,7 @@ void Csf_initializeJoinPermitClock(void)
 void Csf_initializeConfigClock(void)
 {
     /* Initialize join permit timer */
-    configClkHandle = Timer_construct(&configClkStruct,
+    configClkHandle = UtilTimer_construct(&configClkStruct,
                                     processConfigTimeoutCallback,
                                     CONFIG_TIMEOUT_VALUE,
                                     0,
@@ -1088,7 +1134,7 @@ void Csf_initializeConfigClock(void)
 void Csf_initializeIdentifyClock(void)
 {
     /* Initialize identify clock timer */
-    identifyClkHandle = Timer_construct(&identifyClkStruct,
+    identifyClkHandle = UtilTimer_construct(&identifyClkStruct,
                                     processIdentifyTimeoutCallback,
                                     10,
                                     0,
@@ -1105,16 +1151,16 @@ void Csf_initializeIdentifyClock(void)
 void Csf_setTrackingClock(uint32_t trackingTime)
 {
     /* Stop the Tracking timer */
-    if(Timer_isActive(&trackingClkStruct) == true)
+    if(UtilTimer_isActive(&trackingClkStruct) == true)
     {
-        Timer_stop(&trackingClkStruct);
+        UtilTimer_stop(&trackingClkStruct);
     }
 
     if(trackingTime)
     {
         /* Setup timer */
-        Timer_setTimeout(trackingClkHandle, trackingTime);
-        Timer_start(&trackingClkStruct);
+        UtilTimer_setTimeout(trackingClkHandle, trackingTime);
+        UtilTimer_start(&trackingClkStruct);
     }
 }
 
@@ -1126,16 +1172,16 @@ void Csf_setTrackingClock(uint32_t trackingTime)
 void Csf_setBroadcastClock(uint32_t broadcastTime)
 {
     /* Stop the Tracking timer */
-    if(Timer_isActive(&broadcastClkStruct) == true)
+    if(UtilTimer_isActive(&broadcastClkStruct) == true)
     {
-        Timer_stop(&broadcastClkStruct);
+        UtilTimer_stop(&broadcastClkStruct);
     }
 
     if(broadcastTime)
     {
         /* Setup timer */
-        Timer_setTimeout(broadcastClkHandle, broadcastTime);
-        Timer_start(&broadcastClkStruct);
+        UtilTimer_setTimeout(broadcastClkHandle, broadcastTime);
+        UtilTimer_start(&broadcastClkStruct);
     }
 }
 
@@ -1159,31 +1205,31 @@ void Csf_setTrickleClock(uint32_t trickleTime, uint8_t frameType)
     if(frameType == ApiMac_wisunAsyncFrame_advertisement)
     {
         /* Stop the PA trickle timer */
-        if(Timer_isActive(&tricklePAClkStruct) == true)
+        if(UtilTimer_isActive(&tricklePAClkStruct) == true)
         {
-            Timer_stop(&tricklePAClkStruct);
+            UtilTimer_stop(&tricklePAClkStruct);
         }
 
         if(trickleTime > 0)
         {
             /* Setup timer */
-            Timer_setTimeout(tricklePAClkHandle, randomTime);
-            Timer_start(&tricklePAClkStruct);
+            UtilTimer_setTimeout(tricklePAClkHandle, randomTime);
+            UtilTimer_start(&tricklePAClkStruct);
         }
     }
     else if(frameType == ApiMac_wisunAsyncFrame_config)
     {
         /* Stop the PC trickle timer */
-        if(Timer_isActive(&tricklePCClkStruct) == true)
+        if(UtilTimer_isActive(&tricklePCClkStruct) == true)
         {
-            Timer_stop(&tricklePCClkStruct);
+            UtilTimer_stop(&tricklePCClkStruct);
         }
 
         if(trickleTime > 0)
         {
             /* Setup timer */
-            Timer_setTimeout(tricklePCClkHandle, randomTime);
-            Timer_start(&tricklePCClkStruct);
+            UtilTimer_setTimeout(tricklePCClkHandle, randomTime);
+            UtilTimer_start(&tricklePCClkStruct);
         }
     }
 }
@@ -1196,16 +1242,16 @@ void Csf_setTrickleClock(uint32_t trickleTime, uint8_t frameType)
 void Csf_setJoinPermitClock(uint32_t joinDuration)
 {
     /* Stop the join timer */
-    if(Timer_isActive(&joinClkStruct) == true)
+    if(UtilTimer_isActive(&joinClkStruct) == true)
     {
-        Timer_stop(&joinClkStruct);
+        UtilTimer_stop(&joinClkStruct);
     }
 
     if(joinDuration != 0)
     {
         /* Setup timer */
-        Timer_setTimeout(joinClkHandle, joinDuration);
-        Timer_start(&joinClkStruct);
+        UtilTimer_setTimeout(joinClkHandle, joinDuration);
+        UtilTimer_start(&joinClkStruct);
     }
 }
 
@@ -1217,16 +1263,16 @@ void Csf_setJoinPermitClock(uint32_t joinDuration)
 void Csf_setConfigClock(uint32_t delay)
 {
     /* Stop the join timer */
-    if(Timer_isActive(&configClkStruct) == true)
+    if(UtilTimer_isActive(&configClkStruct) == true)
     {
-        Timer_stop(&configClkStruct);
+        UtilTimer_stop(&configClkStruct);
     }
 
     if(delay != 0)
     {
         /* Setup timer */
-        Timer_setTimeout(configClkHandle, delay);
-        Timer_start(&configClkStruct);
+        UtilTimer_setTimeout(configClkHandle, delay);
+        UtilTimer_start(&configClkStruct);
     }
 }
 
@@ -1642,7 +1688,7 @@ void Csf_clearAllNVItems(void)
  */
 bool Csf_isConfigTimerActive(void)
 {
-    return(Timer_isActive(&configClkStruct));
+    return(UtilTimer_isActive(&configClkStruct));
 }
 
 /*!
@@ -1652,7 +1698,7 @@ bool Csf_isConfigTimerActive(void)
  */
 bool Csf_isTrackingTimerActive(void)
 {
-    return(Timer_isActive(&trackingClkStruct));
+    return(UtilTimer_isActive(&trackingClkStruct));
 }
 
 /*!
@@ -1664,7 +1710,9 @@ void Csf_openNwk(void)
 {
     permitJoining = true;
     Cllc_setJoinPermit(0xFFFFFFFF);
+#ifndef CUI_DISABLE
     updateCollectorStatusLine(false, NULL);
+#endif /* CUI_DISABLE */
 }
 
 /*!
@@ -1678,7 +1726,9 @@ void Csf_closeNwk(void)
     {
         permitJoining = false;
         Cllc_setJoinPermit(0);
+#ifndef CUI_DISABLE
         updateCollectorStatusLine(false, NULL);
+#endif /* CUI_DISABLE */
     }
 }
 
@@ -1792,7 +1842,9 @@ int Csf_getDeviceExtAdd(uint16_t deviceShortAddr, ApiMac_sAddrExt_t * extAddr)
  */
 void Csf_SmPasskeyEntry(SM_passkeyEntry_t passkeyAction)
 {
+#ifndef CUI_DISABLE
     static uint8_t smMenuUsed = 0;
+#endif /* CUI_DISABLE */
     // if passkey is selected
     if(passkeyAction == SM_passkeyEntryReq)
     {
@@ -1802,6 +1854,7 @@ void Csf_SmPasskeyEntry(SM_passkeyEntry_t passkeyAction)
         if (RemoteDisplay_getBleAuthConnectionStatus() == false)
         {
 #endif /* USE_DMM */
+#ifndef CUI_DISABLE
         // deregister main menu when you switch to SM menu
         CUI_deRegisterMenu(csfCuiHndl, &csfMainMenu);
 
@@ -1812,6 +1865,7 @@ void Csf_SmPasskeyEntry(SM_passkeyEntry_t passkeyAction)
         // Open the menu itself
         // there is only 1 item in smPassKeyMenu list.
         CUI_menuNav(csfCuiHndl, &smPassKeyMenu, 0);
+#endif /* CUI_DISABLE */
 #ifdef USE_DMM
         }
 #endif /* USE_DMM */
@@ -1824,6 +1878,7 @@ void Csf_SmPasskeyEntry(SM_passkeyEntry_t passkeyAction)
           RemoteDisplay_updateSmState(SMCOMMISSIONSTATE_PASSKEY_TIMEOUT);
         }
 #endif /* USE_DMM */
+#ifndef CUI_DISABLE
         // deregister the passkey menu
         CUI_deRegisterMenu(csfCuiHndl, &smPassKeyMenu);
 
@@ -1837,6 +1892,7 @@ void Csf_SmPasskeyEntry(SM_passkeyEntry_t passkeyAction)
         // Go back to the help screen which is the last menu in the list.
         // third argument represents the index of the menu to travel to.
         CUI_menuNav(csfCuiHndl, &csfMainMenu, csfMainMenu.numItems - 1);
+#endif /* CUI_DISABLE */
     }
 }
 #endif /* endif for FEATURE_SECURE_COMMISSIONING */
@@ -2026,6 +2082,7 @@ static bool addDeviceListItem(Llc_deviceListItem_t *pItem, bool *pNewDevice)
     return (retVal);
 }
 
+#ifndef CUI_DISABLE
 /*!
  Read the number of currently active sensors
 
@@ -2047,6 +2104,7 @@ static uint16_t getNumActiveDevices(void)
         }
     return (activeSensors);
 }
+#endif /* CUI_DISABLE */
 
 /*!
  * @brief       Update an entry in the device list
@@ -2254,6 +2312,8 @@ static uint16_t getTheFirstDevice(void)
 }
 #endif /* endif for POWER_MEAS */
 #endif /* endif for TEST_REMOVE_DEVICE */
+
+#ifndef CUI_DISABLE
 /*!
  * @brief       Handles printing that the orphaned device joined back
  *
@@ -2265,6 +2325,7 @@ void Csf_IndicateOrphanReJoin(uint16_t shortAddr)
                          shortAddr);
     CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
 }
+#endif /* CUI_DISABLE */
 
 #ifdef USE_DMM
 
@@ -2276,7 +2337,7 @@ void Csf_IndicateOrphanReJoin(uint16_t shortAddr)
 void Csf_initializeProvisioningClock(void)
 {
     /* Initialize the timers needed for this application */
-    provisioningClkHandle = Timer_construct(&provisioningClkStruct,
+    provisioningClkHandle = UtilTimer_construct(&provisioningClkStruct,
                                        processProvisioningCallback,
                                        FH_ASSOC_TIMER,
                                         0,
@@ -2292,19 +2353,19 @@ void Csf_initializeProvisioningClock(void)
 void Csf_setProvisioningClock(bool provision)
 {
     /* Stop the Provisioning timer */
-    if(Timer_isActive(&provisioningClkStruct) == true)
+    if(UtilTimer_isActive(&provisioningClkStruct) == true)
     {
-        Timer_stop(&provisioningClkStruct);
+        UtilTimer_stop(&provisioningClkStruct);
     }
 
     /* Setup timer for provisioning association timeout */
     if (provision)
     {
-        Timer_setTimeout(provisioningClkHandle, PROVISIONING_ASSOC_TIMER);
+        UtilTimer_setTimeout(provisioningClkHandle, PROVISIONING_ASSOC_TIMER);
     }
 
-    Timer_setFunc(provisioningClkHandle, processProvisioningCallback, provision);
-    Timer_start(&provisioningClkStruct);
+    UtilTimer_setFunc(provisioningClkHandle, processProvisioningCallback, provision);
+    UtilTimer_start(&provisioningClkStruct);
 }
 
 
@@ -2336,6 +2397,7 @@ static void processProvisioningCallback(UArg provision)
 }
 #endif /* endif for USE_DMM */
 
+#ifndef CUI_DISABLE
 /**
  *  @brief Updates the collector's status line
  *
@@ -2387,6 +2449,7 @@ static void updateCollectorStatusLine(bool restored, Llc_netInfo_t *pNetworkInfo
     {
         permitJoinStatus = "On";
     }
+
     CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
 
     /* Print out collector status information */
@@ -2405,6 +2468,7 @@ static void updateCollectorStatusLine(bool restored, Llc_netInfo_t *pNetworkInfo
                              permitJoinStatus);
     }
 }
+#endif /* CUI_DISABLE */
 
 /*
  *  @brief Handles common network starting actions
@@ -2415,8 +2479,10 @@ static void formNwkAndUpdateUser(void)
 #ifndef AUTO_START
     if(started == false)
     {
+#ifndef CUI_DISABLE
         CUI_statusLinePrintf(csfCuiHndl, collectorStatusLine, "Starting...");
         CUI_statusLinePrintf(csfCuiHndl, numJoinDevStatusLine, "%x", getNumActiveDevices());
+#endif /* CUI_DISABLE */
         /* Tell the collector to start */
         Util_setEvent(&Collector_events, COLLECTOR_START_EVT);
     }
@@ -2434,7 +2500,9 @@ static void openCloseNwkAndUpdateUser(bool openNwkRequest)
     /* Network permission changes not accepted during CM Process */
     if((fCommissionRequired == TRUE) || (SM_Current_State == SM_CM_InProgress))
     {
+#ifndef CUI_DISABLE
         CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine, "PermitJoin blocked during commissioning");
+#endif /* CUI_DISABLE */
     }
     else
 #endif /* FEATURE_SECURE_COMMISSIONING */
@@ -2476,14 +2544,17 @@ static void sendToggleAndUpdateUser(uint16_t shortAddr)
         {
             toggleDev.addrMode = ApiMac_addrType_short;
             Collector_sendToggleLedRequest(&toggleDev);
+#ifndef CUI_DISABLE
             CUI_statusLinePrintf(csfCuiHndl, deviceStatusLine,
                                  "ToggleLEDRequest Sent - Addr=0x%04x",
                                  toggleDev.addr.shortAddr);
+#endif /* CUI_DISABLE */
         }
    }
 }
 #endif /* endif for POWER_MEAS */
 
+#ifndef CUI_DISABLE
 static uint8_t moveCursorLeft(uint8_t col, uint8_t left_boundary, uint8_t right_boundary, uint8_t skip_space)
 {
     // If you haven't hit the end of left boundary, keep moving cursor left.
@@ -2528,9 +2599,6 @@ static uint8_t moveCursorRight(uint8_t col, uint8_t left_boundary, uint8_t right
     }
     return col;
 }
-
-
-
 
 /**
  *  @brief Callback to be called when the UI sets PAN ID.
@@ -3490,3 +3558,4 @@ static void uintToString (uint32_t value, char * str, uint8_t base, uint8_t num_
     }
   }
 }
+#endif /* CUI_DISABLE */

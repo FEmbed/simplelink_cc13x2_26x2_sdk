@@ -214,16 +214,18 @@ static void setActivityTrackingTx(macTxIntData_t *txData, uint16_t cmdStatus, RF
     {
         case MAC_ACTIVITY_LINK_EST:
             txActivityData.numMissedAssocTxFrames = resetCount ? 0 : (txActivityData.numMissedAssocTxFrames + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
         case MAC_ACTIVITY_TX_BEACON:
             txActivityData.numMissedBeaconTxFrames = resetCount ? 0 : (txActivityData.numMissedBeaconTxFrames + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
         case MAC_ACTIVITY_FH:
             txActivityData.numMissedFHTxFrames = resetCount ? 0 : (txActivityData.numMissedFHTxFrames + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
         case MAC_ACTIVITY_DATA:
             txActivityData.numMissedDataTxFrames = resetCount ? 0 : (txActivityData.numMissedDataTxFrames + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
+        default:
+            break;
     }
 }
 /*******************************************************************************
@@ -266,16 +268,18 @@ static void setActivityTrackingRx(macRx_t *pRxBuf, bool resetCount)
     {
         case MAC_ACTIVITY_LINK_EST:
             rxActivityData.numRxAssocAbort = resetCount ? 0 : (rxActivityData.numRxAssocAbort + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
         case MAC_ACTIVITY_FH:
             rxActivityData.numRxBCAbort = resetCount ? 0 : (rxActivityData.numRxBCAbort + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
         case MAC_ACTIVITY_SCAN:
             rxActivityData.numRxScanAbort = resetCount ? 0 : (rxActivityData.numRxScanAbort + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
         case MAC_ACTIVITY_DATA:
             rxActivityData.numRxDataAbort = resetCount ? 0 : (rxActivityData.numRxDataAbort + MAC_ACTIVITY_DEFAULT_INC);
-        break;
+            break;
+        default:
+            break;
     }
 }
 

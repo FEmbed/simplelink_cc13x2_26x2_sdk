@@ -120,15 +120,24 @@
                     },
                     {
                         "_name": "pRegOverride1Mbps",
-                        "Block": "override_ble5_setup_override_1mbps_hpa.json"
+                        "Block": [
+                            "override_ble5_setup_override_1mbps_coex.json",
+                            "override_ble5_setup_override_1mbps_hpa.json"
+                        ]
                     },
                     {
                         "_name": "pRegOverride2Mbps",
-                        "Block": "override_ble5_setup_override_2mbps_hpa.json"
+                        "Block": [
+                            "override_ble5_setup_override_2mbps_coex.json",
+                            "override_ble5_setup_override_2mbps_hpa.json"
+                        ]
                     },
                     {
                         "_name": "pRegOverrideCoded",
-                        "Block": "override_ble5_setup_override_coded_hpa.json"
+                        "Block": [
+                            "override_ble5_setup_override_coded_coex.json",
+                            "override_ble5_setup_override_coded_hpa.json"
+                        ]
                     },
                     {
                         "_name": "pRegOverrideTxStd",

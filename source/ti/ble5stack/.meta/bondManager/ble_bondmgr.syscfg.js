@@ -236,10 +236,16 @@ const config = {
 function validate(inst, validation)
 {
     //check what is the max value
-    if(inst.maxBonds < 0 || inst.maxBonds > 10)
+    if(inst.maxBonds < 0 || inst.maxBonds > 32)
     {
-        validation.logError("The Max number of Bonds that can be saved in NV is 10"
+        validation.logError("The Max number of bonds that can be saved in NV is 32"
                             , inst, "maxBonds");
+    }
+
+    if(inst.maxBonds > 21)
+    {
+        validation.logWarning("If scanning or connection initiation on the 2M PHY is used, "
+        + "the max number of bonds that can be saved in NV is 21.", inst, "maxBonds");
     }
 
     if(inst.maxCharCfg < 0 || inst.maxCharCfg > 4)

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ssi.c
-*  Revised:        2017-04-26 18:27:45 +0200 (Wed, 26 Apr 2017)
-*  Revision:       48852
+*  Revised:        2020-07-14 12:55:48 +0200 (Tue, 14 Jul 2020)
+*  Revision:       57992
 *
 *  Description:    Driver for Synchronous Serial Interface
 *

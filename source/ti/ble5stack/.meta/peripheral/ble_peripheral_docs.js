@@ -51,15 +51,13 @@ Pass to app | Pass a GAP_UPDATE_LINK_PARAM_REQ_EVENT to the app for it to \
 decide by responding with GAP_UpdateLinkParamReqReply
 `
 
-// Long description for the paramUpdateDelay configuration parameter
-const paramUpdateDelayLongDescription = `Delay after connection establishment,\
-before sending a a GAP Update Link Parameter Request (in ms).\n
+// Long description for the sendParamsUpdateReq configuration parameter
+const sendParamsUpdateReqLongDescription = `Sends GAP_UpdateLinkParamReq after connection establishment.\n
 
-__Default__: 6000 ms\n
-__Range__: 0 to sizeof(uint32)`
+__Default__: True (checked)`
 
   // Exports the long descriptions for each configurable
   exports = {
     paramUpdateReqLongDescription: paramUpdateReqLongDescription,
-    paramUpdateDelayLongDescription: paramUpdateDelayLongDescription
+    sendParamsUpdateReqLongDescription: sendParamsUpdateReqLongDescription,
 };

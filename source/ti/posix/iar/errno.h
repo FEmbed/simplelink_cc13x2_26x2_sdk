@@ -191,6 +191,10 @@ extern "C" {
 #define ENOBUFS                 105
 #endif
 
+#ifndef ENODEV
+#define ENODEV                  19
+#endif
+
 #ifndef ENOPROTOOPT
 #define ENOPROTOOPT             109
 #endif

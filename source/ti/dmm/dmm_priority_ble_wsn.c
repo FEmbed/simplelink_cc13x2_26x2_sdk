@@ -62,7 +62,7 @@ typedef enum
 {
     DMM_WSN_RETRANSMIT =0x022B,       
     DMM_WSN_TRANSMIT =0x0309,		
-    DMM_WSN_RECEIVE =0x03E7,		
+    DMM_WSN_RECEIVE =0x0307,
 } DMMStackActivityWSN;
 
 /* Global Priority Table: BLE connection lower than WSN data */

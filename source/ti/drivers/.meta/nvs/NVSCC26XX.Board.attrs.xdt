@@ -77,17 +77,7 @@
  * regions.
  */
 
-#if defined(__TI_COMPILER_VERSION__)
-
-% for (let i = 0, k = 0; i < localInstances.length; i++) {
-%     let inst = localInstances[i];
-%     if (inst.internalFlash.regionType !== "Generated") continue;
-#pragma LOCATION(`name``k`, 0x`inst.internalFlash.regionBase.toString(16)`);
-#pragma NOINIT(`name``k`);
-static char `name``k++`[0x`inst.internalFlash.regionSize.toString(16)`];
-% }
-
-#elif defined(__clang__)
+#if defined(__TI_COMPILER_VERSION__) || defined(__clang__)
 
 % for (let i = 0, k = 0; i < localInstances.length; i++) {
 %     let inst = localInstances[i];

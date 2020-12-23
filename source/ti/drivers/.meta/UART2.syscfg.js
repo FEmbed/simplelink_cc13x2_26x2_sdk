@@ -118,16 +118,16 @@ of the [__UART driver__][5].
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_u_a_r_t2_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#UART2_Configuration_Options "Configuration options reference"
-[5]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#details "C API reference"
+[1]: /drivers/doxygen/html/_u_a_r_t2_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#UART2_Configuration_Options "Configuration options reference"
+[5]: /drivers/doxygen/html/_u_a_r_t_8h.html#details "C API reference"
 `,
     /* instance properties and methods */
     defaultInstanceName: "CONFIG_UART2_",
     config        : Common.addNameConfig(config, "/ti/drivers/UART2", "CONFIG_UART2_"),
-    modules       : Common.autoForceModules(["Board", "Power"]),
+    modules       : Common.autoForceModules(["Board", "Power", "DMA"]),
     validate      : validate,
 
     _getPinResources: _getPinResources

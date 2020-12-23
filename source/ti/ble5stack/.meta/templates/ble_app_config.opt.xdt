@@ -54,17 +54,25 @@ const LPName = rfDesign.rfDesign;
 % {
 -DCC26X2R1_LAUNCHXL
 % }
-% if(devFamily == "DeviceFamily_CC26X2")
+% else if(LPName == "LP_CC2652PSIP")
+% {
+-DCC2652PSIP_LP
+% }
+% else if(LPName == "LP_CC2652RSIP")
+% {
+-DCC2652RSIP_LP
+% }
+% if(devFamily == "DeviceFamily_CC26X2" && LPName != "LP_CC2652PSIP")
 % {
 -DCC26X2
 -DCC26XX
 % }
-% else if(devFamily == "DeviceFamily_CC13X2" && LPName == "LAUNCHXL-CC1352P-2")
+% else if((devFamily == "DeviceFamily_CC13X2" && (LPName == "LAUNCHXL-CC1352P-2" || LPName == "LAUNCHXL-CC1352P-4")) || (LPName == "LP_CC2652PSIP"))
 % {
 -DCC13X2P
 -DCC13XX
 % }
-% else if(devFamily == "DeviceFamily_CC13X2" && LPName != "LAUNCHXL-CC1352P-2")
+% else if(devFamily == "DeviceFamily_CC13X2" && (LPName == "LAUNCHXL-CC1352R1" || LPName == "LAUNCHXL-CC1352P1"))
 % {
 -DCC13X2
 -DCC13XX

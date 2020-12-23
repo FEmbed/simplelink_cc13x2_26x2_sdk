@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ let config = [
         longDescription:`When enabled, the [__SDFatFS__][1] driver interface
 will be accessible by the application.
 
-[1]: /tidrivers/doxygen/html/_s_d_fat_f_s_8h.html#details "C API reference"
+[1]: /drivers/doxygen/html/_s_d_fat_f_s_8h.html#details "C API reference"
 `,
         default: false
     }
@@ -176,6 +176,33 @@ function moduleInstances(inst)
 }
 
 /*
+ *  ======== getLibs ========
+ *  Argument to the /ti/utils/build/GenLibs.cmd.xdt template
+ */
+function getLibs(mod)
+{
+    /* Get device information from GenLibs */
+    let GenLibs = system.getScript("/ti/utils/build/GenLibs");
+
+    let libGroup = {
+        name: "/third_party/fatfs",
+        deps: [],
+        libs: []
+    };
+
+    /* add dependency on useFatFS configuration (if needed) */
+    for (let i = 0; i < mod.$instances.length; i++) {
+        let inst =  mod.$instances[i];
+        if (inst.useFatFS === true) {
+            libGroup.libs.push(GenLibs.libPath("third_party/fatfs", "fatfs.a"));
+            break;
+        }
+    }
+
+    return (libGroup);
+}
+
+/*
  *  ======== base ========
  *  Define the base properties and methods
  */
@@ -188,12 +215,12 @@ operations on SD cards.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration][4]
-[1]: /tidrivers/doxygen/html/_s_d_8h.html#details "C API reference"
+[1]: /drivers/doxygen/html/_s_d_8h.html#details "C API reference"
 [2]:
-/tidrivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Synopsis "Synopsis"
-[3]: /tidrivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Examples
+/drivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Synopsis "Synopsis"
+[3]: /drivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Examples
 "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#SD_Configuration_Options "Configuration options reference"
+[4]: /drivers/syscfg/html/ConfigDoc.html#SD_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName: "CONFIG_SD_",
     config: Common.addNameConfig(config, "/ti/drivers/SD", "CONFIG_SD_"),
@@ -202,8 +229,12 @@ operations on SD cards.
     sharedModuleInstances: sharedModuleInstances,
     moduleInstances: moduleInstances,
     filterHardware: filterHardware,
-
-    _getPinResources: _getPinResources
+    _getPinResources: _getPinResources,
+    templates             : {
+        /* contribute libraries to linker command file */
+        "/ti/utils/build/GenLibs.cmd.xdt":
+            {modName: "/ti/drivers/SD", getLibs: getLibs}
+    }
 };
 
 /* extend the base exports to include family-specific content */

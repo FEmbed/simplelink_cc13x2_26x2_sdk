@@ -46,7 +46,6 @@ const DevInfo = Common.getScript("device_info.js");
 
 /* PHY group */
 const PHY_GROUP = Common.PHY_BLE;
-DevInfo.addPhyGroup(PHY_GROUP);
 
 /* Base module for RF Settings */
 const RFBase = Common.getScript("radioconfig");
@@ -59,10 +58,9 @@ const BleDocs = Common.getScript("settings/ble_docs.js");
 const SharedDocs = Common.getScript("settings/shared_docs.js");
 
 /* Setting specific configurable */
-const tmp = system.getScript(DevInfo.getSyscfgParams(PHY_GROUP));
-const config = _.cloneDeep(tmp);
+const tmp = DevInfo.getConfiguration(PHY_GROUP);
+const config = _.cloneDeep(tmp.configs);
 
-const highPaSupport = DevInfo.hasHighPaSupport();
 let hasWBMS = false;
 
 const settingSpecific = {
@@ -74,14 +72,6 @@ const settingSpecific = {
     phyGroup: PHY_GROUP,
     config: config
 };
-
-const phyOptions = getPhyOptions();
-addPhyConfigurable();
-
-/* Add high PA configurable if required */
-if (highPaSupport) {
-    RFBase.addTxPowerConfigHigh(config);
-}
 
 /*!
  *  ======== validate ========
@@ -111,55 +101,27 @@ function validate(inst, validation) {
 }
 
 /*
- *  ======== getPhyOptions ========
- *  Create PHY options list
- *
- *  @returns - list of PHY options for the configurable
- */
-function getPhyOptions() {
-    const opts = [];
-    const settingMap = DevInfo.getSettingMap(PHY_GROUP);
-    _.each(settingMap, (s) => {
-        const phyType = s.name;
-        opts.push({
-            name: phyType,
-            displayName: s.description
-        });
-    });
-    return opts;
-}
-
-/*
- *  ======== addPhyConfigurable ========
- *  Add a PHY Type configurable
+ *  ======== phyTypeOnChange ========
+ *  Change handler for PHY type configurable
  *
  */
-function addPhyConfigurable() {
-    config.unshift({
-        name: "phyType",
-        displayName: "Phy Type",
-        description: "Selects the PHY/setting",
-        options: phyOptions,
-        default: phyOptions[0].name,
-        onChange: (inst, ui) => {
-            const phyType = inst.phyType;
-            updatePDUConfig(inst, ui);
+function phyTypeOnChange(inst, ui) {
+    const phyType = inst.phyType;
+    updatePDUConfig(inst, ui);
 
-            // Refresh the instance
-            RFBase.reloadInstanceFromPhy(inst, ui, phyType, PHY_GROUP, ["txPower", "txPowerHi"]);
+    // Refresh the instance
+    RFBase.reloadInstanceFromPhy(inst, ui, phyType, PHY_GROUP, ["txPower", "txPowerHi"]);
 
-            // Hide whitening if wBMS setting
-            hasWBMS = phyType.includes("wbms");
-            ui.whitening.hidden = hasWBMS;
-        }
-    });
+    // Hide whitening if wBMS setting
+    hasWBMS = phyType.includes("wbms");
+    ui.whitening.hidden = hasWBMS;
 }
 
 /*!
- *  ======== onPermissionsChange ========
+ *  ======== onPermissionChange ========
  *  Change permission according to permission configurable
  */
-function onPermissionsChange(inst, ui) {
+function onPermissionChange(inst, ui) {
     // PHY type:
     // - always ReadOnly with a Custom stack
     // - otherwise controlled by the 'permission' configurable
@@ -192,27 +154,53 @@ function updatePDUConfig(inst, ui) {
 }
 
 /*!
+ *  ======== initConfigurables ========
+ *  Initialize configurables that are not completed in pre-processing script.
+ *
+ *  @param configurables - configurables to act on
+ */
+function initConfigurables(configurables) {
+    _.each(configurables, (item) => {
+        switch (item.name) {
+        case "highPA":
+            item.onChange = RFBase.highPaOnChange;
+            break;
+        case "phyType":
+            item.onChange = phyTypeOnChange;
+            break;
+        case "permission":
+            item.onChange = onPermissionChange;
+            break;
+        case "paramVisibility":
+            item.onChange = onVisibilityChange;
+            break;
+        default:
+            break;
+        }
+    });
+}
+
+/*!
  *  ======== extend ========
  *  Extends BLE object to include RF Basic module
  *
  */
 function extend(base) {
-    /* Add permission configurable */
-    RFBase.addPermission(settingSpecific.config, onPermissionsChange);
-
-    /* Add configurable to control visibility of RF parameters */
-    RFBase.addVisibilityConfig(settingSpecific.config, onVisibilityChange);
-
     /* Initialize state of UI elements (readOnly when appropriate) */
     Common.initLongDescription(settingSpecific.config, BleDocs.bleDocs);
     Common.initLongDescription(settingSpecific.config, SharedDocs.sharedDocs);
 
     /* Make sure our copy of configurables is updated */
-    const cmdHandler = CmdHandler.get(PHY_GROUP, phyOptions[0].name);
+    const cmdHandler = CmdHandler.get(PHY_GROUP, config[0].default);
     cmdHandler.initConfigurables(settingSpecific.config);
+
+    /* Initialize configurables */
+    initConfigurables(settingSpecific.config);
+
+    /* Remove invalid elements from configurables */
     RFBase.pruneConfig(settingSpecific.config);
 
-    return ({...base, ...settingSpecific});
+    return {...base, ...settingSpecific};
 }
 
 exports = extend(RFBase);

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       osc.h
-*  Revised:        2020-03-06 14:44:21 +0100 (Fri, 06 Mar 2020)
-*  Revision:       56985
+*  Revised:        2020-06-04 12:01:31 +0200 (Thu, 04 Jun 2020)
+*  Revision:       57662
 *
 *  Description:    Defines and prototypes for the system oscillator control.
 *
@@ -94,6 +94,7 @@ extern "C"
     #define OSCHF_SwitchToRcOscTurnOffXosc  NOROM_OSCHF_SwitchToRcOscTurnOffXosc
     #define OSCHF_DebugGetCrystalAmplitude  NOROM_OSCHF_DebugGetCrystalAmplitude
     #define OSCHF_DebugGetExpectedAverageCrystalAmplitude NOROM_OSCHF_DebugGetExpectedAverageCrystalAmplitude
+    #define OSCHF_DebugGetCrystalStartupTime NOROM_OSCHF_DebugGetCrystalStartupTime
     #define OSC_HPOSCInitializeFrequencyOffsetParameters NOROM_OSC_HPOSCInitializeFrequencyOffsetParameters
     #define OSC_HPOSC_Debug_InitFreqOffsetParams NOROM_OSC_HPOSC_Debug_InitFreqOffsetParams
     #define OSC_HPOSCInitializeSingleInsertionFreqOffsParams NOROM_OSC_HPOSCInitializeSingleInsertionFreqOffsParams
@@ -484,6 +485,31 @@ extern uint32_t OSCHF_DebugGetExpectedAverageCrystalAmplitude( void );
 
 //*****************************************************************************
 //
+//! \brief Measure the crystal startup time.
+//!
+//! \note This is a debug function that should not be needed in normal operation.
+//!
+//! This function assumes that the chip is running on RCOSC_HF when called.
+//! It then switches to XOSC_HF while measuring number of LF-clock edges
+//! before XOSC_HF has started and are ready to be used.
+//! After that, the function switches back to RCOSC_HF and returns number of LF-edges found.
+//!
+//! The length in time between the LF clock edges is approximately 15 microseconds.
+//! Or more exactly: LF_clock_edges / ( 32768 * 2 ) seconds.
+//!
+//! Please note that the startup time, in addition to the crystal itself also can vary depending
+//! on the time since the crystal was stopped and the frequency of the RCOSC_HF oscillator.
+//! Calling this function intensively will show a shorter startup time than in typical use cases.
+//! When running with TI-RTOS there is a background task (optional but default on) adjusting RCOSC_HF
+//! to be as equal as possible to the crystal frequency, giving the shortest possible startup time.
+//!
+//! \return Returns number of LF-clock edges from starting the crystal until it's ready to be used.
+//
+//*****************************************************************************
+extern uint32_t OSCHF_DebugGetCrystalStartupTime( void );
+
+//*****************************************************************************
+//
 //! \brief HPOSC initialization function. Must always be called before using HPOSC.
 //!
 //! Calculates the fitting curve parameters (polynomials) to be used by the
@@ -699,6 +725,10 @@ extern void OSC_HPOSCRtcCompensate( int32_t relFreqOffset );
     #ifdef ROM_OSCHF_DebugGetExpectedAverageCrystalAmplitude
         #undef  OSCHF_DebugGetExpectedAverageCrystalAmplitude
         #define OSCHF_DebugGetExpectedAverageCrystalAmplitude ROM_OSCHF_DebugGetExpectedAverageCrystalAmplitude
+    #endif
+    #ifdef ROM_OSCHF_DebugGetCrystalStartupTime
+        #undef  OSCHF_DebugGetCrystalStartupTime
+        #define OSCHF_DebugGetCrystalStartupTime ROM_OSCHF_DebugGetCrystalStartupTime
     #endif
     #ifdef ROM_OSC_HPOSCInitializeFrequencyOffsetParameters
         #undef  OSC_HPOSCInitializeFrequencyOffsetParameters

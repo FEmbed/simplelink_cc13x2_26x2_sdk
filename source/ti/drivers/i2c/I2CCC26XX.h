@@ -312,16 +312,11 @@
 #include <ti/drivers/pin/PINCC26XX.h>
 #include <ti/drivers/Power.h>
 
-#include <ti/drivers/dpl/HwiP.h>
 #include <ti/drivers/dpl/SwiP.h>
-#include <ti/drivers/dpl/SemaphoreP.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*! @internal @brief I2C function table pointer */
-extern const I2C_FxnTable I2CCC26XX_fxnTable;
 
 /*!
  *  @brief  I2CCC26XX Pin Configuration
@@ -389,78 +384,47 @@ typedef struct {
  *  @endcode
  */
 typedef struct {
-    /*! I2C peripheral's base address */
-    uint32_t     baseAddr;
-    /*! I2C peripheral's Power driver ID */
+    I2C_BASE_HWATTRS
+
+    /* I2C peripheral's Power driver ID */
     unsigned long       powerMngrId;
-    /*! I2C peripheral's interrupt number */
-    int                 intNum;
-    /*! @brief I2C Peripheral's interrupt priority.
 
-        The CC26xx uses three of the priority bits,
-        meaning ~0 has the same effect as (7 << 5).
-
-        (7 << 5) will apply the lowest priority.
-
-        (1 << 5) will apply the highest priority.
-
-        Setting the priority to 0 is not supported by this driver.
-
-        Hwi's with priority 0 ignore the Hwi dispatcher to support zero-latency interrupts, thus invalidating the critical sections in this driver.
-    */
-    uint8_t             intPriority;
-    /*! @brief I2C Swi priority.
-        The higher the number, the higher the priority.
-        The minimum is 0 and the maximum is 15 by default.
-        The maximum can be reduced to save RAM by adding or modifying Swi.numPriorities in the kernel configuration file.
-    */
+    /*
+     *  I2C Swi priority.
+     *  The higher the number, the higher the priority.
+     *  The minimum is 0 and the maximum is 15 by default.
+     *  The maximum can be reduced to save RAM by adding or modifying
+     *  Swi.numPriorities in the kernel configuration file.
+     */
     uint32_t            swiPriority;
-    /*! I2C SDA pin mapping */
+    /* I2C SDA pin mapping */
     uint8_t             sdaPin;
-    /*! I2C SCL pin mapping */
+    /* I2C SCL pin mapping */
     uint8_t             sclPin;
 } I2CCC26XX_HWAttrsV1;
 
 /*!
- *  @cond NODOC
- *  I2CCC26XX Object.  The application must not access any member variables
- *  of this structure!
+ *  @brief      I2CCC26XX Object.
+ *
+ *  The application must not access any member variables of this structure!
  */
 typedef struct {
-    /* I2C control variables */
-    I2C_TransferMode    transferMode;        /*!< Blocking or Callback mode */
-    I2C_CallbackFxn     transferCallbackFxn; /*!< Callback function pointer */
-    uint32_t            bitRate;             /*!< Bitrate of the I2C module */
+    I2C_BASE_OBJECT
 
-    /* I2C RTOS objects */
-    HwiP_Struct hwi;                         /*!< Hwi object handle */
-    SwiP_Struct          swi;                /*!< Swi object */
-    SemaphoreP_Struct    mutex;              /*!< Grants exclusive access to I2C */
-    SemaphoreP_Struct    transferComplete;   /*!< Signal I2C transfer complete */
+    /* Swi object */
+    SwiP_Struct        swi;
+
+    /* Bitrate of the I2C module */
+    uint32_t           bitRate;
 
     /* PIN driver state object and handle */
-    PIN_State           pinState;
-    PIN_Handle          hPin;
-
-    /* I2C current transaction */
-    I2C_Transaction     *currentTransaction; /*!< Ptr to current I2C transaction */
-    uint8_t             *writeBuf;        /*!< Internal inc. writeBuf index */
-    unsigned int        writeCount;       /*!< Internal dec. writeCounter */
-    uint8_t             *readBuf;         /*!< Internal inc. readBuf index */
-    unsigned int        readCount;        /*!< Internal dec. readCounter */
-
-    /* I2C transaction pointers for I2C_MODE_CALLBACK */
-    I2C_Transaction * volatile headPtr;  /*!< Head ptr for queued transactions */
-    I2C_Transaction *tailPtr;            /*!< Tail ptr for queued transactions */
+    PIN_State          pinState;
+    PIN_Handle         hPin;
 
     /* I2C power notification */
-    void                *i2cPostFxn;        /*!< I2C post-notification Function pointer */
-    Power_NotifyObj     i2cPostObj;         /*!< I2C post-notification object */
-
-    bool                isOpen;             /*!< flag to indicate module is open */
+    void              *i2cPostFxn;
+    Power_NotifyObj    i2cPostObj;
 } I2CCC26XX_Object;
-
-/*! @endcond */
 
 #ifdef __cplusplus
 }

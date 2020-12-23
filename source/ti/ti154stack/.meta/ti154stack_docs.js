@@ -48,6 +48,16 @@ __Default__: False (unchecked)
 `
 };
 
+const genLibs = {
+    description: "Configures genLibs usage for local libraries. Always hidden",
+    longDescription: `
+This is a hidden parameter that controls whether the stack module contributes \
+libraries to the generated linker command file.
+\n\
+__Default__: True (checked)
+`
+};
+
 const project = {
     description: "Configures project type for device configuration",
     readOnly: "Only this project is supported",
@@ -111,6 +121,7 @@ based networking solutions.
 
 exports = {
     lockProject: lockProject,
+    genLibs: genLibs,
     project: project,
     mode: mode,
     ti154stackModule: ti154stackModule

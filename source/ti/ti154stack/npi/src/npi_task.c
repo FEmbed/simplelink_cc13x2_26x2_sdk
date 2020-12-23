@@ -992,6 +992,10 @@ static void NPITask_processStackMsg(uint8_t *pMsg)
                 incomingTXEventAppCBFunc(pMsg);
                 break;
             }
+            default:
+            {
+                break;
+            }
         }
     }
 

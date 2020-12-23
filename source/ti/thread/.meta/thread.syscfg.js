@@ -37,6 +37,8 @@
 
 "use strict";
 
+const genLibs = system.getScript("/ti/utils/build/GenLibs.syscfg.js");
+
 /* Description text for modules and configurables */
 const deviceTypeLongDescription = `The device type for the Thread node. \
 This can either be Full Thread Device (FTD), capable of full Thread \
@@ -71,6 +73,12 @@ settings.
 [4]: /thread/html/thread/example-apps-cc13x2_26x2.html#factory-reset
 `;
 
+const genLibDescription = "Configures genLibs usage for local libraries. Always hidden";
+const genLibLongDescription = `This is a hidden parameter that controls whether the \
+stack module contributes libraries to the generated linker command file.
+
+__Default__: True (checked)`;
+
 /* Static module definition for Thread module */
 const moduleStatic = {
     config: [
@@ -87,6 +95,14 @@ const moduleStatic = {
             ]
         },
         {
+            name: "genLibs",
+            displayName: "Generate Thread Libraries",
+            default: true,
+            hidden: true,
+            description: genLibDescription,
+            longDescription: genLibLongDescription
+        },
+        {
             name: "deviceTypeReadOnly",
             default: false,
             hidden: true,
@@ -96,6 +112,32 @@ const moduleStatic = {
     moduleInstances: moduleInstances,
     modules: modules
 };
+
+/*
+ * ======== getLibs ========
+ * Contribute libraries to linker command file
+ *
+ * @param inst  - thread module instance
+ * @returns     - Object containing the name of component, array of dependent
+ *                components, and array of library names
+ */
+function getLibs(inst)
+{
+    // Create a GenLibs input argument
+    let results = {
+        name: "/ti/thread",
+        deps: [],
+        libs: []
+    };
+
+    if(inst.$static.genLibs)
+    {
+        // Add prebuilt libs to results.libs
+        // Not currently in use
+    }
+
+    return(results);
+}
 
 /* Submodule instance definitions */
 function moduleInstances(inst)
@@ -143,7 +185,7 @@ function modules(inst)
     submodules.push({
         name: "multiStack",
         displayName: "Multi-Stack Validation",
-        moduleName: "/ti/easylink/multi_stack_validate",
+        moduleName: "/ti/common/multi_stack_validate",
         hidden: true
     });
     submodules.push({
@@ -187,7 +229,12 @@ const threadModule = {
         "/ti/thread/templates/tiop_config.h.xdt":
                             "/ti/thread/templates/tiop_config.h.xdt",
         "/ti/thread/templates/tiop_config.c.xdt":
-                            "/ti/thread/templates/tiop_config.c.xdt"
+                            "/ti/thread/templates/tiop_config.c.xdt",
+        "/ti/utils/build/GenLibs.cmd.xdt":
+        {
+            modName: "/ti/thread/thread",
+            getLibs: getLibs
+        }
     }
 };
 

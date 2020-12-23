@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -145,7 +145,9 @@ extern "C" {
 /** @}*/
 
 /*! Base address for the DMA control table, must be 1024 bytes aligned */
-#if !defined(UDMACC26XX_CONFIG_BASE) && (DeviceFamily_PARENT == DeviceFamily_PARENT_CC13X2_CC26X2)
+#if !defined(UDMACC26XX_CONFIG_BASE) && \
+    (DeviceFamily_PARENT == DeviceFamily_PARENT_CC13X2_CC26X2 || \
+    DeviceFamily_PARENT == DeviceFamily_PARENT_CC13X1_CC26X1)
     #define UDMACC26XX_CONFIG_BASE 0x20001800
 #elif !defined(UDMACC26XX_CONFIG_BASE)
     #define UDMACC26XX_CONFIG_BASE 0x20000400
@@ -371,7 +373,10 @@ __STATIC_INLINE void UDMACC26XX_clearInterrupt(UDMACC26XX_Handle handle, uint32_
  */
 __STATIC_INLINE void UDMACC26XX_channelDisable(UDMACC26XX_Handle handle, uint32_t channelBitMask)
 {
-    UDMACC26XX_HWAttrs const *hwAttrs = handle->hwAttrs;
+    UDMACC26XX_HWAttrs const *hwAttrs;
+
+    /* Get the pointer to the hwAttrs */
+    hwAttrs = (UDMACC26XX_HWAttrs *)(handle->hwAttrs);
 
     HWREG(hwAttrs->baseAddr + UDMA_O_CLEARCHANNELEN) = channelBitMask;
 }
@@ -399,7 +404,10 @@ __STATIC_INLINE void UDMACC26XX_channelDisable(UDMACC26XX_Handle handle, uint32_
 __STATIC_INLINE void UDMACC26XX_disableAttribute(UDMACC26XX_Handle handle,
     uint32_t channelNum, uint32_t attr)
 {
-    UDMACC26XX_HWAttrs const *hwAttrs = (UDMACC26XX_HWAttrs *) handle->hwAttrs;
+    UDMACC26XX_HWAttrs const *hwAttrs;
+
+    /* Get the pointer to the hwAttrs */
+    hwAttrs = (UDMACC26XX_HWAttrs *)(handle->hwAttrs);
 
     uDMAChannelAttributeDisable(hwAttrs->baseAddr, channelNum, attr);
 }

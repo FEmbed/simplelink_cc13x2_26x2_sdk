@@ -14,7 +14,6 @@
         name="libopenthread_ncp_ncp_CC1352P_2_LAUNCHXL_tirtos_gcc"
         configurations="OptimizeSize"
         toolChain="GNU"
-        cgtVersion="GNU_9.0"
         outputType="staticLibrary"
         artifactName="openthread_ncp_ncp"
         artifactExtension="a"
@@ -70,7 +69,6 @@
         description="this is the openthread ncp (network-control-processor) (mode: ncp/ftd) library">
 
         <property name="isHybrid" value="true"/>
-        <group id="libopenthread_ncp_ncp_CC1352P_2_LAUNCHXL_tirtos_gcc.SIMPLELINK_CC13X2_26X2_SDK.thread.GCC"/>
         <file path="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/third_party/openthread/src/ncp/ncp_config.h" openOnCreation="false" excludeFromBuild="false" action="link" targetDirectory="src/ncp">
         </file>
         <file path="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/third_party/openthread/src/ncp/changed_props_set.cpp" openOnCreation="false" excludeFromBuild="false" action="link" targetDirectory="src/ncp">

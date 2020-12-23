@@ -1,7 +1,7 @@
 {
     "setting": {
-        "Name": "WB-DSSS 60 kbps, 2-GFSK, 195 kHz deviation, 4x spreading (Preview)",
-        "Description": "4x Wideband Direct Sequence Spread Spectrum (WB-DSSS) 60 kbps, 2-GFSK, 195 kHz deviation, FEC K = 4 for the 902-928 MHz band (Preview)",
+        "Name": "WB-DSSS 60 kbps, 2-GFSK, 195 kHz deviation, 4x spreading",
+        "Description": "4x Wideband Direct Sequence Spread Spectrum (WB-DSSS) 60 kbps, 2-GFSK, 195 kHz deviation, FEC K = 4 for the 902-928 MHz band",
         "Frequency": "915",
         "Patch": {
             "Define": "RF_MODE_AUTO",
@@ -123,7 +123,7 @@
                     },
                     {
                         "_name": "txPower",
-                        "$": "0xFFFF"
+                        "$": "0x9F3F"
                     },
                     {
                         "_name": "pRegOverride",

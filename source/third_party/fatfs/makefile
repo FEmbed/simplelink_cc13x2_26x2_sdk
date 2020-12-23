@@ -20,7 +20,7 @@ ifneq ($(IAR_ARMCOMPILER),)
 	LIB_DIRS += $(IAR_LIB_DIRS)
 endif
 
-ifneq ($(CLANG_ARMCOMPILER),)
+ifneq ($(TICLANG_ARMCOMPILER),)
 	LIB_DIRS += $(TICLANG_LIB_DIRS)
 endif
 

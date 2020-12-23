@@ -54,7 +54,6 @@
 #include <stdint.h>
 
 #include "ti_154stack_config.h"
-#include "hal_defs.h"
 #include "api_mac.h"
 
 #ifdef OSAL_PORT2TIRTOS
@@ -123,6 +122,10 @@ Sensor to poll and get the frame*/
 #define BCN_MODE_INDIRECT_PERSISTENT_TIME 3
 
 #define MIN_PERSISTENCE_TIME_USEC 2000000
+
+#ifndef MAX
+#define MAX(n,m)   (((n) < (m)) ? (m) : (n))
+#endif
 
 #if ((CONFIG_PHY_ID >= APIMAC_MRFSK_STD_PHY_ID_BEGIN) && (CONFIG_PHY_ID <= APIMAC_MRFSK_GENERIC_PHY_ID_BEGIN))
 

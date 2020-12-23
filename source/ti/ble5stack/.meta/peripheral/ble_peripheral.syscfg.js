@@ -75,12 +75,12 @@ const config = {
             ]
         },
         {
-            name: "paramUpdateDelay",
-            displayName: "Parameter Update Delay (ms)",
-            description: "Delay after connection establishment, before sending a parameter update requst",
-            default: 6000,
+            name: "sendParamsUpdateReq",
+            displayName: "Send Parameter Update Request",
+            description: "Sends parameter update request after connection establishment",
+            default: true,
             hidden: false,
-            longDescription: Docs.paramUpdateDelayLongDescription
+            longDescription: Docs.sendParamsUpdateReqLongDescription,
         }
     ]
 };
@@ -111,7 +111,7 @@ function moduleInstances(inst)
 {
     const dependencyModule = [];
 
-    if(!inst.hidePeripheralGroup)
+    if(!inst.hidePeripheralGroup && inst.sendParamsUpdateReq)
     {
         dependencyModule.push({
             name: "connUpdateParamsPeripheral",

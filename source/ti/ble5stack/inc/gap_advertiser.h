@@ -916,6 +916,9 @@ extern bStatus_t GapAdv_prepareLoadByBuffer(uint8 *pBuf, bool freeOldData);
  */
 extern bStatus_t GapAdv_loadByBuffer(uint16 len, uint8 *pBuf);
 
+
+bStatus_t GapAdv_loadByBuffer_hook(uint16 len, uint8 *pBuf);
+
 /**
  * Abort an advertising load operation.
  *

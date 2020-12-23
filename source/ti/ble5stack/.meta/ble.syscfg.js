@@ -73,10 +73,6 @@ const advSetScript = system.getScript("/ti/ble5stack/adv_config/"
 // Get common Script
 const Common = system.getScript("/ti/ble5stack/ble_common.js");
 
-// Get DeviceFamily and LP Name
-const devFamily = Common.device2DeviceFamily(system.deviceData.deviceId);
-const LPName = Common.getBoardOrLaunchPadName(true);
-
 //static implementation of the BLE module
 const moduleStatic = {
     
@@ -88,6 +84,13 @@ const moduleStatic = {
             default: false,
             hidden: true,
             onChange: onLockProjectChange
+        },
+        {
+            name: "genLibs",
+            displayName: "Generate BLE Libraries",
+            default: true,
+            hidden: true,
+            description: "Configures genLibs usage for local libraries. Always hidden"
         },
         {
             name: "deviceRole",
@@ -369,6 +372,73 @@ function onEnableGattBuildeChange(inst,ui)
 }
 
 /*
+ * ======== getLibs ========
+ * Contribute libraries to linker command file
+ *
+ * @param inst  - Module instance containing the config that changed
+ * @returns     - Object containing the name of component, array of dependent
+ *                components, and array of library names
+ */
+function getLibs(inst)
+{
+    let libs = [];
+
+    if(inst.$static.genLibs)
+    {
+        // Add the BLE libs (oneLib, stackWrapper and Symbols) according to the
+        // board/device that is being used.
+        // There are 3 different folders (cc26x2r1, cc13x2r1 and cc1352p)
+        // Each device should use it from the appropriate folder.
+        const devFamily = Common.device2DeviceFamily(system.deviceData.deviceId);
+        const basePath = "ti/ble5stack/libraries/";
+        const rfDesign = system.modules["/ti/devices/radioconfig/rfdesign"].$static;
+        const LPName = rfDesign.rfDesign;
+        let devLibsFolder = "cc26x2r1";
+
+        // DeviceFamily_CC26X2 devices are using the libs from the
+        // cc26x2r1 folder.
+        if(devFamily == "DeviceFamily_CC26X2")
+        {
+            if(LPName != "LP_CC2652PSIP")
+            {
+                devLibsFolder = "cc26x2r1";
+            }
+            else
+            {
+                devLibsFolder = "cc1352p";
+            }
+        }
+        // DeviceFamily_CC13X2 devices are using the libs from the cc13x2r1
+        // or the cc1352p folders.
+        // Note: Devices with high PA should use the libs from the cc1352p folder.
+        else if(devFamily == "DeviceFamily_CC13X2")
+        {
+            if(LPName == "LAUNCHXL-CC1352P-2" || LPName == "LAUNCHXL-CC1352P-4")
+            {
+                devLibsFolder = "cc1352p";
+            }
+            else
+            {
+                devLibsFolder = "cc13x2r1";
+            }
+        }
+
+        libs.push(basePath + devLibsFolder + "/OneLib.a");
+        libs.push(basePath + devLibsFolder + "/StackWrapper.a");
+        libs.push(basePath + devLibsFolder + "/ble_r2.symbols");
+    }
+
+    // Create a GenLibs input argument
+    const linkOpts = {
+        name: "/ti/ble5stack",
+        deps: [],
+        libs: libs
+    };
+
+    return(linkOpts);
+}
+
+/*
  *  ======== moduleInstances ========
  *  Determines what modules are added as non-static submodules
  *
@@ -412,7 +482,7 @@ function modules(inst)
     dependencyModule.push({
         name: "multiStack",
         displayName: "Multi-Stack Validation",
-        moduleName: "/ti/easylink/multi_stack_validate",
+        moduleName: "/ti/common/multi_stack_validate",
         hidden: true
     });
 
@@ -444,7 +514,13 @@ const bleModule = {
         "/ti/ble5stack/templates/build_config.opt.xdt",
 
         "/ti/ble5stack/templates/ble_app_config.opt.xdt":
-        "/ti/ble5stack/templates/ble_app_config.opt.xdt"
+        "/ti/ble5stack/templates/ble_app_config.opt.xdt",
+
+        "/ti/utils/build/GenLibs.cmd.xdt":
+        {
+            modName: "/ti/ble5stack/ble",
+            getLibs: getLibs
+        }
     }
 };
 

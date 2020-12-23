@@ -57,6 +57,7 @@ const config = {
             description: "Select which RF Design to use as a template",
             options: rfDesignOptions,
             default: rfDesignOptions[0].name,
+            onChange: onRfDesignChange,
             hidden: false
         },
         {
@@ -136,25 +137,76 @@ const config = {
                     { displayName: "3",   name: "HCI_EXT_TX_POWER_3_DBM"},
                     { displayName: "4",   name: "HCI_EXT_TX_POWER_4_DBM"},
                     { displayName: "5",   name: "HCI_EXT_TX_POWER_5_DBM"},
-                    { displayName: "14",  name: "HCI_EXT_TX_POWER_14_DBM"},
-                    { displayName: "15",  name: "HCI_EXT_TX_POWER_15_DBM"},
-                    { displayName: "16",  name: "HCI_EXT_TX_POWER_16_DBM"},
-                    { displayName: "17",  name: "HCI_EXT_TX_POWER_17_DBM"},
-                    { displayName: "18",  name: "HCI_EXT_TX_POWER_18_DBM"},
-                    { displayName: "19",  name: "HCI_EXT_TX_POWER_19_DBM"},
-                    { displayName: "20",  name: "HCI_EXT_TX_POWER_20_DBM"}]
-                // Get the device PA table that will be used
-                const txPowerTableType = Common.getRadioScript(inst.rfDesign,
-                                         system.deviceData.deviceId).radioConfigParams.paExport;
-                const currentOptions = txPowerTableType != "combined" ?
-                                       configurable.filter(config => config.displayName.valueOf() <= 5)
-                                       :configurable;
-                return currentOptions;
+                    { displayName: "6",   name: "HCI_EXT_TX_POWER_P2_14_DBM_P4_6_DBM"},
+                    { displayName: "7",   name: "HCI_EXT_TX_POWER_P2_15_DBM_P4_7_DBM"},
+                    { displayName: "8",   name: "HCI_EXT_TX_POWER_P2_16_DBM_P4_8_DBM"},
+                    { displayName: "9",   name: "HCI_EXT_TX_POWER_P2_17_DBM_P4_9_DBM"},
+                    { displayName: "10",  name: "HCI_EXT_TX_POWER_P2_18_DBM_P4_10_DBM"},
+                    { displayName: "14",  name: "HCI_EXT_TX_POWER_P2_14_DBM_P4_6_DBM"},
+                    { displayName: "15",  name: "HCI_EXT_TX_POWER_P2_15_DBM_P4_7_DBM"},
+                    { displayName: "16",  name: "HCI_EXT_TX_POWER_P2_16_DBM_P4_8_DBM"},
+                    { displayName: "17",  name: "HCI_EXT_TX_POWER_P2_17_DBM_P4_9_DBM"},
+                    { displayName: "18",  name: "HCI_EXT_TX_POWER_P2_18_DBM_P4_10_DBM"},
+                    { displayName: "19",  name: "HCI_EXT_TX_POWER_P2_19_DBM"},
+                    { displayName: "20",  name: "HCI_EXT_TX_POWER_P2_20_DBM"}]
+                return getPaTableValues(inst.rfDesign, configurable);
             }
         }
     ]
 }
 
+/*
+ * ======== onRfDesignChange ========
+ * Different devices have different valid pa levels.
+ * Therefore, when selecting different rfDesing value (different device),
+ * and the pa value is invalid set it to 0.
+ *
+ * @param inst - BLE instance
+ * @param ui   - The User Interface object
+ */
+function onRfDesignChange(inst, ui)
+{
+    if(!validateDefaultTxPower(inst))
+    {
+        inst.defaultTxPower = "HCI_EXT_TX_POWER_0_DBM";
+    }
+}
+
+/*
+ * ======== getPaTableValues ========
+ * Generates an array of SRFStudio compatible rfDesign options based on device
+ *
+ * @param rfDesign     - the selected device
+ * @param tableOptions - the table with all pa levels options
+ *
+ * @returns - a list with the valid pa levels from the tableOptions
+ */
+function getPaTableValues(rfDesign, tableOptions)
+{
+    // Get the device PA table levels
+    const txPowerTableType = Common.getRadioScript(rfDesign,
+                             system.deviceData.deviceId).radioConfigParams.paExport;
+    let currentOptions;
+
+    // If using a device that not support high PA
+    if(txPowerTableType != "combined")
+    {
+        currentOptions = tableOptions.filter(config => config.displayName.valueOf() <= 5);
+    }
+    // If using CC1352P-2 device
+    else if(rfDesign == "LAUNCHXL-CC1352P-2")
+    {
+        currentOptions = tableOptions.filter(config => config.displayName.valueOf() <= 5 ||
+                                                    config.displayName.valueOf() >= 14);
+    }
+    // If using CC1352P-4 device
+    else if(rfDesign == "LAUNCHXL-CC1352P-4" || rfDesign == "LP_CC2652PSIP")
+    {
+        currentOptions = tableOptions.filter(config => config.displayName.valueOf() <= 10);
+    }
+
+    return currentOptions;
+}
 /*
  * ======== getRfDesignOptions ========
  * Generates an array of SRFStudio compatible rfDesign options based on device
@@ -191,10 +243,39 @@ function getRfDesignOptions(deviceId)
     {
         newRfDesignOptions = [{name: "LAUNCHXL-CC2652RB"}];
     }
+    else if(deviceId === "CC2652P1FSIP")
+    {
+        newRfDesignOptions = [{name: "LP_CC2652PSIP"}];
+    }
+    else if(deviceId === "CC2652R1FSIP")
+    {
+        newRfDesignOptions = [{name: "LP_CC2652RSIP"}];
+    }
 
     return(newRfDesignOptions);
 }
 
+/*
+ * ======== validateDefaultTxPower ========
+ * Check if a selected defaultTxPower value is valid
+ * This check is added since the user can enter an invalid
+ * value in the example .syscfg file.
+ *
+ * @param inst - BLE instance
+ *
+ * @returns - true if the selected value is in the pa levels list
+ *            false if the selected value is not in the list
+ */
+function validateDefaultTxPower(inst)
+{
+    let validOptions = inst.$module.$configByName.defaultTxPower.options(inst);
+    const selectedOption = inst.defaultTxPower;
+    if(!_.find(validOptions, (option)=> option.name == selectedOption))
+    {
+        return false
+    }
+    return true;
+}
 /*
  * ======== validate ========
  * Validate this inst's configuration
@@ -204,9 +285,7 @@ function getRfDesignOptions(deviceId)
  */
 function validate(inst, validation)
 {
-    let validOptions = inst.$module.$configByName.defaultTxPower.options(inst);
-    const selectedOption = inst.defaultTxPower;
-    if(!_.find(validOptions, (option)=> option.name == selectedOption))
+    if(!validateDefaultTxPower(inst))
     {
         validation.logError("Selected option is invalid, please select a valid option", inst, "defaultTxPower");
     }
@@ -245,9 +324,14 @@ function moduleInstances(inst)
         permission: "ReadOnly"
     }
 
-    if(inst.rfDesign == "LAUNCHXL-CC1352P-2")
+    if(inst.rfDesign == "LAUNCHXL-CC1352P-2" || inst.rfDesign == "LAUNCHXL-CC1352P-4" || inst.rfDesign == "LP_CC2652PSIP")
     {
         args.highPA = true;
+        if(inst.rfDesign == "LAUNCHXL-CC1352P-4")
+        {
+            args.phyType = "bt5le1mp10";
+            args.txPowerHi = "10";
+        }
     }
 
 	dependencyModule.push({

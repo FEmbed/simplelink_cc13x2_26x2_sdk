@@ -60,13 +60,6 @@ let devSpecific = {
         swiPriority
     ],
 
-    moduleStatic: {
-        displayName: "SPI Driver Configuration",
-
-        /* bring in DMA and Power modules */
-        modules: Common.autoForceModules(["Board", "Power", "DMA"])
-    },
-
     /* override generic requirements with  device-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
 
@@ -309,6 +302,10 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "SPI", null,
+        [{name: "SPICC26X2DMA"}], null);
+
     /* merge and overwrite base module attributes */
     let result = Object.assign({}, base, devSpecific);
 

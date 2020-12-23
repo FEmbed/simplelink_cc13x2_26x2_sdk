@@ -86,8 +86,8 @@ typedef uint32          halDataAlign_t;
 #elif defined __TI_COMPILER_VERSION || defined __TI_COMPILER_VERSION__
 #define ASM_NOP    asm(" NOP")
 
-/* ----------- GNU Compiler ----------- */
-#elif defined __GNUC__
+/* ----------- GNU & TI-CLANG Compiler ----------- */
+#elif defined(__GNUC__) || defined(__clang__)
 #define ASM_NOP __asm__ __volatile__ ("nop")
 
 /* ---------- MSVC compiler ---------- */
@@ -132,7 +132,7 @@ typedef uint32          halDataAlign_t;
 #define PACKED_TYPEDEF_CONST_STRUCT PACKED typedef const struct
 #define PACKED_TYPEDEF_UNION        PACKED typedef union
 
-#elif defined __TI_COMPILER_VERSION || defined __TI_COMPILER_VERSION__
+#elif defined __TI_COMPILER_VERSION || defined __TI_COMPILER_VERSION__ || defined __clang__
 #define XDATA
 #define CODE
 #define DATA

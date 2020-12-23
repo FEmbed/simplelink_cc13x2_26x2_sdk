@@ -60,8 +60,7 @@ function device2Family(device)
         {prefix: "CC26",     family: "CC26XX"},
         {prefix: "CC32",     family: "CC32XX"},
         {prefix: "MSP432E",  family: "MSP432E4"},
-        {prefix: "MSP432",   family: "MSP432"},
-        {prefix: "dragon",   family: "MTXX"}
+        {prefix: "MSP432",   family: "MSP432"}
     ];
 
     /* deviceId is the directory name within the pinmux/deviceData */

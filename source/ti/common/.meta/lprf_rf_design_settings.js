@@ -102,6 +102,12 @@ const boardSpecificRfDesignSettings = {
     CC2652RB_LAUNCHXL_RF_DESIGN_SETTINGS: {
         rfDesign: "LAUNCHXL-CC2652RB"
     },
+    LP_CC2652RSIP_RF_DESIGN_SETTINGS: {
+        rfDesign: "LP_CC2652RSIP"
+    },
+    LP_CC2652PSIP_RF_DESIGN_SETTINGS: {
+        rfDesign: "LP_CC2652PSIP"
+    }
 };
 
 // Get the LaunchPad specific CCFG Settings

@@ -40,6 +40,7 @@
 /*********************************************************************
  * INCLUDES
  */
+#include "ti_zstack_config.h"
 #include "zcl.h"
 #include "zcl_general.h"
 #include "zcl_lighting.h"
@@ -48,6 +49,7 @@
   #include "stub_aps.h"
 #endif
 
+#ifdef ZCL_LIGHTING
 /*********************************************************************
  * MACROS
  */
@@ -187,7 +189,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveToHueCmd( uint8_t srcEP, afAddrType_
   buf[3] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_TO_HUE, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_TO_HUE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 4, buf );
 }
 
@@ -217,7 +219,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveHueCmd( uint8_t srcEP, afAddrType_t 
   buf[1] = rate;
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_HUE, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_HUE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 2, buf );
 }
 
@@ -247,7 +249,7 @@ ZStatus_t zclLighting_ColorControl_Send_StepHueCmd( uint8_t srcEP, afAddrType_t 
   buf[2] = transitionTime;
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_STEP_HUE, TRUE,
+                          COMMAND_COLOR_CONTROL_STEP_HUE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 3, buf );
 }
 
@@ -277,7 +279,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveToSaturationCmd( uint8_t srcEP, afAd
   buf[2] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_TO_SATURATION, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_TO_SATURATION, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 3, buf );
 }
 
@@ -306,7 +308,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveSaturationCmd( uint8_t srcEP, afAddr
   buf[1] = rate;
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_SATURATION, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_SATURATION, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 2, buf );
 }
 
@@ -336,7 +338,7 @@ ZStatus_t zclLighting_ColorControl_Send_StepSaturationCmd( uint8_t srcEP, afAddr
   buf[2] = transitionTime;
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_STEP_SATURATION, TRUE,
+                          COMMAND_COLOR_CONTROL_STEP_SATURATION, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 3, buf );
 }
 
@@ -367,7 +369,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveToHueAndSaturationCmd( uint8_t srcEP
   buf[3] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_TO_HUE_AND_SATURATION, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_TO_HUE_AND_SATURATION, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 4, buf );
 }
 
@@ -400,7 +402,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveToColorCmd( uint8_t srcEP, afAddrTyp
   buf[5] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_TO_COLOR, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_TO_COLOR, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 6, buf );
 }
 
@@ -432,7 +434,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveColorCmd( uint8_t srcEP, afAddrType_
   buf[3] = HI_UINT16( rateY );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_COLOR, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_COLOR, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 4, buf );
 }
 
@@ -466,7 +468,7 @@ ZStatus_t zclLighting_ColorControl_Send_StepColorCmd( uint8_t srcEP, afAddrType_
   buf[5] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_STEP_COLOR, TRUE,
+                          COMMAND_COLOR_CONTROL_STEP_COLOR, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 6, buf );
 }
 
@@ -497,7 +499,7 @@ ZStatus_t zclLighting_ColorControl_Send_MoveToColorTemperatureCmd( uint8_t srcEP
   buf[3] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_MOVE_TO_COLOR_TEMPERATURE, TRUE,
+                          COMMAND_COLOR_CONTROL_MOVE_TO_COLOR_TEMPERATURE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 4, buf );
 }
 
@@ -532,7 +534,7 @@ ZStatus_t zclLighting_ColorControl_Send_EnhancedMoveToHueCmd( uint8_t srcEP, afA
   buf[4] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_ENHANCED_MOVE_TO_HUE, TRUE,
+                          COMMAND_COLOR_CONTROL_ENHANCED_MOVE_TO_HUE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 5, buf );
 }
 
@@ -563,7 +565,7 @@ ZStatus_t zclLighting_ColorControl_Send_EnhancedMoveHueCmd( uint8_t srcEP, afAdd
   buf[2] = HI_UINT16( rate );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_ENHANCED_MOVE_HUE, TRUE,
+                          COMMAND_COLOR_CONTROL_ENHANCED_MOVE_HUE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 3, buf );
 }
 
@@ -595,7 +597,7 @@ ZStatus_t zclLighting_ColorControl_Send_EnhancedStepHueCmd( uint8_t srcEP, afAdd
   buf[4] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_ENHANCED_STEP_HUE, TRUE,
+                          COMMAND_COLOR_CONTROL_ENHANCED_STEP_HUE, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 5, buf );
 }
 
@@ -627,7 +629,7 @@ ZStatus_t zclLighting_ColorControl_Send_EnhancedMoveToHueAndSaturationCmd( uint8
   buf[4] = HI_UINT16( transitionTime );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_ENHANCED_MOVE_TO_HUE_AND_SATURATION, TRUE,
+                          COMMAND_COLOR_CONTROL_ENHANCED_MOVE_TO_HUE_AND_SATURATION, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 5, buf );
 }
 
@@ -664,7 +666,7 @@ ZStatus_t zclLighting_ColorControl_Send_ColorLoopSetCmd(uint8_t srcEP, afAddrTyp
   buf[6] = HI_UINT16( startHue );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_LIGHTING_COLOR_CONTROL,
-                          COMMAND_LIGHTING_COLOR_LOOP_SET, TRUE,
+                          COMMAND_COLOR_CONTROL_COLOR_LOOP_SET, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 7, buf );
 }
 #endif //ZCL_LIGHT_LINK_ENHANCE
@@ -786,72 +788,72 @@ static ZStatus_t zclLighting_ProcessInColorControlCmds( zclIncoming_t *pInMsg,
 
   switch ( pInMsg->hdr.commandID )
   {
-    case COMMAND_LIGHTING_MOVE_TO_HUE:
+    case COMMAND_COLOR_CONTROL_MOVE_TO_HUE:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveToHue( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_HUE:
+    case COMMAND_COLOR_CONTROL_MOVE_HUE:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveHue( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_STEP_HUE:
+    case COMMAND_COLOR_CONTROL_STEP_HUE:
       stat = zclLighting_ProcessInCmd_ColorControl_StepHue( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_TO_SATURATION:
+    case COMMAND_COLOR_CONTROL_MOVE_TO_SATURATION:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveToSaturation( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_SATURATION:
+    case COMMAND_COLOR_CONTROL_MOVE_SATURATION:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveSaturation( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_STEP_SATURATION:
+    case COMMAND_COLOR_CONTROL_STEP_SATURATION:
       stat = zclLighting_ProcessInCmd_ColorControl_StepSaturation( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_TO_HUE_AND_SATURATION:
+    case COMMAND_COLOR_CONTROL_MOVE_TO_HUE_AND_SATURATION:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveToHueAndSaturation( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_TO_COLOR:
+    case COMMAND_COLOR_CONTROL_MOVE_TO_COLOR:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveToColor( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_COLOR:
+    case COMMAND_COLOR_CONTROL_MOVE_COLOR:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveColor( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_STEP_COLOR:
+    case COMMAND_COLOR_CONTROL_STEP_COLOR:
       stat = zclLighting_ProcessInCmd_ColorControl_StepColor( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_MOVE_TO_COLOR_TEMPERATURE:
+    case COMMAND_COLOR_CONTROL_MOVE_TO_COLOR_TEMPERATURE:
       stat = zclLighting_ProcessInCmd_ColorControl_MoveToColorTemperature( pInMsg, pCBs );
       break;
 
 #ifdef ZCL_LIGHT_LINK_ENHANCE
-    case COMMAND_LIGHTING_ENHANCED_MOVE_TO_HUE:
+    case COMMAND_COLOR_CONTROL_ENHANCED_MOVE_TO_HUE:
       stat = zclLighting_ProcessInCmd_ColorControl_EnhancedMoveToHue( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_ENHANCED_MOVE_HUE:
+    case COMMAND_COLOR_CONTROL_ENHANCED_MOVE_HUE:
       stat = zclLighting_ProcessInCmd_ColorControl_EnhancedMoveHue( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_ENHANCED_STEP_HUE:
+    case COMMAND_COLOR_CONTROL_ENHANCED_STEP_HUE:
       stat = zclLighting_ProcessInCmd_ColorControl_EnhancedStepHue( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_ENHANCED_MOVE_TO_HUE_AND_SATURATION:
+    case COMMAND_COLOR_CONTROL_ENHANCED_MOVE_TO_HUE_AND_SATURATION:
       stat = zclLighting_ProcessInCmd_ColorControl_EnhancedMoveToHueAndSaturation( pInMsg, pCBs );
       break;
 
-    case COMMAND_LIGHTING_COLOR_LOOP_SET:
+    case COMMAND_COLOR_CONTROL_COLOR_LOOP_SET:
       stat = zclLighting_ProcessInCmd_ColorControl_ColorLoopSet( pInMsg, pCBs );
       break;
 
-    case  COMMAND_LIGHTING_MOVE_COLOR_TEMPERATURE:{
+    case  COMMAND_COLOR_CONTROL_MOVE_COLOR_TEMPERATURE:{
         if ( pCBs->pfnColorControl_MoveColorTemperature ) // no payload to parse
               {
                 zclCCMoveColorTemperature_t pCmd = {0};
@@ -860,7 +862,7 @@ static ZStatus_t zclLighting_ProcessInColorControlCmds( zclIncoming_t *pInMsg,
               }
         break;
     }
-    case  COMMAND_LIGHTING_STEP_COLOR_TEMPERATURE:{
+    case  COMMAND_COLOR_CONTROL_STEP_COLOR_TEMPERATURE:{
         if ( pCBs->pfnColorControl_StepColorTemperature ) // no payload to parse
               {
                 zclCCStepColorTemperature_t pCmd = {0};
@@ -869,7 +871,7 @@ static ZStatus_t zclLighting_ProcessInColorControlCmds( zclIncoming_t *pInMsg,
 
         break;
     }
-    case COMMAND_LIGHTING_STOP_MOVE_STEP:
+    case COMMAND_COLOR_CONTROL_STOP_MOVE_STEP:
       if ( pCBs->pfnColorControl_StopMoveStep ) // no payload to parse
       {
         stat = pCBs->pfnColorControl_StopMoveStep();
@@ -1369,3 +1371,5 @@ static ZStatus_t zclLighting_ProcessInCmd_ColorControl_ColorLoopSet( zclIncoming
 
 /****************************************************************************
 ****************************************************************************/
+
+#endif // ZCL_LIGHTING

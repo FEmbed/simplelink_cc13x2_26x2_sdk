@@ -36,6 +36,7 @@
   Should you have any questions regarding your right to use this Software,
   contact Texas Instruments Incorporated at www.TI.com.
 **************************************************************************************************/
+#include "ti_zstack_config.h"
 
 #ifdef BDB_REPORTING
 /*********************************************************************

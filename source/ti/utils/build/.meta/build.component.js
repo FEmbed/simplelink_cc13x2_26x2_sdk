@@ -37,22 +37,23 @@
 
 "use strict";
 
-const displayName = "Build Assist (experimental)";
+const displayName = "Build Assist";
 
-let topModules = [
-    {
-        displayName: displayName,
-        description: "Build Assist is a set of build-related utilities.",
-        modules: [
-            "/ti/utils/build/GenLibs"
-        ]
-    }
-];
+/* linter will complain we never use this, if we leave this uncommented */
+// let topModules = [
+//     {
+//         displayName: displayName,
+//         description: "Build Assist is a set of build-related utilities.",
+//         modules: [
+//             "/ti/utils/build/GenLibs"
+//         ]
+//     }
+// ];
 
 let templates = [
     {
         "name": "/ti/utils/build/GenLibs.cmd.xdt",
-        "outputPath": "ti_utils_build_linker.cmd.exp",
+        "outputPath": "ti_utils_build_linker.cmd.genlibs",
         "alwaysRun": true /* so make can _always_ add this to link line */
     }
 ];
@@ -63,6 +64,6 @@ let templates = [
  */
 exports = {
     displayName,
-//    topModules,
+    //topModules,
     templates: templates
 };

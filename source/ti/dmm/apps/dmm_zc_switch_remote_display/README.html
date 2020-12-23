@@ -44,6 +44,7 @@
 <li><a href="#startingCoordsNetwork">Starting the Zigbee Coordinator's Network</a></li>
 <li><a href="#ProvisionedZcSwitch">Provisioned Zigbee Coordinator</a></li>
 <li><a href="#NetworkDeviceDiscoveryService">Zigbee Network Device Discovery via BLE</a></li>
+<li><a href="#DisableCUI">Disabling Common User Interface</a></li>
 </ul></li>
 </ul>
 
@@ -683,6 +684,17 @@ Coordinator.</p>
   written to.</p>
 
   <p>In LightBlue, make sure to select the "Listen for notifications" button.</p>
+</blockquote>
+
+<h2><a name="DisableCUI"></a>Disabling Common User Interface</h2>
+
+<p>The common user interface (CUI) is a UART based interface that allows users to control and receive updates regarding the application. For various reasons, including reducing the memory footprint, the user is able to disable the common user interface (CUI). To disable the CUI, the following variable must be defined in <code>dmm_zc_switch_remote_display_app.opts</code>:</p>
+
+<pre><code>-DCUI_DISABLE
+</code></pre>
+
+<blockquote>
+  <p>Please Note: particular features that are dependednt on the CUI wil be unavailable when this feature is enabled.</p>
 </blockquote>
 
     </div>

@@ -167,7 +167,7 @@ int mq_getattr(mqd_t mqdes, struct mq_attr *mqstat)
 mqd_t mq_open(const char *name, int oflags, ...)
 {
     va_list             va;
-    unsigned int        mode;
+    mode_t              mode;
     struct mq_attr     *attrs = NULL;
     MQueueObj          *msgQueue;
     MQueueDesc         *msgQueueDesc = NULL;
@@ -182,7 +182,7 @@ mqd_t mq_open(const char *name, int oflags, ...)
     va_start(va, oflags);
 
     if (oflags & O_CREAT) {
-        mode = va_arg(va, unsigned int);
+        mode = (mode_t)va_arg(va, unsigned int);
         attrs = va_arg(va, struct mq_attr *);
 
         if (attrs == NULL) {

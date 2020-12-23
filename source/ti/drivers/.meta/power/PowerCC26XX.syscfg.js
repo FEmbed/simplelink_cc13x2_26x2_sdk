@@ -323,6 +323,10 @@ function validate(inst, vo)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    devSpecific = Common.addImplementationConfig(devSpecific, "Power", null,
+        [{name: "PowerCC26X2"}], null);
+
     return (Object.assign({}, base, devSpecific));
 }
 
@@ -332,5 +336,6 @@ function extend(base)
  */
 exports = {
     /* required function, called by base ADCBuf module */
-    extend: extend
+    extend: extend,
+    getClockFrequencies: getClockFrequencies
 };

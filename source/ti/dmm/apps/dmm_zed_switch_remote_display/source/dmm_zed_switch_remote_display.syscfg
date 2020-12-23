@@ -169,6 +169,7 @@ var zstack = scripting.addModule("/ti/zstack/zstack");
 zstack.deviceType = "zed";
 zstack.pm.pollPeriod = 1000;
 zstack.deviceTypeReadOnly = true;
+zstack.rf.rfDesign = rfDesignSettings.rfDesign;
 
 /* ======== BLE ======== */
 var ble = scripting.addModule("/ti/ble5stack/ble");
@@ -203,9 +204,9 @@ ble.advSet1.scanRes1.maxConnInterval = 130;
 ble.advSet1.scanRes1.GAP_ADTYPE_POWER_LEVEL = true;
 
 // Update Min Connection Interval (ms)
-ble.connUpdateParamsPeripheral.upMinConnInt = 100;
+ble.connUpdateParamsPeripheral.reqMinConnInt = 100;
 // Update Max Connection Interval (ms)
-ble.connUpdateParamsPeripheral.upMaxConnInt = 130;
+ble.connUpdateParamsPeripheral.reqMaxConnInt = 130;
 
 /* ======== DMM ======== */
 var dmm = scripting.addModule("/ti/dmm/dmm");

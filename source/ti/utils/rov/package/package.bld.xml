@@ -33,7 +33,11 @@
         <file name="package/package.xdc.inc"/>
         <file name=".meta/rov.component.js"/>
         <file name=".meta/syscfg_c.rov.xs.xdt"/>
-        <file name="package.bld"/>
+        <file name="addons/execution_graph/ExecGraph.js"/>
+        <file name="addons/execution_graph/Users_Guide.md"/>
+        <file name="addons/execution_graph/execution_graph.html"/>
+        <file name="addons/execution_graph/execution_graph.js"/>
+        <file name="addons.json"/>
         <file name="package/package.cfg.xdc.inc"/>
     </release>
     </releases>

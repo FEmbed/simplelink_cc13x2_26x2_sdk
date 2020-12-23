@@ -67,8 +67,11 @@
 #include "jdllc.h"
 #include "ssf.h"
 #include "sensor.h"
-#include "cui.h"
 #include "util_timer.h"
+
+#ifndef CUI_DISABLE
+#include "cui.h"
+#endif
 
 #if defined(FEATURE_TOAD)
 #include <crc32.h>
@@ -142,7 +145,10 @@ static uint8_t oadTimeouts = 0;
 uint8_t oadImgIdPld[OADProtocol_IMAGE_ID_LEN];
 
 OADClient_Params_t oadClientParams;
+
+#ifndef CUI_DISABLE
 static uint32_t oadStatusLine;
+#endif
 
 static Clock_Struct oadClkStruct;
 static Clock_Handle oadClkHandle;
@@ -177,8 +183,10 @@ static bool isOADPaused = false;
 static void oadClockInitialize(void);
 static void oadClockCallback(UArg a0);
 static void oadClockSet(uint32_t oadTimeout);
+#ifndef CUI_DISABLE
 static void displayOadBlockUpdate(uint16_t oadBlock, uint16_t oadBNumBlocks, uint8_t retries);
 static void displayOadStatusUpdate(OADStorage_Status_t status);
+#endif
 static void oadFwVersionReqCb(void* pSrcAddr);
 static void oadImgIdentifyReqCb(void* pSrcAddr, uint8_t imgId, uint8_t *imgMetaData);
 static void oadBlockRspCb(void* pSrcAddr, uint8_t imgId, uint16_t blockNum, uint8_t *blkData);
@@ -248,7 +256,10 @@ void OADClient_open(OADClient_Params_t *params)
 
     OADProtocol_open(&OADProtocol_params);
 
+#ifndef CUI_DISABLE
     CUI_statusLineResourceRequest(*(oadClientParams.pOadCuiHndl), "OAD Status", false, &oadStatusLine);
+#endif
+
     oadClockInitialize();
 
     // check if external flash memory available
@@ -352,8 +363,10 @@ void OADClient_processEvent(uint16_t *pEvent)
                  */
                 OADProtocol_sendOadImgBlockReq(&oadServerAddr, oadImgId, oadBlock, 1);
 
+#ifndef CUI_DISABLE
                 /* update display */
                 displayOadBlockUpdate(oadBlock, oadBNumBlocks, oadRetries);
+#endif
 
                 /*
                  * Send poll request to get rsp in OAD_BLOCK_REQ_POLL_DELAY ms
@@ -392,8 +405,10 @@ void OADClient_processEvent(uint16_t *pEvent)
                  */
                 status = OADStorage_imgFinalise();
 
+#ifndef CUI_DISABLE
                 /* Display result */
                 displayOadStatusUpdate(status);
+#endif
 
                 /* Stop any further OAD message processing */
                 oadInProgress = false;
@@ -479,12 +494,16 @@ void OADClient_processEvent(uint16_t *pEvent)
 
         if(OADProtocol_Status_Success == status)
         {
+#ifndef CUI_DISABLE
             //notify to user
             CUI_statusLinePrintf(*(oadClientParams.pOadCuiHndl), oadStatusLine, "Sent Reset Response");
+#endif
         }
         else
         {
+#ifndef CUI_DISABLE
             CUI_statusLinePrintf(*(oadClientParams.pOadCuiHndl), oadStatusLine, "Failed to send Reset Response");
+#endif
         }
 
         /* Clear the event */
@@ -515,7 +534,9 @@ void OADClient_abort(bool resume)
         ApiMac_mlmeSetReqBool(ApiMac_attribute_autoRequest, currAutoReq);
 #endif
 
+#ifndef CUI_DISABLE
         displayOadStatusUpdate(OADStorage_Aborted);
+#endif
 
         /* start timer to auto resume */
         if( resume &&
@@ -639,7 +660,7 @@ static void oadClockCallback(UArg a0)
 static void oadClockInitialize(void)
 {
     /* Initialize the timers needed for this application */
-    oadClkHandle = Timer_construct(&oadClkStruct,
+    oadClkHandle = UtilTimer_construct(&oadClkStruct,
                                         oadClockCallback,
                                         OAD_BLOCK_REQ_RATE,
                                         0,
@@ -655,19 +676,20 @@ static void oadClockInitialize(void)
 static void oadClockSet(uint32_t oadTimeout)
 {
     /* Stop the Reading timer */
-    if(Timer_isActive(&oadClkStruct) == true)
+    if(UtilTimer_isActive(&oadClkStruct) == true)
     {
-        Timer_stop(&oadClkStruct);
+        UtilTimer_stop(&oadClkStruct);
     }
 
     /* Setup timer */
     if ( oadTimeout )
     {
-        Timer_setTimeout(oadClkHandle, oadTimeout);
-        Timer_start(&oadClkStruct);
+        UtilTimer_setTimeout(oadClkHandle, oadTimeout);
+        UtilTimer_start(&oadClkStruct);
     }
 }
 
+#ifndef CUI_DISABLE
 /*!
  The application calls this function to indicate oad block.
 
@@ -710,6 +732,7 @@ static void displayOadStatusUpdate(OADStorage_Status_t status)
         break;
     }
 }
+#endif /* CUI_DISABLE */
 
 #if defined(OAD_ONCHIP) && defined(OAD_IMG_B)
 /*********************************************************************
@@ -802,7 +825,9 @@ static void toadWriteDeltaBlock(uint8_t* pData, uint32_t len)
 
     if(status != OADStorage_Status_Success)
     {
+#ifndef CUI_DISABLE
         displayOadStatusUpdate(status);
+#endif
         /* OAD abort with no auto resume */
         OADClient_abort(false);
         return;
@@ -932,7 +957,9 @@ static void oadImgIdentifyReqCb(void* pSrcAddr, uint8_t imgId, uint8_t *imgMetaD
     }
     else
     {
+#ifndef CUI_DISABLE
         displayOadStatusUpdate(status);
+#endif
 
         //Send fail response back
         OADProtocol_sendOadIdentifyImgRsp(pSrcAddr, 0);
@@ -979,8 +1006,9 @@ static void oadBlockRspCb(void* pSrcAddr, uint8_t imgId, uint16_t blockNum, uint
 
             if(status != OADStorage_Status_Success)
             {
-
+#ifndef CUI_DISABLE
                 displayOadStatusUpdate(status);
+#endif
                 /* OAD abort with no auto resume */
                 OADClient_abort(false);
                 return;

@@ -40,8 +40,16 @@
 // Get common Script
 const Common = system.getScript("/ti/ble5stack/ble_common.js");
 
-// Long description for the upMinConnInt configuration parameter
-const upMinConnIntLongDescription = `In BLE connections, a frequency-hopping \
+
+// Long description for the paramUpdateDelay configuration parameter
+const paramUpdateDelayLongDescription = `Delay after connection establishment,\
+before sending a a GAP Update Link Parameter Request (in ms).\n
+
+__Default__: 6000 ms\n
+__Range__: 0 to sizeof(uint32)`
+
+// Long description for the reqMinConnInt configuration parameter
+const reqMinConnIntLongDescription = `In BLE connections, a frequency-hopping \
 scheme is used. The two devices each send and receive data from one another \
 only on a specific channel at a specific time. These devices meet a specific \
 amount of time later at a new channel (the link layer of the BLE protocol \
@@ -61,8 +69,8 @@ Min connection interval <= Max connection interval\n
 For more information, refer to the [BLE User's Guide](ble5stack/ble_user_guide/\
 html/ble-stack-5.x/gap.html#id4).\n`
 
-// Long description for the upMaxConnInt configuration parameter
-const upMaxConnIntLongDescription = `In BLE connections, a frequency-hopping \
+// Long description for the reqMaxConnInt configuration parameter
+const reqMaxConnIntLongDescription = `In BLE connections, a frequency-hopping \
 scheme is used. The two devices each send and receive data from one another \
 only on a specific channel at a specific time. These devices meet a specific \
 amount of time later at a new channel (the link layer of the BLE protocol \
@@ -82,8 +90,8 @@ Max connection interval >= Min connection interval\n
 For more information, refer to the [BLE User's Guide](ble5stack/ble_user_guide/\
 html/ble-stack-5.x/gap.html#id4).\n`
 
-// Long description for the upSlaveLat configuration parameter
-const upSlaveLatLongDescription =`This parameter gives the slave (peripheral) \
+// Long description for the reqSlaveLat configuration parameter
+const reqSlaveLatLongDescription =`This parameter gives the slave (peripheral) \
 device the option of skipping a number of connection events. This ability \
 gives the peripheral device some flexibility. If the peripheral does not have \
 any data to send, it can skip connection events, stay asleep, and save power. \
@@ -98,8 +106,8 @@ __Default__: 0 \n
 __Range__: ${Common.connParamsRanges.connLatencyMinValue} to \
 ${Common.connParamsRanges.connLatencyMaxValue}`
 
-// Long description for the upConnTo configuration parameter
-const upConnToLongDescription =`This time-out is the maximum amount of time \
+// Long description for the reqConnTo configuration parameter
+const reqConnToLongDescription =`This time-out is the maximum amount of time \
 between two successful connection events. If this time passes without a \
 successful connection event, the device terminates the connection and returns \
 to an unconnected state.\n
@@ -116,8 +124,9 @@ html/ble-stack-5.x/gap.html#id4).\n`
 
  // Exports the long descriptions for each configurable
  exports = {
-    upMinConnIntLongDescription: upMinConnIntLongDescription,
-    upMaxConnIntLongDescription: upMaxConnIntLongDescription,
-    upSlaveLatLongDescription: upSlaveLatLongDescription,
-    upConnToLongDescription: upConnToLongDescription
+    paramUpdateDelayLongDescription: paramUpdateDelayLongDescription,
+    reqMinConnIntLongDescription: reqMinConnIntLongDescription,
+    reqMaxConnIntLongDescription: reqMaxConnIntLongDescription,
+    reqSlaveLatLongDescription: reqSlaveLatLongDescription,
+    reqConnToLongDescription: reqConnToLongDescription
 };

@@ -525,12 +525,20 @@ static void rxDoneCallback(RF_Handle h, RF_CmdHandle ch, RF_EventMask e)
                 }
                 //copy address from packet payload (as it is not in hdr)
                 memcpy(&rxPacket.dstAddr, (&pDataEntry->data + hdrSize), addrSize);
-                //copy payload
-                memcpy(&rxPacket.payload, (&pDataEntry->data + hdrSize + addrSize), rxPacket.len);
-                rxPacket.rssi = rxStatistics.lastRssi;
-                rxPacket.absTime = rxStatistics.timeStamp;
+                if(EASYLINK_MAX_DATA_LENGTH >= rxPacket.len)
+                {
+                    //copy payload
+                    memcpy(&rxPacket.payload, (&pDataEntry->data + hdrSize + addrSize), rxPacket.len);
+                    rxPacket.rssi = rxStatistics.lastRssi;
+                    rxPacket.absTime = rxStatistics.timeStamp;
 
-                status = EasyLink_Status_Success;
+                    status = EasyLink_Status_Success;
+                }
+                else
+                {
+                    // Packet payload too long
+                    status = EasyLink_Status_Rx_Buffer_Error;
+                }
             }
             else if ( rxStatistics.nRxBufFull == 1)
             {
@@ -1173,10 +1181,12 @@ EasyLink_Status EasyLink_setRfPower(int8_t i8TxPowerDbm)
     rfDriverFree = false;
 
 #if (defined CONFIG_CC1352R1F3RGZ)     || (defined CONFIG_CC1312R1F3RGZ)     || \
-    (defined CONFIG_CC2652R1FRGZ)      || (defined CONFIG_CC1312R1_LAUNCHXL) || \
+    (defined CONFIG_CC2652R1FRGZ)      || (defined CONFIG_CC2652R1FSIP)      || \
+    (defined CONFIG_CC2652P1FSIP)      || (defined CONFIG_CC1312R1_LAUNCHXL) || \
     (defined CONFIG_CC1352R1_LAUNCHXL) || (defined CONFIG_CC26X2R1_LAUNCHXL) || \
     (defined LAUNCHXL_CC1352P1)        || (defined LAUNCHXL_CC1352P_2)       || \
-    (defined LAUNCHXL_CC1352P_4)
+    (defined LAUNCHXL_CC1352P_4)       || (defined CONFIG_LP_CC2652RSIP)     || \
+    (defined CONFIG_LP_CC2652PSIP)
 
     RF_TxPowerTable_Entry *rfPowerTable = NULL;
     RF_TxPowerTable_Value newValue;
@@ -1298,10 +1308,12 @@ EasyLink_Status EasyLink_getRfPower(int8_t *pi8TxPowerDbm)
     }
 
 #if (defined CONFIG_CC1352R1F3RGZ)     || (defined CONFIG_CC1312R1F3RGZ)     || \
-    (defined CONFIG_CC2652R1FRGZ)      || (defined CONFIG_CC1312R1_LAUNCHXL) || \
+    (defined CONFIG_CC2652R1FRGZ)      || (defined CONFIG_CC2652R1FSIP)      || \
+    (defined CONFIG_CC2652P1FSIP)      || (defined CONFIG_CC1312R1_LAUNCHXL) || \
     (defined CONFIG_CC1352R1_LAUNCHXL) || (defined CONFIG_CC26X2R1_LAUNCHXL) || \
     (defined LAUNCHXL_CC1352P1)        || (defined LAUNCHXL_CC1352P_2)       || \
-    (defined LAUNCHXL_CC1352P_4)
+    (defined LAUNCHXL_CC1352P_4)       || (defined CONFIG_LP_CC2652RSIP)     || \
+    (defined CONFIG_LP_CC2652PSIP)
 
     uint8_t rfPowerTableSize = 0;
     RF_TxPowerTable_Entry *rfPowerTable = NULL;

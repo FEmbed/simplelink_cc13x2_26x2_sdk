@@ -364,6 +364,10 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "I2S", null,
+        [{name: "I2SCC26XX"}], null);
+
     /* overwrite base module attributes */
     let result = Object.assign({}, base, devSpecific);
 

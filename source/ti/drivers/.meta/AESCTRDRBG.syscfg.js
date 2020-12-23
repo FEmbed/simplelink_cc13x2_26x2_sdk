@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,6 +65,7 @@ let base = {
     displayName         : "AESCTRDRBG",
     description         : "AES (Advanced Encryption Standard) Counter"
         + " Deterministic Random Bit Generator (CTRDRBG) Driver",
+    alwaysShowLongDescription : true,
     longDescription     : `
 The [__AESCTRDRBG driver__][1] generates cryptographically secure random
 numbers. Its output may be used as keying material or for other security
@@ -73,9 +74,9 @@ related purposes.
 * [Usage Synopsis][2]
 * [Examples][3]
 
-[1]: /tidrivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#ti_drivers_AESCTRDRBG_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#ti_drivers_AESCTRDRBG_Examples "C usage examples"
+[1]: /drivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#ti_drivers_AESCTRDRBG_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#ti_drivers_AESCTRDRBG_Examples "C usage examples"
 `,
     validate            : validate,
     config              : Common.addNameConfig(config, "/ti/drivers/aesctrdrbg", "CONFIG_AESCTRDRBG_"),

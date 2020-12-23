@@ -39,12 +39,7 @@
 
 // Long description for the maxBonds configuration parameter
 const maxBondsLongDescription = `Maximum number of bonds that can be saved in NV.\n
-__Default__: 10\n
-__Note__: Due to the structure of SNV, if the maximum number of bonds is set to\
-more than 13, then there are some additional required changes to support storage\
-of the larger number of bonds.\n
-For more information, refer to the [BLE User's Guide](ble5stack/ble_user_guide/html/\
-ble-stack-5.x/gapbondmngr-cc13x2_26x2.html#increasing-number-of-bonding-entries).\n`
+__Default__: 10\n`
 
 // Long description for the maxCharCfg configuration parameter
 const maxCharCfgLongDescription = `Maximum number of characteristic configurations \

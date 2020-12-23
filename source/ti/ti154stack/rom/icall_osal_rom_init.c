@@ -64,6 +64,8 @@
 
 #include "rom_jt_def_154.h"
 
+#include <ti/drivers/dpl/ClockP.h>
+
 /*******************************************************************************
  * EXTERNS
  */
@@ -101,6 +103,8 @@ extern void ICall_leaveCSImpl(ICall_CSState key);
 #if defined(USE_ICALL) && !defined(USE_DMM)
 #if defined __TI_COMPILER_VERSION || defined __TI_COMPILER_VERSION__
 #pragma DATA_ALIGN(ICALL_OSAL_ROM_Flash_JT, 4)
+#elif defined(__GNUC__) || defined(__clang__)
+__attribute__ ((aligned (4)))
 #else
 #pragma data_alignment=4
 #endif
@@ -141,7 +145,7 @@ const uint32 ICALL_OSAL_ROM_Flash_JT[] =
      (uint32)&sAddrExtCpy,                                          // ROM_ICALL_OSAL_JT_OFFSET[25]
      (uint32)&sAddrExtCmp,                                          // ROM_ICALL_OSAL_JT_OFFSET[26]
 
-};  
+};
 #else
 const uint32 ICALL_OSAL_ROM_Flash_JT[] =
 {
@@ -170,7 +174,7 @@ const uint32 ICALL_OSAL_ROM_Flash_JT[] =
      (uint32)&strlen,                                              // ROM_ICALL_OSAL_JT_OFFSET[18]
      (uint32)&memcmp,                                                   // ROM_ICALL_OSAL_JT_OFFSET[19]
 
-     (uint32)&Clock_getTicks,                                           // ROM_ICALL_OSAL_JT_OFFSET[20]
+     (uint32)&ClockP_getSystemTicks,                                           // ROM_ICALL_OSAL_JT_OFFSET[20]
      (uint32)&OsalPort_setTimer,                                           // ROM_ICALL_OSAL_JT_OFFSET[21]
      (uint32)&OsalPort_stopTimer,                                          // ROM_ICALL_OSAL_JT_OFFSET[22]
 
@@ -184,7 +188,7 @@ const uint32 ICALL_OSAL_ROM_Flash_JT[] =
 
 
 void Icall_Osal_ROM_Init(void)
-{   
+{
     /* assign the Icall Osal ROM JT table */
     RAM_MAC_BASE_ADDR[ROM_RAM_ICALL_OSAL_TABLE_INDEX] = (uint32)(ICALL_OSAL_ROM_Flash_JT);
 }

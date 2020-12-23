@@ -317,30 +317,11 @@ function validate(inst, validation)
     const isSMEnabled = inst.secureLevel === "macSecureAndCommissioning";
     const isSMProject = inst.project.includes("SM");
 
-    // Linked Library Message - add info messages regarding linked library
-    if(isSecurityDisabled)
+    // If disabled option chosen after switching project type.
+    // Should never occur in examples as project type is locked
+    if(isSMEnabled && !isSMProject)
     {
-        validation.logInfo("Ensure that the maclib_nosecure library is linked",
-            inst, "secureLevel");
-    }
-    else if(isSMEnabled)
-    {
-        if(!isSMProject)
-        {
-            // If disabled option chosen after switching project type.
-            // Should never occur in examples as project type is locked
-            validation.logError("Commissioning only available for SM projects",
-                inst, "secureLevel");
-        }
-        else
-        {
-            validation.logInfo("Ensure that the maclib_sm library is linked",
-                inst, "secureLevel");
-        }
-    }
-    else
-    {
-        validation.logInfo("Ensure that the maclib_secure library is linked",
+        validation.logError("Commissioning only available for SM projects",
             inst, "secureLevel");
     }
 

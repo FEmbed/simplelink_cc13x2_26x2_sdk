@@ -108,6 +108,8 @@
 
 #if defined __TI_COMPILER_VERSION || defined __TI_COMPILER_VERSION__
 #pragma DATA_ALIGN(HMAC_ROM_Flash_JT, 4)
+#elif defined(__GNUC__) || defined(__clang__)
+__attribute__ ((aligned (4)))
 #else
 #pragma data_alignment=4
 #endif

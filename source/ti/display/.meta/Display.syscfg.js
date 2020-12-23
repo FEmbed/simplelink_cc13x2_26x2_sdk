@@ -46,12 +46,35 @@ let config = [
         name        : "displayType",
         displayName : "Display Type",
         default     : "UART",
-        onChange   : onDisplayTypeChange,
+        onChange    : onChange,
         options : [
             {name: "UART"},
             {name: "LCD"},
             {name: "Host"}
         ]
+    },
+    {
+        name: "displayImplementation",
+        displayName: "Display Implementation",
+        default: "DisplayUart",
+        options: [
+            {name: "DisplayUart"},
+            {name: "DisplayUart2"},
+            {name: "DisplayDogm1286"},
+            {name: "DisplayHost"}
+        ],
+        readOnly: true,
+        description: "Displays Display delegates available for the " +
+            system.deviceData.deviceId + " device and Display Type.",
+        longDescription: "Displays Display delegates available for the " +
+            system.deviceData.deviceId + " device and the " +
+            "__Display Type__.\n\n" + `
+Since there is only one delegate for each Display Type, it is a read-only
+value that cannot be changed. Please refer to the
+[__Display driver table__][0] for further documentation.
+
+[0]: /drivers/doxygen/html/index.html#display
+`
     },
     {
         name        : "lcdSize",
@@ -70,7 +93,8 @@ let config = [
         name        : "useUART2",
         displayName : "Use UART2",
         description : "Use UART2 for underlying UART driver",
-        default     : false
+        default     : false,
+        onChange    : onChange
     },
     {
         name        : "enableANSI",
@@ -293,10 +317,11 @@ function onChangeMutexTimeout(inst, ui)
 }
 
 /*
- *  ======== onDisplayTypeChange ========
+ *  ======== onChange ========
  *  Show/hide appropriate config options for each type of display
+ *  Update Display Implementation if useUART2 config is invoked
  */
-function onDisplayTypeChange(inst, ui)
+function onChange(inst, ui)
 {
     if (inst.displayType == "LCD") {
         ui.enableANSI.hidden = true;
@@ -307,6 +332,7 @@ function onDisplayTypeChange(inst, ui)
         ui.lcdSize.hidden = false;
         ui.mutexTimeout.hidden = true;
         ui.mutexTimeoutValue.hidden = true;
+        inst.displayImplementation = "DisplayDogm1286";
     }
     else if (inst.displayType == "Host") {
         ui.enableANSI.hidden = true;
@@ -317,6 +343,7 @@ function onDisplayTypeChange(inst, ui)
         ui.lcdSize.hidden = true;
         ui.mutexTimeout.hidden = true;
         ui.mutexTimeoutValue.hidden = true;
+        inst.displayImplementation = "DisplayHost";
     }
     else {
         ui.enableANSI.hidden = false;
@@ -327,6 +354,14 @@ function onDisplayTypeChange(inst, ui)
         ui.lcdSize.hidden = true;
         ui.mutexTimeout.hidden = false;
         onChangeMutexTimeout(inst, ui);
+
+        if (inst.useUART2 == false) {
+            inst.displayImplementation =
+                inst.$module.$configByName.displayImplementation.default;
+        }
+        else {
+            inst.displayImplementation = "DisplayUart2";
+        }
     }
 
     if (inst.$hardware) {
@@ -376,7 +411,7 @@ function onHardwareChanged(inst, ui)
         inst.mutexTimeout = "Never Timeout";
     }
 
-    onDisplayTypeChange(inst, ui);
+    onChange(inst, ui);
 }
 
 /*
@@ -394,12 +429,10 @@ function getLibs(mod)
 
     /* Get device information from GenLibs */
     let GenLibs = system.getScript("/ti/utils/build/GenLibs");
-    let toolchain = GenLibs.getToolchainDir();
-    let isa = GenLibs.getDeviceIsa();
-    let suffix = Common.getLibSuffix(isa, toolchain);
+    let libPath = GenLibs.libPath;
 
     /* add the display library to libGroup's libs */
-    libGroup.libs.push("ti/display/lib/display" + suffix);
+    libGroup.libs.push(libPath("ti/display", "display.a"));
 
     /* add dependency on /ti/drivers (if needed) */
     let needDrivers = false;
@@ -430,10 +463,10 @@ and portable APIs.
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_display_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_display_8h.html#ti_drivers_Display_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_display_8h.html#ti_drivers_Display_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#Display_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_display_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_display_8h.html#ti_drivers_Display_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_display_8h.html#ti_drivers_Display_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#Display_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName   : "CONFIG_Display_",
     config                : Common.addNameConfig(config, "/ti/display/Display","CONFIG_Display_"),

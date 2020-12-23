@@ -12,8 +12,8 @@ tsort.debug = function (){};    /* comment out this line for trace debug */
  *  ======== tsort.Node ========
  *  A Graph is a collection of Node's.  This is a Node constructor.
  *
- *  @param name name of this node
- *  @param graph the tsort.Graph that this node is a part of.
+ *  @param {string} name name of this node
+ *  @param {Object} graph the tsort.Graph that this node is a part of.
  */
 tsort.Node = function(name, graph)
 {
@@ -29,8 +29,7 @@ tsort.Node = function(name, graph)
  *  ======== Node.pointsTo ========
  *  Establish a directed arc from this node to the specified node.
  *
- *  @param node the node that <this> node should be connected to
- *  @return void
+ *  @param {Object} node the node that <this> node should be connected to
  */
 tsort.Node.prototype.pointsTo = function (node)
 {
@@ -45,8 +44,6 @@ tsort.Node.prototype.pointsTo = function (node)
 /**
  *  ======== Node.reset ========
  *  Initialize fields of Node that are modified during traversal.
- *
- *  @return void
  */
 tsort.Node.prototype.reset = function ()
 {
@@ -59,7 +56,7 @@ tsort.Node.prototype.reset = function ()
  *  ======== Node.toString ========
  *  Convert this node to a string.
  *
- *  @return the name of this node
+ *  @return {string} the name of this node
  */
 tsort.Node.prototype.toString = function ()
 {
@@ -70,7 +67,8 @@ tsort.Node.prototype.toString = function ()
  *  ======== tsort.Graph ========
  *  Constructor for a Graph.
  *
- *  @param name the name of the graph
+ *  @param {string} name the name of the graph
+ *  @param {Function} error the error function to call
  */
 tsort.Graph = function (name, error)
 {
@@ -84,8 +82,6 @@ tsort.Graph = function (name, error)
  *  ======== Graph.reverse ========
  *  Reverse the direction of all arcs in the graph.  This allows one to
  *  easily determine reachability by reusing DFS traversal.
- *
- *  @return void
  */
 tsort.Graph.prototype.reverse = function ()
 {
@@ -96,7 +92,7 @@ tsort.Graph.prototype.reverse = function ()
  *  ======== Graph.toString ========
  *  Convert this graph to a string.
  *
- *  @return the name of this graph.
+ *  @return {string} the name of this graph.
  */
 tsort.Graph.prototype.toString = function ()
 {
@@ -107,8 +103,8 @@ tsort.Graph.prototype.toString = function ()
  *  ======== Graph.mkNode ========
  *  Add a Node to this Graph.
  *
- *  @param name the name of the node to create and add to the graph
- *  @return the newly created node.
+ *  @param {string} name the name of the node to create and add to the graph
+ *  @return {Object} the newly created node.
  */
 tsort.Graph.prototype.mkNode = function (name)
 {
@@ -125,8 +121,8 @@ tsort.Graph.prototype.mkNode = function (name)
  *  ======== Graph.DFS ========
  *  Do a DFS traversal of this Graph.
  *
- *  @param fxn function to call as each node is visited.
- *  @param start node to start from within the graph.
+ *  @param {Function} fxn function to call as each node is visited.
+ *  @param {Object} start node to start from within the graph.
  */
 tsort.Graph.prototype.DFS = function(fxn, start)
 {
@@ -200,7 +196,7 @@ tsort.Graph.prototype.DFS = function(fxn, start)
  *  Ordinary topological sort of the nodes.  Returns an array
  *  of all graph nodes in topological order.
  *
- *  @return an array of all graph nodes in topological order
+ *  @return {Array} an array of all graph nodes in topological order
  */
 tsort.Graph.prototype.tsort = function ()
 {
@@ -252,9 +248,9 @@ tsort.Graph.prototype.tsort = function ()
  *  order determined by the partitioning and simply call ordinary tsort
  *  (which starts with nodes that appear earlier in the node array first).
  *
- *  @param lateList array of nodes that should appear as "late as possible"
- *  @param earlyList array of nodes that should appear as "early as possible"
- *  @return an array of all graph nodes in topological order
+ *  @param {Array} lateList nodes that should appear as "late as possible"
+ *  @param {Array} earlyList nodes that should appear as "early as possible"
+ *  @return {Array} all graph nodes in topological order
  */
 tsort.Graph.prototype.tsort2 = function (lateList, earlyList)
 {
@@ -340,8 +336,8 @@ tsort.Graph.prototype.tsort2 = function (lateList, earlyList)
  *  ======== Graph.canReach ========
  *  Returns an array of nodes that can reach the specified node.
  *
- *  @param node node to be reached
- *  @return an array of nodes that can reach <node>.
+ *  @param {Object} node node to be reached
+ *  @return {Array} an array of nodes that can reach <node>.
  */
 tsort.Graph.prototype.canReach = function (node)
 {
@@ -373,7 +369,7 @@ tsort.test = function (verbose)
     graph.mkNode("hwi");
     graph.clk.pointsTo(graph.gbl);
     graph.clk.pointsTo(graph.mem);
-//    graph.gbl.pointsTo(graph.clk);
+    //graph.gbl.pointsTo(graph.clk);
 
     tsort.print("Default order:   " + graph.tsort());
 

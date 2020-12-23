@@ -128,15 +128,6 @@ function disabledModeOptions(inst)
                 }
             ]);
         }
-        else {
-            return ([
-                {
-                    name: "Three Pin",
-                    reason: "Disabled by " + inst.$hardware.displayName +
-                    ". See: " + system.getReference(inst, "$hardware")
-                }
-            ]);
-        }
     }
 
     return ([]);
@@ -148,21 +139,9 @@ function disabledModeOptions(inst)
 function onHardwareChanged(inst, ui)
 {
     if (inst.$hardware) {
-
-        /* If the hardware has a slave select line */
-        if (Common.findSignalTypes(inst.$hardware, ["SPI_SS"])) {
-            inst.mode = "Four Pin SS Active Low";
-            ui.mode.readOnly = false;
-        }
-        else {
+        if (!Common.findSignalTypes(inst.$hardware, ["SPI_SS"])) {
             inst.mode = "Three Pin";
-            ui.mode.readOnly = true;
         }
-    }
-    else {
-        /* If hardware removed, set default */
-        inst.mode = "Three Pin";
-        ui.mode.readOnly = false;
     }
 
     /*
@@ -244,10 +223,10 @@ interface to control onboard Serial Peripheral Interfaces (SPI).
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_s_p_i_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#SPI_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_s_p_i_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#SPI_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName: "CONFIG_SPI_",
     config: Common.addNameConfig(config, "/ti/drivers/SPI", "CONFIG_SPI_"),

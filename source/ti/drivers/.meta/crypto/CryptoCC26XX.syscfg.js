@@ -70,7 +70,12 @@ let devSpecific = {
  *  This function is invoked by the generic Crypto module to
  *  allow us to augment and override as needed.
  */
-function extend(base) {
+function extend(base)
+{
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "Crypto", null,
+        [{name: "CryptoCC26XX"}], null);
+
     return Object.assign({}, base, devSpecific);
 }
 

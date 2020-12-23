@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,8 +50,8 @@ let config = [
 a [__GPIO__][1] instance or a [__PWM__][2] instance, however, brightness
 control requires a PWM.
 
-[1]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#details "GPIO"
-[2]: /tidrivers/doxygen/html/_p_w_m_8h.html#details "PWM"
+[1]: /drivers/doxygen/html/_g_p_i_o_8h.html#details "GPIO"
+[2]: /drivers/doxygen/html/_p_w_m_8h.html#details "PWM"
 `,
         default: false
     }
@@ -159,7 +159,9 @@ function moduleInstances(inst)
             description: "This LED is driven by a GPIO",
             moduleName: "/ti/drivers/GPIO",
             args: {
-                $name: inst.$name + "_GPIO",
+                $name: inst.$name + "_GPIO"
+            },
+            requiredArgs: {
                 mode : "Output"
             }
         };
@@ -216,12 +218,12 @@ The [__LED driver__][1] provides a simple interface to control LEDs.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration][4]
-[1]: /tidrivers/doxygen/html/_l_e_d_8h.html#details "C API reference"
+[1]: /drivers/doxygen/html/_l_e_d_8h.html#details "C API reference"
 [2]:
-/tidrivers/doxygen/html/_l_e_d_8h.html#ti_drivers_LED_Synopsis "Synopsis"
-[3]: /tidrivers/doxygen/html/_l_e_d_8h.html#ti_drivers_LED_Examples
+/drivers/doxygen/html/_l_e_d_8h.html#ti_drivers_LED_Synopsis "Synopsis"
+[3]: /drivers/doxygen/html/_l_e_d_8h.html#ti_drivers_LED_Examples
 "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#LED_Configuration_Options "Configuration options reference"
+[4]: /drivers/syscfg/html/ConfigDoc.html#LED_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName: "CONFIG_LED_",
 

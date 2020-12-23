@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Texas Instruments Incorporated
+ * Copyright (c) 2019-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,7 @@
 #include <ti/drivers/AESCTR.h>
 #include <ti/drivers/cryptoutils/cryptokey/CryptoKey.h>
 #include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
+#include <ti/drivers/cryptoutils/utils/CryptoUtils.h>
 
 /* Forward declarations */
 static void AESCTRDRBGXX_addBigendCounter(uint8_t *counter, uint32_t increment);
@@ -142,23 +143,6 @@ static int_fast16_t AESCTRDRBGXX_updateState(AESCTRDRBG_Handle handle,
 }
 
 /*
- *  ======== reverseBufferBytewise ========
- */
-static void reverseBufferBytewise(void * buffer, size_t bufferLength) {
-    uint8_t *bufferLow = buffer;
-    uint8_t *bufferHigh = bufferLow + bufferLength - 1;
-    uint8_t tmp;
-
-    while (bufferLow < bufferHigh) {
-        tmp = *bufferLow;
-        *bufferLow = *bufferHigh;
-        *bufferHigh = tmp;
-        bufferLow++;
-        bufferHigh--;
-    }
-}
-
-/*
  *  ======== AESCTRDRBGXX_addBigendCounter ========
  */
 static void AESCTRDRBGXX_addBigendCounter(uint8_t *counter, uint32_t increment) {
@@ -166,7 +150,8 @@ static void AESCTRDRBGXX_addBigendCounter(uint8_t *counter, uint32_t increment) 
     uint64_t prior;
 
     /* Turn it into a little-endian counter */
-    reverseBufferBytewise(counter64, AESCTRDRBG_AES_BLOCK_SIZE_BYTES);
+    CryptoUtils_reverseBufferBytewise(counter64,
+                                      AESCTRDRBG_AES_BLOCK_SIZE_BYTES);
 
     prior = counter64[0];
 
@@ -179,7 +164,8 @@ static void AESCTRDRBGXX_addBigendCounter(uint8_t *counter, uint32_t increment) 
     }
 
     /* Turn it back into a big-endian integer */
-    reverseBufferBytewise(counter64, AESCTRDRBG_AES_BLOCK_SIZE_BYTES);
+    CryptoUtils_reverseBufferBytewise(counter64,
+                                      AESCTRDRBG_AES_BLOCK_SIZE_BYTES);
 }
 
 /*
@@ -348,6 +334,8 @@ int_fast16_t AESCTRDRBG_getBytes(AESCTRDRBG_Handle handle, CryptoKey *randomByte
                                   CEIL(randomBytes->u.plaintext.keyLength, AESCTRDRBG_AES_BLOCK_SIZE_BYTES) - 1);
 
     status = AESCTRDRBGXX_updateState(handle, NULL, 0);
+
+    randomBytes->encoding = CryptoKey_PLAINTEXT;
 
     AESCTR_enableThreadSafety(object->ctrHandle);
     AESCTR_releaseLock(object->ctrHandle);

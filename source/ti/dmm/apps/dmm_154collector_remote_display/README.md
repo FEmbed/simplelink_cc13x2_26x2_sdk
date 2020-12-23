@@ -13,6 +13,7 @@
   * [Provisioned 15.4 Network on the Collector](#Provisioned15.4Collector)
   * [15.4 Network Device Discovery via BLE](#NetworkDeviceDiscovery15.4Collector)
   * [DMM 15.4 Security Manager (SM) Commissioning](#DMM15.4SecurityManager)
+  * [Disabling Common User Interface](#DisableCUI)
 * [DMM Collector Reboot and Reset](#DMMCollectorRebootAndReset)
 * [DMM Limitations](#DmmLimitations)
 
@@ -634,6 +635,17 @@ The software flowchart below describes the different scenarios for the SMCOMMISS
 * **GATT Val Permissions**: GATT_PERMIT_AUTHEN_WRITE
 * **Valid Values**: Any
 
+## <a name="DisableCUI"></a>Disabling Common User Interface
+
+The common user interface (CUI) is a UART based interface that allows users to control and receive updates regarding the application. For various reasons, including reducing the memory footprint, the user is able to disable the common user interface (CUI). To disable the CUI, the following variable must be defined in the `dmm_154collector_remote_display_app.opts`:
+
+```
+-DCUI_DISABLE
+```
+
+> Please Note: particular features that are dependednt on the CUI wil be unavailable when this feature is enabled.
+
+
 ## <a name="DMMCollectorRebootAndReset"></a>DMM Collector Reboot and Reset
 
 By default the DMM 15.4 Collector RD is configured to store network parameters
@@ -667,7 +679,6 @@ To clear the NV, perform a device reset while holding the **RIGHT** button.
 
 > Note: Once booted the **RIGHT** button is used to turn Permit Join on in the
 network. Be careful not to hold the Right button down for to long.
-
 
 ## <a name="DmmLimitations"></a>DMM Limitations
 

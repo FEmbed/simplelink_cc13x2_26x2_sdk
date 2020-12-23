@@ -63,7 +63,6 @@
  *  dependencies these libraries have.  Specifically:
  *    {
  *      name: "/ti/ndk",       // name of this "library group"
- *      vers: "1.0.0.0"        // (optional) version of this library group
  *      libs: ["ti/...", ...], // array of physical library names provided
  *      deps: [                // array of lib groups required by libs above
  *        "/ti/drivers",
@@ -150,19 +149,19 @@
 let config = [
     {
         name: "enableLibs",
-//        displayName: "Generate Linker File with Libraries",
+        //displayName: "Generate Linker File with Libraries",
         hidden: true,
         default: false
     },
     {
         name: "asserts",
-//        displayName: "Asserts",
+        //displayName: "Asserts",
         hidden: true,
         default: ""
     },
     {
         name: "toolchain",
-//        displayName: "Toolchain",
+        //displayName: "Toolchain",
         hidden: true,
         default: "",
         options: [
@@ -213,7 +212,7 @@ let tsortLib = system.getScript("tsort.syscfg.js");
  *  Each library group is specified by an object of the form:
  *     { name: "/ti/display",
  *       libs: ["/...", ...],
- *       deps: ["/ti/drivers:1.0.1.0", ...]
+ *       deps: ["/ti/drivers", ...]
  *     }
  *
  *  @param args - array of library groups and any user supplied "assertions"
@@ -248,18 +247,18 @@ function genList(args)
                     /^([a-zA-Z0-9/]+)\s*([<>#])\s*([a-zA-Z0-9/]+)$/);
                 if (tokens) {
                     switch (tokens[2]) {
-                    case '>':
-                        edges.push({start: tokens[1], end: tokens[3]});
-                        break;
-                    case '<':
-                        edges.push({start: tokens[3], end: tokens[1]});
-                        break;
-                    case '#':
-                        if (cuts[tokens[1]] == null) {
-                            cuts[tokens[1]] = {};
-                        }
-                        cuts[tokens[1]][tokens[3]] = true;
-                        break;
+                        case '>':
+                            edges.push({start: tokens[1], end: tokens[3]});
+                            break;
+                        case '<':
+                            edges.push({start: tokens[3], end: tokens[1]});
+                            break;
+                        case '#':
+                            if (cuts[tokens[1]] == null) {
+                                cuts[tokens[1]] = {};
+                            }
+                            cuts[tokens[1]][tokens[3]] = true;
+                            break;
                     }
                 }
             }
@@ -309,7 +308,7 @@ function genList(args)
         var start = group.name;
         var startAdded = false;
         for (j = 0; j < group.deps.length; j++) {
-            var end = group.deps[j].split(':')[0];
+            var end = group.deps[j];
             if ((start in cuts) && (end in cuts[start])) {
                 console.log("    cutting '" + start + "' -> '" + end + "'");
             }
@@ -361,20 +360,20 @@ function getDeviceIsa(devId = null)
     let isa = "";
 
     switch (true) {
-      case /CC32/.test(devId):
-        isa = "m4";
-        break;
-      case /CC[12][36].0/.test(devId):
-        isa = "m3";
-        break;
-      case /CC[12][36].2/.test(devId):
-      case /MSP432/.test(devId):
-        isa = "m4f";
-        break;
-      default:
-        isa = devId;
-        //console.log("GenLibs.syscfg.js::getDeviceIsa() unsupported device!");
-        break;
+        case /CC32/.test(devId):
+            isa = "m4";
+            break;
+        case /CC[12][36].0/.test(devId):
+            isa = "m3";
+            break;
+        case /CC[12][36].2/.test(devId):
+        case /MSP432/.test(devId):
+            isa = "m4f";
+            break;
+        default:
+            isa = devId;
+            //console.log("GenLibs.syscfg.js::getDeviceIsa() unsupported device!");
+            break;
     }
 
     return (isa);

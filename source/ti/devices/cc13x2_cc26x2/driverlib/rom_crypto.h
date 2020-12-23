@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       rom_crypto.h
-*  Revised:        2020-03-10 14:19:05 +0100 (Tue, 10 Mar 2020)
-*  Revision:       57013
+*  Revised:        2020-06-02 15:59:24 +0200 (Tue, 02 Jun 2020)
+*  Revision:       57639
 *
 *  Description:    This header file is the API to the crypto functions
 *                  built into ROM on the CC13xx/CC26xx.

@@ -105,7 +105,6 @@ const I2C_Config I2C_config[`countDef`] = {
     %    }
     % }
     {
-        .fxnTablePtr = &I2CCC26XX_fxnTable,
         .object      = &i2cCC26xxObjects[`inst.$name`],
         .hwAttrs     = &i2cCC26xxHWAttrs[`inst.$name`]
     },

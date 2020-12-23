@@ -114,7 +114,7 @@ function generateIncludesC(modules, useCoEx) {
         }
         else if (modpath === BasePath + "settings/ieee_15_4") {
             libPath = "ieee";
-            phyGroup = Common.PHY_IEEE_802_15_4;
+            phyGroup = Common.PHY_IEEE_15_4;
         }
         else {
             // Not a RadioConfig module, skip

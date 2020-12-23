@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,7 +86,7 @@ let config = [
             + " the maximum speed for this instance is the maximum"
             + " speed supported by the slowest attached slave.  If no slave"
             + " devices are attached, the maximum bit rate is 100 Kbps."
-            + "\n[More ...](/tidrivers/syscfg/html/ConfigDoc.html"
+            + "\n[More ...](/drivers/syscfg/html/ConfigDoc.html"
             + "#ti_drivers_I2C_maxBitRate \"Full description of"
             + " this parameter\")\n",
 
@@ -107,7 +107,7 @@ let config = [
             + "By default, SysConfig triggers an error in the event that"
             + " the declared maximum speed of an attached slave is less then"
             + " this value.  You can disable this error by setting the "
-            + " [speedChecks](/tidrivers/syscfg/html/ConfigDoc.html"
+            + " [speedChecks](/drivers/syscfg/html/ConfigDoc.html"
             + "#ti_drivers_I2C_speedChecks) configuration parameter to either"
             + " `'Warn'` or `'Remark'`.\n"
             + "\n**Note**: The maximum bit rate for an I2C bus is a function"
@@ -353,6 +353,14 @@ function validate(inst, vo)
 
         /* validate I2C addresses used */
         _validateAddrs(inst, components, vo);
+    }
+
+    /* If this instance has a SCL Timeout config */
+    if (inst.sclTimeout) {
+        if (inst.sclTimeout < 0 || inst.sclTimeout > 0xFF) {
+            vo.logError("Invalid timeout specified! Value must be between 0" +
+                " and 0xFF", inst, "sclTimeout");
+        }
     }
 }
 
@@ -1009,10 +1017,10 @@ interface to access peripherals on an I2C bus.
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_i2_c_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_i2_c_8h.html#ti_drivers_I2C_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_i2_c_8h.html#ti_drivers_I2C_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#I2C_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_i2_c_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_i2_c_8h.html#ti_drivers_I2C_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_i2_c_8h.html#ti_drivers_I2C_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#I2C_Configuration_Options "Configuration options reference"
 `,
 
     defaultInstanceName: "CONFIG_I2C_",

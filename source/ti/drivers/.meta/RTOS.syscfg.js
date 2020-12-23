@@ -59,6 +59,7 @@ let family = Common.device2Family(system.deviceData, "RTOS");
 let rtosConfig = [
     {
         name: "name",
+        displayName: "Name",
         default: "TI-RTOS",
         options: [
             {name: "NoRTOS"},
@@ -94,6 +95,14 @@ function modules(inst)
         reqs = [];
     }
 
+    if (inst.name == "FreeRTOS") {
+        reqs.push({
+            name: "FreeRTOS",
+            moduleName: "/ti/drivers/FreeRTOS",
+            hidden: true
+        });
+    }
+
     return (reqs);
 }
 
@@ -117,10 +126,10 @@ function moduleInstances(inst)
 
     if (_timerConflict(inst.name)) {
         var timer = Reservation.getTimerInstParams(inst.timerID);
-        timer.args.owner = inst.name;
-        timer.args.purpose = "Needed to support function timeouts";
-        timer.args.$name = "RTOS_Timer0";
-        timer.hidden = false; // issue: set to true when PMUX-1197 is fixed
+        timer.requiredArgs.owner = inst.name;
+        timer.requiredArgs.purpose = "Needed to support function timeouts";
+        timer.requiredArgs.$name = "RTOS_Timer0";
+        timer.hidden = true;
         timer.collapsed = true; /* don't auto expand resource properties */
         reservations.push(timer);
     }
@@ -188,6 +197,8 @@ exports = {
 
     /* tooltip in GUI */
     description: "RTOS Resource Manager",
+
+    alwaysShowLongDescription : true,
 
     /* Intro splash in GUI */
     longDescription: "The RTOS module reserves device resources that"

@@ -224,11 +224,12 @@ function getTxPowerRFConfig(inst, freqBand, phyType, phyGroup)
 
     if((board.includes("CC1352P1") && freqBand === "freqBandSub1")
         || (((board.includes("CC1352P-2") || board.includes("CC1352P_2"))
-        || (board.includes("CC1352P-4") || board.includes("CC1352P_4")))
+        || (board.includes("CC1352P-4") || board.includes("CC1352P_4"))
+        || (board.includes("CC2652PSIP")))
         && (freqBand === "freqBand24")))
     {
         // On 1352P1 the high PA is enabled for Sub-1 GHz
-        // On 1352P2 and P4 the high PA is enabled for 2.4 GHz
+        // On 2652PSIP, 1352P2, and P4 the high PA is enabled for 2.4 GHz
         txPowerHiOptions = RfDesign.getTxPowerOptions(freq, true);
     }
 

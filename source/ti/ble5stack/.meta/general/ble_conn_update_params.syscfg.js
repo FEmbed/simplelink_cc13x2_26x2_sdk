@@ -45,30 +45,56 @@ const Common = system.getScript("/ti/ble5stack/ble_common.js");
 
 const config = [
     {
-        name: "upMinConnInt",
-        displayName: "Update Min Connection Interval (ms)",
-        default: 500,
-        longDescription: Docs.upMinConnIntLongDescription
+        name: "hideParamUpdateDelay",
+        onChange: onHideParamUpdateDelayChange,
+        default: false,
+        hidden: true
     },
     {
-        name: "upMaxConnInt",
-        displayName: "Update Max Connection Interval (ms)",
-        default: 1000,
-        longDescription: Docs.upMaxConnIntLongDescription
-    },
-    {
-        name: "upSlaveLat",
-        displayName: "Update Slave Latency",
-        default: 0,
-        longDescription: Docs.upSlaveLatLongDescription
-    },
-    {
-        name: "upConnTo",
-        displayName: "Update Connection Timeout (ms)",
+        name: "paramUpdateDelay",
+        displayName: "Parameter Update Delay (ms)",
+        description: "Delay after connection establishment, before sending a parameter update requst",
         default: 6000,
-        longDescription: Docs.upConnToLongDescription
+        hidden: false,
+        longDescription: Docs.paramUpdateDelayLongDescription
+    },
+    {
+        name: "reqMinConnInt",
+        displayName: "Requested Min Conn. Interval (ms)",
+        default: 500,
+        longDescription: Docs.reqMinConnIntLongDescription
+    },
+    {
+        name: "reqMaxConnInt",
+        displayName: "Requested Max Conn. Interval (ms)",
+        default: 1000,
+        longDescription: Docs.reqMaxConnIntLongDescription
+    },
+    {
+        name: "reqSlaveLat",
+        displayName: "Requested Slave Latency",
+        default: 0,
+        longDescription: Docs.reqSlaveLatLongDescription
+    },
+    {
+        name: "reqConnTo",
+        displayName: "Requested Conn. Timeout (ms)",
+        default: 6000,
+        longDescription: Docs.reqConnToLongDescription
     }
 ]
+
+/*
+ * ======== onHideParamUpdateDelayChange ========
+ * Hide/unhide the paramUpdateDelay configurable
+ * @param inst  - Module instance containing the config that changed
+ * @param ui    - The User Interface object
+ */
+function onHideParamUpdateDelayChange(inst, ui)
+{
+    inst.hideParamUpdateDelay == true ?
+    ui.paramUpdateDelay.hidden = true : ui.paramUpdateDelay.hidden = false;
+}
 
 /*
  * ======== validate ========

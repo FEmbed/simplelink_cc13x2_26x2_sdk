@@ -169,6 +169,19 @@ function getRfDesignOptions()
     {
         newRfDesignOptions = [{name: "LAUNCHXL-CC2652RB"}];
     }
+    else if(deviceId === "CC2652R1FSIP")
+    {
+        newRfDesignOptions = [{name: "LP_CC2652RSIP"}];
+    }
+    else if(deviceId === "CC2652P1FSIP")
+    {
+        newRfDesignOptions = [{name: "LP_CC2652PSIP"}];
+    }
+    else
+    {
+        throw new Error("Unknown deviceId " + deviceId + ".");
+    }
+
 
     return(newRfDesignOptions);
 }

@@ -2270,6 +2270,7 @@ extern void  rf_patch_cpe_bt5();
 extern void  rf_patch_cpe_multi_protocol();
 extern void  rf_patch_cpe_multi_protocol_rtls();
 extern void  rf_patch_cpe_multi_bt5_coex(void);
+extern void  rf_patch_rfe_ble_coex(void);
 
 void MAP_rf_patch_cpe( void )
 {
@@ -2285,6 +2286,13 @@ void MAP_rf_patch_cpe( void )
       rf_patch_cpe_bt5();
     #endif
   #endif
+#endif
+}
+
+void MAP_rf_patch_rfe( void )
+{
+#ifdef USE_COEX
+  rf_patch_rfe_ble_coex();
 #endif
 }
 

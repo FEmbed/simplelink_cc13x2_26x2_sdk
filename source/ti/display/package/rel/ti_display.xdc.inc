@@ -14,7 +14,7 @@ DisplayDogm1286.h
 lcd/LCDDogm1286.h
 lcd/LCDDogm1286_util.h
 package/package.cfg.xdc.inc
-lib/display.aem4f
+lib/ccs/m4f/display.a
 package/package_ti.display.c
 Display.c
 DisplayExt.c
@@ -26,5 +26,10 @@ lcd/SharpGrLib.c
 DisplayDogm1286.c
 lcd/LCDDogm1286.c
 lcd/LCDDogm1286_util.c
+lib/display.aem4f
+lib/ticlang/m4f/display.a
+lib/display.am4f
+lib/gcc/m4f/display.a
 lib/display.am4fg
+lib/iar/m4f/display.a
 lib/display.arm4f

@@ -42,7 +42,7 @@ const docs = system.getScript("/ti/ti154stack/oad_config/toad_config/"
     + "ti154stack_toad_config_docs.js");
 
 const toadReadOnlyStr = "Turbo OAD is not enabled for this project";
-const AGAMA_MEMORY_MAX = 81920; // 80 KiB
+const CC13X2_CC26X2_MEMORY_MAX = 81920; // 80 KiB
 
 // Configurables for the static TOAD settings group
 const config = [
@@ -135,9 +135,11 @@ function validate(inst, validation)
                 "blockCacheSize");
         }
 
-        if(inst.blockCacheSize <= 0 || inst.blockCacheSize > AGAMA_MEMORY_MAX)
+        if(inst.blockCacheSize <= 0 ||
+           inst.blockCacheSize > CC13X2_CC26X2_MEMORY_MAX)
         {
-            validation.logError(`Must be between 0 and ${AGAMA_MEMORY_MAX}`,
+            validation.logError(
+                `Must be between 0 and ${CC13X2_CC26X2_MEMORY_MAX}`,
                 inst, "blockCacheSize");
         }
 
@@ -148,9 +150,11 @@ function validate(inst, validation)
                 "writeBufferSize");
         }
 
-        if(inst.writeBufferSize <= 0 || inst.writeBufferSize > AGAMA_MEMORY_MAX)
+        if(inst.writeBufferSize <= 0 ||
+           inst.writeBufferSize > CC13X2_CC26X2_MEMORY_MAX)
         {
-            validation.logError(`Must be between 0 and ${AGAMA_MEMORY_MAX}`,
+            validation.logError(
+                `Must be between 0 and ${CC13X2_CC26X2_MEMORY_MAX}`,
                 inst, "writeBufferSize");
         }
     }

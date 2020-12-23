@@ -1,7 +1,7 @@
 /*******************************************************************************
 *  Filename:       rom_crypto.c
-*  Revised:        2020-03-10 14:39:38 +0100 (Tue, 10 Mar 2020)
-*  Revision:       57014
+*  Revised:        2020-06-02 15:59:24 +0200 (Tue, 02 Jun 2020)
+*  Revision:       57639
 *
 *  Description:    This is the implementation for the API to the ECC functions
 *                  built into ROM on the CC13x2/CC26x2.

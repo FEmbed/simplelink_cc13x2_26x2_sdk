@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,7 @@ let base = {
     displayName         : "AESCCM",
     description         : "AES (Advanced Encryption Standard) Counter with"
         + " Cipher Block Chaining Message Authentication Code (CBC-MAC) Driver",
+    alwaysShowLongDescription : true,
     longDescription     : `
 The [__AESCCM driver__][1] combines CBC-MAC with an AES block cipher
 in CTR mode of operation. This combination of block cipher modes
@@ -75,10 +76,10 @@ multiples of the block cipher block size.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration Options][4]
-[1]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_AESCCM_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_AESCCM_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCCM_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_a_e_s_c_c_m_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_AESCCM_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_AESCCM_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#AESCCM_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
     defaultInstanceName : "CONFIG_AESCCM_",

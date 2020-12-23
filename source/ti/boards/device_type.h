@@ -48,6 +48,8 @@ extern "C" {
 #define DeviceType_ID_CC2642R1      9
 #define DeviceType_ID_CC2652R1      10
 #define DeviceType_ID_CC2652RB      11
+#define DeviceType_ID_CC2652RSIP    12
+#define DeviceType_ID_CC2652PSIP    13
 
 /*
  * Lookup table that sets DeviceType_ID based on the defined device type
@@ -75,6 +77,10 @@ extern "C" {
     #define DeviceType_ID       DeviceType_ID_CC2652R1
 #elif defined(LAUNCHXL_CC2652RB)
     #define DeviceType_ID       DeviceType_ID_CC2652RB
+#elif defined(LP_CC2652RSIP)
+    #define DeviceType_ID       DeviceType_ID_CC2652RSIP
+#elif defined(LP_CC2652PSIP)
+    #define DeviceType_ID       DeviceType_ID_CC2652PSIP
 #else
     #define DeviceType_ID       DeviceType_ID_GENERIC
 #endif
@@ -90,6 +96,8 @@ extern "C" {
     + defined(CONFIG_CC2642R1FRGZ)                                      \
     + defined(LAUNCHXL_CC26X2R1)                                        \
     + defined(LAUNCHXL_CC2652RB)                                        \
+    + defined(LP_CC2652RSIP)                                        \
+    + defined(LP_CC2652PSIP)                                        \
     ) > 1
     #error "More then one DeviceType has been defined!"
 #endif

@@ -2731,7 +2731,7 @@ static uint8_t bufferKeyLookup(uint8_t *pDst, void *pSrc)
     /* Index into macKeyIdLookupList[keyIndex] */
     *pBuf++ = pSec->keyIdLookupIndex;
     /* skip over unused byte */
-    *pBuf++;
+    pBuf++;
 #else
     /* Index into macKeyIdLookupList */
     *pBuf++ = pSec->keyIndex;
@@ -2770,7 +2770,7 @@ static uint8_t bufferKeyUsage(uint8_t *pDst, void *pSrc)
     /* Index into macKeyUsageList[keyIndex] */
     *pBuf++ = pSec->keyUsageIndex;
     /* skip over unused byte */
-    *pBuf++;
+    pBuf++;
 #else
     /* Index into macKeyUsageList */
     *pBuf++ = pSec->keyIndex;

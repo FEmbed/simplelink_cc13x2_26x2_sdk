@@ -111,6 +111,10 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "AESCTRDRBG", null,
+        [{name: "AESCTRDRBGXX"}], null);
+
     /* merge and overwrite base module attributes */
     let result = Object.assign({}, base, devSpecific);
 

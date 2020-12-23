@@ -70,27 +70,23 @@ var cc26xxOtherFiles = [
 var xdcArgs = java.lang.System.getenv("XDCARGS");
 var deviceWareOpts =
     xdc.loadCapsule("ti/drivers/xdcArgParser.xs").getDeviceWareOpts(xdcArgs);
+var libBuilder = xdc.loadCapsule("ti/drivers/libBuilder.xs");
 
 if (deviceWareOpts.cc26xxware) {
     objList = objList.concat(cc26xxObjFiles);
     otherFiles = otherFiles.concat(cc26xxOtherFiles);
 }
 
-var profile = "release";
-
-/*
- * this package builds the library using "release" profile and
- * currently cannot use common.bld because common.bld assumes
- * all ti targets libs are built with whole_program_debug profile
- */
+let targets = [];
 for (var i = 0; i < Build.targets.length; i++) {
-    var targ = Build.targets[i];
-
-    var lib = Pkg.addLibrary('lib/display', targ,
-        {profile: profile, copts: " -I. "});
-
-    lib.addObjects(objList);
+    /*
+     * Extract the target names as a string
+     * http://rtsc.eclipseprojects.io/cdoc-tip/index.html#xdc/bld/ITarget.html
+     */
+    targets[i] = Build.targets[i].$name;
 }
+
+libBuilder.makeLibs("display", targets, objList, " -I. ");
 
 /* include source files in the release package */
 Pkg.attrs.exportSrc = true;

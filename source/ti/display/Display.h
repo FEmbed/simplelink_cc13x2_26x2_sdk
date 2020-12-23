@@ -427,6 +427,10 @@ extern "C" {
 #  define Display_print5(handle, line, col, fmt, a0, a1, a2, a3, a4) \
     Display_printf(handle, line, col, fmt, a0, a1, a2, a3, a4)
 
+/*! Output string fmt with argument list \see Display_doVprintf() */
+#  define Display_vprintf(handle, line, col, fmt, va) \
+    Display_doVprintf(handle, line, col, fmt, va)
+
 /*! Get type of display */
 #  define Display_getType(handle) \
     Display_doGetType(handle)
@@ -451,8 +455,9 @@ extern "C" {
 #  define Display_print3(handle, line, col, fmt, a0, a1, a2)
 #  define Display_print4(handle, line, col, fmt, a0, a1, a2, a3)
 #  define Display_print5(handle, line, col, fmt, a0, a1, a2, a3, a4)
+#  define Display_vprintf(handle, line, col, fmt, va)
 #  define Display_getType(handle) Display_Type_INVALID
-#  define Display_control(handle, cmd, arg)  NULL
+#  define Display_control(handle, cmd, arg) (DISPLAY_STATUS_UNDEFINEDCMD)
 #  define Display_close(handle)
 #endif
 
@@ -665,6 +670,20 @@ void  Display_doPrintf(Display_Handle handle, uint8_t line, uint8_t column,
                        const char *fmt, ...);
 
 /*!
+ * @brief       Calls the vfprintf function of all opened Display implementations
+ *
+ * @param[in]       handle - handle of display
+ * @param[in]       line - line index (0..)
+ * @param[in]       column - column index (0..)
+ * @param[in]       fmt - format string
+ * @param[in]       va - argument list
+ *
+ * @return      void
+ */
+void  Display_doVprintf(Display_Handle handle, uint8_t line, uint8_t column,
+                       const char *fmt, va_list va);
+
+/*!
  * @brief       Closes selected Display implementations
  *
  * @return      void
@@ -714,7 +733,7 @@ uint32_t  Display_doGetType(Display_Handle handle);
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
  */
-void  Display_doControl(Display_Handle handle, unsigned int cmd, void *arg);
+int Display_doControl(Display_Handle handle, unsigned int cmd, void *arg);
 
 /*!
  *  @brief  Function to initializes the Display driver

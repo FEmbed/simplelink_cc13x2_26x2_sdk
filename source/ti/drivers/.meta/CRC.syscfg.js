@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,10 +74,10 @@ supported on each platform. Common CRC pre- and post-processing options are also
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_c_r_c_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_c_r_c_8h.html#ti_drivers_CRC_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_c_r_c_8h.html#ti_drivers_CRC_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#CRC_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_c_r_c_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_c_r_c_8h.html#ti_drivers_CRC_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_c_r_c_8h.html#ti_drivers_CRC_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#CRC_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName : "CONFIG_CRC_",
     config: Common.addNameConfig(config, "/ti/drivers/CRC", "CONFIG_CRC_"),

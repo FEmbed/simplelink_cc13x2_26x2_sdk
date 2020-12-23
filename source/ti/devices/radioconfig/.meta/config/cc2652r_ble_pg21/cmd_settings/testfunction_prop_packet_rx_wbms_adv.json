@@ -65,7 +65,7 @@
                 },
                 {
                     "_name": "pktConf.bCrcIncHdr",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "pktConf.endType",
@@ -77,7 +77,7 @@
                 },
                 {
                     "_name": "rxConf.bAutoFlushIgnored",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "rxConf.bAutoFlushCrcErr",
@@ -85,23 +85,23 @@
                 },
                 {
                     "_name": "rxConf.bIncludeHdr",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "rxConf.bIncludeCrc",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "rxConf.bAppendRssi",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "rxConf.bAppendTimestamp",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "rxConf.bAppendStatus",
-                    "$": "1"
+                    "$": "0"
                 },
                 {
                     "_name": "syncWord0",
@@ -115,11 +115,11 @@
                 },
                 {
                     "_name": "maxPktLen",
-                    "$": "512"
+                    "$": "2047"
                 },
                 {
                     "_name": "hdrConf.numHdrBits",
-                    "$": "0x18"
+                    "$": "0"
                 },
                 {
                     "_name": "hdrConf.lenPos",
@@ -127,7 +127,7 @@
                 },
                 {
                     "_name": "hdrConf.numLenBits",
-                    "$": "0x9"
+                    "$": "0"
                 },
                 {
                     "_name": "addrConf.addrType",
@@ -147,7 +147,7 @@
                 },
                 {
                     "_name": "lenOffset",
-                    "$": "0xFC"
+                    "$": "0x0"
                 },
                 {
                     "_name": "endTrigger.triggerType",

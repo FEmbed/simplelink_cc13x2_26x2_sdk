@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,9 @@
 
 "use strict";
 
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js");
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base Timer configuration
@@ -51,7 +54,7 @@ let devSpecific = {
 and non-portable APIs.
 
 
-[1]: /tidrivers/doxygen/html/_g_p_timer_c_c26_x_x_8h.html#details "C API reference"
+[1]: /drivers/doxygen/html/_g_p_timer_c_c26_x_x_8h.html#details "C API reference"
 `,
             default: false
         }
@@ -97,6 +100,10 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "Timer", null,
+        [{name: "TimerCC26XX"}], null);
+
     /* merge and overwrite base module attributes */
     let result = Object.assign({}, base, devSpecific);
 

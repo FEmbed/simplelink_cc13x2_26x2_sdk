@@ -3546,7 +3546,7 @@ void HCI_ConnectionlessIqReportEvent(uint16 syncHandle,
       {
         // message type, length
         msg->hdr.event	= HCI_GAP_EVENT_EVENT;
-        msg->hdr.status = HCI_LE_EVENT_CODE;
+        msg->hdr.status = HCI_TEST_EVENT_CODE;
 
         // create message
         msg->pData	  = (uint8*)(msg+1);

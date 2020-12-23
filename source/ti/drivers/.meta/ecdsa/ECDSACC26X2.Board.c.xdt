@@ -65,6 +65,7 @@ const ECDSACC26X2_HWAttrs ecdsaCC26X2HWAttrs[`countDef`] = {
 %     let inst        = instances[i];
     {
         .intPriority = `Common.intPriority2Hex(inst.interruptPriority)`,
+        .trngIntPriority = `Common.intPriority2Hex(inst.trngInterruptPriority)`,
     },
 % }
 };

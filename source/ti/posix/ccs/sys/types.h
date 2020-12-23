@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2017-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,30 @@ with a Texas Instruments compiler. You appear to be using a different compiler.
 /*  TI ARM 18.1.0.LTS added sys/types.h but we intentionally do *not*
  *  include it (effectively hiding it from source files). We were not
  *  able to use it because of type collisions (off_t in file.h).
+ *
+ *  NB. As of TI ARM 20.2.0.LTS, include sys/types.h.
  */
+#if defined(__TMS470__)
+
+#if __TI_COMPILER_VERSION__ >= 20002000
+/* use compiler definition of mode_t */
+#include <../include/sys/types.h>
+#else
+/* for older TIARM compilers, must define mode_t ourselves */
+typedef uint16_t mode_t;
+#endif
+
+#elif defined(__TMS320C28X__)
+
+/* this machine is 16-bit integer */
+typedef unsigned int mode_t;
+
+#else
+
+/* assume all others define C11 types and are 32-bit integer */
+typedef uint16_t mode_t;
+
+#endif
 
 #include "_internal.h"
 
@@ -72,7 +95,11 @@ extern "C" {
  *  changing 'unsigned' to 'signed' for this one definition to ensure both
  *  types have the same bit-width. Set declaration flag using same name
  *  as GNU compiler, which defines both types.
+ *
+ *  NB. As of TI ARM 20.2.0.LTS, sys/types.h is included and it defines
+ *  ssize_t. Therefore, this definition must be guarded.
  */
+#ifndef _SSIZE_T_DECLARED
 #ifdef __SIZE_T_TYPE__
 #define unsigned signed
 typedef __SIZE_T_TYPE__ ssize_t;
@@ -85,6 +112,7 @@ typedef __SIZE_TYPE__ ssize_t;
 #define _SSIZE_T_DECLARED
 #else
 #error __SIZE_T_TYPE__ not defined
+#endif
 #endif
 
 #ifndef _CLOCKID_T_DECLARED
@@ -112,6 +140,10 @@ typedef unsigned short uid_t;
 #define _UID_T_DECLARED
 #endif
 
+#ifdef __cplusplus
+}
+#endif
+
 /*  TI compiler defines time_t in time.h (should be in sys/types.h).
  *  Pull in time.h to get time_t definition.
  */
@@ -122,12 +154,15 @@ typedef unsigned short uid_t;
 #include <../include/time.h>
 #endif
 
-
 /*
  *************************************************************************
  *                      posix types
  *************************************************************************
  */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  *  ======== pthread_attr_t ========

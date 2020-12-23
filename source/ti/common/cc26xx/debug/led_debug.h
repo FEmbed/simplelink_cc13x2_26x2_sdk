@@ -55,7 +55,7 @@ extern "C"
  *                                          Includes
  */
 
-#include "common/cc26xx/board_support_pkg/CC26X2R1_CC13X2R1_LAUNCHXL/bsp.h"
+#include "common/flash/no_rtos/extFlash/bsp.h"
 
 /*******************************************************************************
  * MACROS

@@ -1,6 +1,6 @@
 {
     "setting": {
-        "Name": "4.8 kbps, 2-GFSK, 2 kHz deviation, 429 MHz",
+        "Name": "4.8 kbps, 2-GFSK, 2 kHz deviation, 429 MHz, narrowband.",
         "Description": "4.8 kbps, 2-GFSK, 2 kHz deviation for 426-430 MHz band.",
         "Frequency": "429",
         "Patch": {

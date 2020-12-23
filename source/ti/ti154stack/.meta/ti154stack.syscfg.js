@@ -62,6 +62,9 @@ const securityScript = system.getScript("/ti/ti154stack/security_config/"
 // Get top level setting descriptions
 const docs = system.getScript("/ti/ti154stack/ti154stack_docs.js");
 
+// Get common utility functions
+const Common = system.getScript("/ti/ti154stack/ti154stack_common.js");
+
 // Static implementation of 15.4 module
 const moduleStatic = {
     // Configurables for the static 15.4 module
@@ -74,6 +77,14 @@ const moduleStatic = {
             description: docs.lockProject.description,
             longDescription: docs.lockProject.longDescription,
             onChange: onLockProjectChange
+        },
+        {
+            name: "genLibs",
+            displayName: "Generate 15.4 Libraries",
+            default: true,
+            hidden: true,
+            description: docs.genLibs.description,
+            longDescription: docs.genLibs.longDescription
         },
         {
             name: "project",
@@ -320,6 +331,60 @@ function validate(inst, vo)
  *******************************************************************************
  */
 
+
+/*
+ * ======== getLibs ========
+ * Contribute libraries to linker command file
+ *
+ * @param inst  - 15.4 module instance
+ * @returns     - Object containing the name of component, array of dependent
+ *                components, and array of library names
+ */
+function getLibs(inst)
+{
+    const libs = [];
+
+    if(inst.$static.genLibs)
+    {
+        // Get device ID and toolchain to select appropriate libs
+        const GenLibs = system.getScript("/ti/utils/build/GenLibs.syscfg.js");
+        const toolchain = GenLibs.getToolchainDir();
+
+        // Generate correct maclib library to link based on device, security
+        // level, and frequency band selected
+        const basePath = "ti/ti154stack/library/tirtos/" + toolchain + "/bin/";
+
+        let security;
+        switch(inst.$static.secureLevel)
+        {
+            case "macSecureAndCommissioning": security = "sm_"; break;
+            case "macSecureDisabled": security = "nosecure_"; break;
+            default: security = "secure_"; break;
+        }
+
+        const devType = Common.isSub1GHzDevice() ? "cc13x2" : "cc26x2";
+        const freq = (inst.$static.freqBand === "freqBand24") ? "_2_4g" : "";
+
+        const maclib = basePath + "maclib_" + security + devType + freq + ".a";
+        libs.push(maclib);
+
+        if(system.modules["/ti/dmm/dmm"] == undefined)
+        {
+            const macosallib = basePath + "maclib_osal_tirtos_cc13x2_26x2.a";
+            libs.push(macosallib);
+        }
+    }
+
+    // Create a GenLibs input argument
+    const linkOpts = {
+        name: "/ti/ti154stack",
+        deps: [],
+        libs: libs
+    };
+
+    return(linkOpts);
+}
+
 /*
  *  ======== moduleInstances ========
  *  Determines what modules are added as non-static submodules
@@ -358,7 +423,7 @@ function modules(inst)
     dependencyModule.push({
         name: "multiStack",
         displayName: "Multi-Stack Validation",
-        moduleName: "/ti/easylink/multi_stack_validate",
+        moduleName: "/ti/common/multi_stack_validate",
         hidden: true
     });
 
@@ -399,7 +464,12 @@ const ti154StackModule = {
     moduleStatic: moduleStatic,
     templates: {
         "/ti/ti154stack/templates/ti_154stack_config.h.xdt": true,
-        "/ti/ti154stack/templates/ti_154stack_features.h.xdt": true
+        "/ti/ti154stack/templates/ti_154stack_features.h.xdt": true,
+        "/ti/utils/build/GenLibs.cmd.xdt":
+        {
+            modName: "/ti/ti154stack/ti154stack",
+            getLibs: getLibs
+        }
     }
 };
 

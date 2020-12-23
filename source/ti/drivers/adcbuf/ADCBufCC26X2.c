@@ -301,6 +301,19 @@ ADCBuf_Handle ADCBufCC26X2_open(ADCBuf_Handle handle,
         object->callbackFxn = params->callbackFxn;
     }
 
+    /* Check if the ADC data interface is already enabled - if so, then a
+     * previous configuration was halted without cleanly disabling the ADC */
+    if (HWREG(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL) && AUX_ANAIF_ADCCTL_CMD_EN) {
+        /* Disable the ADC and disable UDMA mode for ADC */
+        AUXADCDisable();
+        HWREG(AUX_EVCTL_BASE + AUX_EVCTL_O_DMACTL) =
+                AUX_EVCTL_DMACTL_REQ_MODE_SINGLE
+                        | AUX_EVCTL_DMACTL_SEL_FIFO_NOT_EMPTY;
+
+        /* Release the ADC semaphore */
+        AUXSMPHRelease(AUX_SMPH_2);
+    }
+
     /* Clear the event flags to prevent an immediate interrupt from a previous
      * configuration */
     HWREG(AUX_EVCTL_BASE + AUX_EVCTL_O_EVTOMCUFLAGSCLR) =

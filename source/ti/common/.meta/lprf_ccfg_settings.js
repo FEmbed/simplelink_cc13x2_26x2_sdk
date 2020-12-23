@@ -71,6 +71,8 @@ const deviceToBoard = {
     CC1352P: "CC1352P1_LAUNCHXL",
     CC1312: "CC1312R1_LAUNCHXL",
     CC2642: "CC26X2R1_LAUNCHXL",
+    CC2652R1FSIP: "LP_CC2652RSIP",
+    CC2652P1FSIP: "LP_CC2652PSIP",
     CC2652R1: "CC26X2R1_LAUNCHXL",
     CC2652RB: "CC2652RB_LAUNCHXL"
 };
@@ -124,7 +126,7 @@ const boardSpecificCCFGSettings = {
     CC1312R1_LAUNCHXL_CCFG_SETTINGS: {
         enableBootloader: true,
         enableBootloaderBackdoor: true,
-        dioBootloaderBackdoor: 15,
+        dioBootloaderBackdoor: 13,
         levelBootloaderBackdoor: "Active low"
     },
     CC1352R1_LAUNCHXL_CCFG_SETTINGS: {
@@ -169,6 +171,18 @@ const boardSpecificCCFGSettings = {
         dioBootloaderBackdoor: 13,
         levelBootloaderBackdoor: "Active low",
         srcClkLF: "LF RCOSC"
+    },
+    LP_CC2652RSIP_CCFG_SETTINGS: {
+        enableBootloader: true,
+        enableBootloaderBackdoor: true,
+        dioBootloaderBackdoor: 15,
+        levelBootloaderBackdoor: "Active low"
+    },
+    LP_CC2652PSIP_CCFG_SETTINGS: {
+        enableBootloader: true,
+        enableBootloaderBackdoor: true,
+        dioBootloaderBackdoor: 15,
+        levelBootloaderBackdoor: "Active low"
     }
 };
 

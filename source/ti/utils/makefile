@@ -21,6 +21,7 @@ include $(SDK_INSTALL_DIR)/imports.mak
 XDCARGS= \
     TIPOSIX_REPO=\"$(SDK_INSTALL_DIR)/source\" \
     ti.targets.arm.elf.M4F=\"$(CCS_ARMCOMPILER)\" \
+    ti.targets.arm.clang.M4F=\"$(TICLANG_ARMCOMPILER)\" \
     gnu.targets.arm.M4F=\"$(GCC_ARMCOMPILER)\" \
     iar.targets.arm.M4F=\"$(IAR_ARMCOMPILER)\"
 

@@ -37,6 +37,9 @@
 
 "use strict";
 
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js");
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base SD configuration
@@ -58,7 +61,17 @@ let devSpecific = {
  */
 function extend(base)
 {
-    return (Object.assign({}, base, devSpecific));
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "SD", null,
+        [{name: "SDSPI"}], null);
+
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.templates = Object.assign({}, base.templates, devSpecific.templates);
+
+    return (result);
 }
 
 /*

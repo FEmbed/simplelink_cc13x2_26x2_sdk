@@ -195,7 +195,7 @@ static uint32_t OsalPort_heapCSState;
  *
  * @return  Task ID
  */
-uint8_t OsalPort_registerTask(Task_Handle taskHndl, Semaphore_Handle taskSem, uint32_t* pEvent)
+uint8_t OsalPort_registerTask(void* taskHndl, void* taskSem, uint32_t* pEvent)
 {
     if(taskCnt < MAX_TASKS)
     {
@@ -508,7 +508,7 @@ uint32_t OsalPort_waitEvent(uint8_t taskId)
  *
  * @return  none
  */
-void OsalPort_blockOnEvent(Task_Handle taskHndl)
+void OsalPort_blockOnEvent(void*  taskHndl)
 {
     uint8_t taskIdx;
 

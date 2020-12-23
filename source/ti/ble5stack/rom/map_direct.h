@@ -1335,7 +1335,8 @@ extern uint8 MAP_LL_DirectCteTestRxTest( uint8 rxChan,
 /*******************************************************************************
  * RF hooks
  */
-extern void  MAP_rf_patch_cpe();
+extern void  MAP_rf_patch_cpe(void);
+extern void  MAP_rf_patch_rfe(void);
 
 /*******************************************************************************
  * DMM hooks

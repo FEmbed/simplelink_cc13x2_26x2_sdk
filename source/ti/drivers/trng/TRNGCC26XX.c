@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -149,6 +149,9 @@ static void TRNGCC26XX_serviceJob(TRNG_Handle handle) {
     TRNGCC26XX_Object *object = handle->object;
 
     object->returnStatus = TRNG_STATUS_SUCCESS;
+
+    /* Mark the CryptoKey as non-empty */
+    object->entropyKey->encoding = CryptoKey_PLAINTEXT;
 
     if (object->returnBehavior == TRNG_RETURN_BEHAVIOR_BLOCKING) {
         SemaphoreP_post(&object->operationSemaphore);

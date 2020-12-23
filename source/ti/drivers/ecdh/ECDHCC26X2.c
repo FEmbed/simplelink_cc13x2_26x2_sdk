@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019, Texas Instruments Incorporated
+ * Copyright (c) 2017-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,8 @@ static uint32_t resultAddress;
 /* We need several scratch buffers as the private and public keys are provided
  * in octet string form and thus the components are big-endian. We need to feed
  * the PKA with little-endian integers. That means moving them to some scratch
- * memory and reversing them.
+ * memory and reversing them. The only exception is X25519 that can either be
+ * sent in octet string form or x-only little-endian form.
  * We are storing them in bytes 512 to 512 + 3 x SCRATCH_BUFFER_SIZE.
  * Byte 1024 to 1024 + 66 and 1536 to 1536 + 66 are used by the public key
  * validation routine in driverlib.
@@ -102,9 +103,9 @@ static uint32_t resultAddress;
  *  ======== ECDHCC26X2_internalCallbackFxn ========
  */
 static void ECDHCC26X2_internalCallbackFxn (ECDH_Handle handle,
-                                             int_fast16_t returnStatus,
-                                             ECDH_Operation operation,
-                                             ECDH_OperationType operationType) {
+                                            int_fast16_t returnStatus,
+                                            ECDH_Operation operation,
+                                            ECDH_OperationType operationType) {
     ECDHCC26X2_Object *object = handle->object;
 
     /* This function is only ever registered when in ECDH_RETURN_BEHAVIOR_BLOCKING
@@ -118,9 +119,9 @@ static void ECDHCC26X2_internalCallbackFxn (ECDH_Handle handle,
     }
 }
 
-uint32_t ECDHCC26X2_getPublicKeyResult(CryptoKey *publicKey,
-                                       const ECCParams_CurveParams *curve,
-                                       uint32_t resultPKAMemAddr) {
+static uint32_t ECDHCC26X2_getPublicKeyResult(CryptoKey *publicKey,
+                                              const ECCParams_CurveParams *curve,
+                                              uint32_t resultPKAMemAddr) {
         uint32_t pkaResult;
 
         /* Get X and Y coordinates for short Weierstrass curves */
@@ -131,7 +132,6 @@ uint32_t ECDHCC26X2_getPublicKeyResult(CryptoKey *publicKey,
                                                 + OCTET_STRING_OFFSET,
                                             resultPKAMemAddr,
                                             curve->length);
-
         /* Set first byte of output public key to 0x04 to indicate x,y
          * big-endian coordinates in octet string format
          */
@@ -148,6 +148,19 @@ uint32_t ECDHCC26X2_getPublicKeyResult(CryptoKey *publicKey,
                                             + OCTET_STRING_OFFSET,
                                          curve->length);
 
+        return pkaResult;
+}
+
+static uint32_t ECDHCC26X2_getPublicKeyResultMontgomery(CryptoKey *publicKey,
+                                                        const ECCParams_CurveParams *curve,
+                                                        uint32_t resultPKAMemAddr) {
+        uint32_t pkaResult;
+
+        /* Montgomery curves use X-only little-endian public keys */
+        pkaResult = PKAEccMultiplyGetResult(publicKey->u.plaintext.keyMaterial,
+                                            NULL, /* No Y-Coordinate */
+                                            resultPKAMemAddr,
+                                            curve->length);
         return pkaResult;
 }
 
@@ -248,7 +261,7 @@ static void ECDHCC26X2_hwiFxn (uintptr_t arg0) {
     }
 }
 
-int_fast16_t ECDHCC26X2_runFSM(ECDH_Handle handle) {
+static int_fast16_t ECDHCC26X2_runFSM(ECDH_Handle handle) {
     ECDHCC26X2_Object *object = handle->object;
     uint32_t pkaResult;
 
@@ -320,16 +333,24 @@ int_fast16_t ECDHCC26X2_runFSM(ECDH_Handle handle) {
 
         case ECDHCC26X2_FSM_GEN_PUB_KEY_MULT_PRIVATE_KEY_BY_GENERATOR_RESULT_MONTGOMERY:
 
-            pkaResult = ECDHCC26X2_getPublicKeyResult(object->operation.generatePublicKey->myPublicKey,
-                                                      object->operation.generatePublicKey->curve,
-                                                      resultAddress);
-
-            /* Zero-out the Y coordinate */
-            memset(object->operation.generatePublicKey->myPublicKey->u.plaintext.keyMaterial
-                    + object->operation.generatePublicKey->curve->length
-                    + OCTET_STRING_OFFSET,
-                   0x00,
-                   object->operation.generatePublicKey->curve->length);
+            if (object->operation.generatePublicKey->publicKeyDataFormat == ECDH_PUBLIC_KEY_DATA_FORMAT_MONTGOMERY_X_ONLY)
+            {
+                pkaResult = ECDHCC26X2_getPublicKeyResultMontgomery(object->operation.generatePublicKey->myPublicKey,
+                                                                    object->operation.generatePublicKey->curve,
+                                                                    resultAddress);
+            }
+            else
+            {
+                pkaResult = ECDHCC26X2_getPublicKeyResult(object->operation.generatePublicKey->myPublicKey,
+                                                          object->operation.generatePublicKey->curve,
+                                                          resultAddress);
+                /* Zero-out the Y coordinate */
+                memset(object->operation.generatePublicKey->myPublicKey->u.plaintext.keyMaterial
+                        + object->operation.generatePublicKey->curve->length
+                        + OCTET_STRING_OFFSET,
+                       0x00,
+                       object->operation.generatePublicKey->curve->length);
+            }
 
             return ECDHCC26X2_convertReturnValue(pkaResult);
 
@@ -381,25 +402,40 @@ int_fast16_t ECDHCC26X2_runFSM(ECDH_Handle handle) {
 
         case ECDHCC26X2_FSM_COMPUTE_SHARED_SECRET_MULT_PRIVATE_KEY_BY_PUB_KEY_RESULT_MONTGOMERY:
 
-            pkaResult = ECDHCC26X2_getPublicKeyResult(object->operation.computeSharedSecret->sharedSecret,
-                                                      object->operation.computeSharedSecret->curve,
-                                                      resultAddress);
+            if (object->operation.computeSharedSecret->sharedSecretDataFormat == ECDH_PUBLIC_KEY_DATA_FORMAT_MONTGOMERY_X_ONLY)
+            {
+                pkaResult = ECDHCC26X2_getPublicKeyResultMontgomery(object->operation.computeSharedSecret->sharedSecret,
+                                                                    object->operation.computeSharedSecret->curve,
+                                                                    resultAddress);
+            }
+            else
+            {
+                pkaResult = ECDHCC26X2_getPublicKeyResult(object->operation.computeSharedSecret->sharedSecret,
+                                                          object->operation.computeSharedSecret->curve,
+                                                          resultAddress);
 
-            /* Zero-out the Y coordinate */
-            memset(object->operation.computeSharedSecret->sharedSecret->u.plaintext.keyMaterial
-                    + object->operation.computeSharedSecret->curve->length
-                    + OCTET_STRING_OFFSET,
-                   0x00,
-                   object->operation.computeSharedSecret->curve->length);
-
+                /* Zero-out the Y coordinate */
+                memset(object->operation.computeSharedSecret->sharedSecret->u.plaintext.keyMaterial
+                        + object->operation.computeSharedSecret->curve->length
+                        + OCTET_STRING_OFFSET,
+                       0x00,
+                       object->operation.computeSharedSecret->curve->length);
+            }
 
             return ECDHCC26X2_convertReturnValue(pkaResult);
 
         case ECDHCC26X2_FSM_GEN_PUB_KEY_RETURN:
         case ECDHCC26X2_FSM_GEN_PUB_KEY_RETURN_MONTGOMERY:
+            /* Mark the public key CryptoKey as non-empty */
+            object->operation.generatePublicKey->myPublicKey->encoding = CryptoKey_PLAINTEXT;
+            return ECDH_STATUS_SUCCESS;
+
         case ECDHCC26X2_FSM_COMPUTE_SHARED_SECRET_RETURN:
         case ECDHCC26X2_FSM_COMPUTE_SHARED_SECRET_RETURN_MONTGOMERY:
+            /* Mark the shared secret key CryptoKey as non-empty */
+            object->operation.computeSharedSecret->sharedSecret->encoding = CryptoKey_PLAINTEXT;
             return ECDH_STATUS_SUCCESS;
+
         default:
             return ECDH_STATUS_ERROR;
     }
@@ -560,17 +596,32 @@ int_fast16_t ECDH_generatePublicKey(ECDH_Handle handle, ECDH_OperationGeneratePu
     ECDHCC26X2_Object *object              = handle->object;
     ECDHCC26X2_HWAttrs const *hwAttrs      = handle->hwAttrs;
 
-    /* Validate key sizes to make sure octet string format is used */
-    if (operation->myPrivateKey->u.plaintext.keyLength != operation->curve->length ||
-        operation->myPublicKey->u.plaintext.keyLength != 2 * operation->curve->length + OCTET_STRING_OFFSET) {
-        return ECDH_STATUS_INVALID_KEY_SIZE;
+    /* Validate key sizes to validate the X-only public key format if selected
+     * for Montgomery curves.
+     */
+    if ((operation->curve->curveType == ECCParams_CURVE_TYPE_MONTGOMERY) &&
+        (operation->publicKeyDataFormat == ECDH_PUBLIC_KEY_DATA_FORMAT_MONTGOMERY_X_ONLY))
+    {
+        if (operation->myPrivateKey->u.plaintext.keyLength != operation->curve->length ||
+            operation->myPublicKey->u.plaintext.keyLength != operation->curve->length)
+        {
+            return ECDH_STATUS_INVALID_KEY_SIZE;
+        }
+    }
+    else /* Validate key sizes to make sure octet string format is used */
+    {
+        if (operation->myPrivateKey->u.plaintext.keyLength != operation->curve->length ||
+            operation->myPublicKey->u.plaintext.keyLength != 2 * operation->curve->length + OCTET_STRING_OFFSET)
+        {
+            return ECDH_STATUS_INVALID_KEY_SIZE;
+        }
     }
 
     if (ECDHCC26X2_waitForAccess(handle) != SemaphoreP_OK) {
         return ECDH_STATUS_RESOURCE_UNAVAILABLE;
     }
 
-    /* Since we are receiving the private and public keys in octet string format,
+    /* Since we are receiving the private keys in octet string format,
      * we need to convert them to little-endian form for use with the PKA
      */
     CryptoUtils_reverseCopyPad(operation->myPrivateKey->u.plaintext.keyMaterial, SCRATCH_PRIVATE_KEY, operation->curve->length);
@@ -619,12 +670,26 @@ int_fast16_t ECDH_computeSharedSecret(ECDH_Handle handle, ECDH_OperationComputeS
     ECDHCC26X2_Object *object              = handle->object;
     ECDHCC26X2_HWAttrs const *hwAttrs      = handle->hwAttrs;
 
-    /* Validate key sizes to make sure octet string format is used */
-    if (operation->myPrivateKey->u.plaintext.keyLength != operation->curve->length ||
-        operation->theirPublicKey->u.plaintext.keyLength != 2 * operation->curve->length + OCTET_STRING_OFFSET ||
-        operation->theirPublicKey->u.plaintext.keyMaterial[0] != 0x04 ||
-        operation->sharedSecret->u.plaintext.keyLength != 2 * operation->curve->length + OCTET_STRING_OFFSET) {
-        return ECDH_STATUS_INVALID_KEY_SIZE;
+    /* Validate key sizes to make sure X-only public key format is used for Montgomery curves */
+    if ((operation->curve->curveType == ECCParams_CURVE_TYPE_MONTGOMERY) &&
+        (operation->publicKeyDataFormat == ECDH_PUBLIC_KEY_DATA_FORMAT_MONTGOMERY_X_ONLY))
+    {
+        if (operation->myPrivateKey->u.plaintext.keyLength != operation->curve->length ||
+            operation->theirPublicKey->u.plaintext.keyLength != operation->curve->length ||
+            operation->sharedSecret->u.plaintext.keyLength != operation->curve->length)
+        {
+            return ECDH_STATUS_INVALID_KEY_SIZE;
+        }
+    }
+    else /* Validate key sizes to make sure octet string format is used for short Weierstrass curves */
+    {
+        if (operation->myPrivateKey->u.plaintext.keyLength != operation->curve->length ||
+            operation->theirPublicKey->u.plaintext.keyLength != 2 * operation->curve->length + OCTET_STRING_OFFSET ||
+            operation->theirPublicKey->u.plaintext.keyMaterial[0] != 0x04 ||
+            operation->sharedSecret->u.plaintext.keyLength != 2 * operation->curve->length + OCTET_STRING_OFFSET)
+        {
+            return ECDH_STATUS_INVALID_KEY_SIZE;
+        }
     }
 
     if (ECDHCC26X2_waitForAccess(handle) != SemaphoreP_OK) {
@@ -640,23 +705,37 @@ int_fast16_t ECDH_computeSharedSecret(ECDH_Handle handle, ECDH_OperationComputeS
     object->operationType                   = ECDH_OPERATION_TYPE_COMPUTE_SHARED_SECRET;
     object->operationCanceled               = false;
 
-    /* Since we are receiving the private and public keys in octet string format,
+    /* Since we are receiving the private keys in octet string format,
      * we need to convert them to little-endian form for use with the PKA
      */
     CryptoUtils_reverseCopyPad(operation->myPrivateKey->u.plaintext.keyMaterial,
                                SCRATCH_PRIVATE_KEY,
                                operation->curve->length);
 
-    CryptoUtils_reverseCopyPad(operation->theirPublicKey->u.plaintext.keyMaterial
-                                 + OCTET_STRING_OFFSET,
-                               SCRATCH_PUBLIC_X,
-                               operation->curve->length);
+    /* Montgomery public keys are already in little-endian, so they can be
+     * simply copied.
+     */
+    if ((operation->curve->curveType == ECCParams_CURVE_TYPE_MONTGOMERY) &&
+        (operation->publicKeyDataFormat == ECDH_PUBLIC_KEY_DATA_FORMAT_MONTGOMERY_X_ONLY))
+    {
+        CryptoUtils_copyPad(operation->theirPublicKey->u.plaintext.keyMaterial,
+                            SCRATCH_PUBLIC_X,
+                            operation->curve->length);
+    }
+    else /* Short Weierstrass public keys are in octet string format, so we
+          * need to convert them to little-endian form for use with the PKA */
+    {
+        CryptoUtils_reverseCopyPad(operation->theirPublicKey->u.plaintext.keyMaterial
+                                     + OCTET_STRING_OFFSET,
+                                   SCRATCH_PUBLIC_X,
+                                   operation->curve->length);
 
-    CryptoUtils_reverseCopyPad(operation->theirPublicKey->u.plaintext.keyMaterial
-                                 + OCTET_STRING_OFFSET
-                                 + operation->curve->length,
-                               SCRATCH_PUBLIC_Y,
-                               operation->curve->length);
+        CryptoUtils_reverseCopyPad(operation->theirPublicKey->u.plaintext.keyMaterial
+                                     + OCTET_STRING_OFFSET
+                                     + operation->curve->length,
+                                   SCRATCH_PUBLIC_Y,
+                                   operation->curve->length);
+    }
 
     /* Use the correct state chain for the curve type */
     if (operation->curve->curveType == ECCParams_CURVE_TYPE_SHORT_WEIERSTRASS_AN3) {

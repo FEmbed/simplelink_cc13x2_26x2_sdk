@@ -103,6 +103,87 @@ void CryptoUtils_reverseBufferBytewise(void * buffer, size_t bufferByteLength) {
 }
 
 /*
+ *  ======== CryptoUtils_isBufferAllZeros ========
+ */
+bool CryptoUtils_isBufferAllZeros(const void *buffer, size_t bufferByteLength) {
+    uint32_t i;
+    uint8_t bufferBits = 0;
+
+    for (i = 0; i < bufferByteLength; i++) {
+        bufferBits |= ((uint8_t *)buffer)[i];
+    }
+
+    return bufferBits == 0;
+}
+
+/*
+ *  ======== CryptoUtils_copyPad ========
+ */
+void CryptoUtils_copyPad(const void *source,
+                         void *destination,
+                         size_t sourceLength) {
+    uint32_t i;
+    uint8_t remainder;
+    uint32_t temp;
+    uint8_t *tempBytePointer;
+    const uint8_t *sourceBytePointer;
+
+    remainder = sourceLength % sizeof(uint32_t);
+    temp = 0;
+    tempBytePointer = (uint8_t *)&temp;
+    sourceBytePointer = (uint8_t *)source;
+
+    /* Copy source to destination starting at the end of source and the
+     * beginning of destination.
+     * We assemble each word in normal order and write one word at a
+     * time since the PKA_RAM requires word-aligned reads and writes.
+     */
+
+    for (i = 0; i < sourceLength / sizeof(uint32_t); i++) {
+            uint32_t sourceOffset = sizeof(uint32_t) * i;
+
+            tempBytePointer[0] = sourceBytePointer[sourceOffset + 0];
+            tempBytePointer[1] = sourceBytePointer[sourceOffset + 1];
+            tempBytePointer[2] = sourceBytePointer[sourceOffset + 2];
+            tempBytePointer[3] = sourceBytePointer[sourceOffset + 3];
+
+            *((uint32_t *)destination + i) = temp;
+    }
+
+    /* Reset to 0 so we do not have to zero-out individual bytes */
+    temp = 0;
+
+    /* If sourceLength is not a word-multiple, we need to copy over the
+     * remaining bytes and zero pad the word we are writing to PKA_RAM.
+     */
+    if (remainder == 1) {
+
+        tempBytePointer[0] = sourceBytePointer[0];
+
+        /* i is reused from the loop above. This write  zero-pads the
+         * destination buffer to word-length.
+         */
+        *((uint32_t *)destination + i) = temp;
+    }
+    else if (remainder == 2) {
+
+        tempBytePointer[0] = sourceBytePointer[0];
+        tempBytePointer[1] = sourceBytePointer[1];
+
+       *((uint32_t *)destination + i) = temp;
+    }
+    else if (remainder == 3) {
+
+        tempBytePointer[0] = sourceBytePointer[0];
+        tempBytePointer[1] = sourceBytePointer[1];
+        tempBytePointer[2] = sourceBytePointer[2];
+
+        *((uint32_t *)destination + i) = temp;
+    }
+
+}
+
+/*
  *  ======== CryptoUtils_reverseCopyPad ========
  */
 void CryptoUtils_reverseCopyPad(const void *source,

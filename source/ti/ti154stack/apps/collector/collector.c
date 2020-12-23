@@ -56,7 +56,9 @@
 #include "csf.h"
 #include "smsgs.h"
 #include "collector.h"
+#ifndef CUI_DISABLE
 #include "cui.h"
+#endif /* CUI_DISABLE */
 #include <advanced_config.h>
 #ifdef FEATURE_SECURE_COMMISSIONING
 #include "sm_ti154.h"
@@ -147,7 +149,7 @@
 #define ASSOC_TRACKING_RETRY    0x4000    /* Tracking Req retried */
 #define ASSOC_TRACKING_ERROR    0x8000    /* Tracking Req error */
 #define ASSOC_TRACKING_MASK     0xF000    /* Tracking mask  */
-
+#define MAX_DATA_REQ_MSDU_MAP_TABLE_SIZE 3
 #ifdef USE_DMM
 #define NTWK_DISCOVER_TIMER         100
 #endif /* USE_DMM */
@@ -183,6 +185,9 @@ STATIC uint16_t devicePanId = 0xFFFF;
 STATIC uint8_t deviceTxMsduHandle = 0;
 
 STATIC bool fhEnabled = false;
+
+STATIC ApiMac_msduAddrMap_t dataRequestMsduMappingTable[MAX_DATA_REQ_MSDU_MAP_TABLE_SIZE];
+
 #ifdef USE_DMM
 /* Device List Discovery Flag */
 static bool listDiscovery = false;
@@ -456,6 +461,20 @@ void Collector_init(void)
         /* Update policy */
         DMMPolicy_updateStackState(DMMPolicy_StackRole_154Sensor, DMMPOLICY_154_PROVISIONING);
 #endif /* USE_DMM */
+    }
+    Llc_netInfo_t netInfo;
+    if (Csf_getNetworkInformation(&netInfo) == true)
+    {
+        /* Update Channel Mask to show the previous network channel */
+        if (!CONFIG_FH_ENABLE)
+        {
+            uint8_t channelMask[APIMAC_154G_CHANNEL_BITMAP_SIZ] = {0};
+            uint8_t idx = netInfo.channel / 8;
+            uint8_t shift = (netInfo.channel % 8);
+            uint8_t chan = (0x01) << shift;
+            channelMask[idx] = chan;
+            Cllc_setChanMask(channelMask);
+        }
     }
 
     if(CONFIG_AUTO_START)
@@ -1202,10 +1221,39 @@ static void dataCnfCB(ApiMac_mcpsDataCnf_t *pDataCnf)
     {
         Csf_updateFrameCounter(NULL, pDataCnf->frameCntr);
     }
+    /* Remove the sensor short address from the table if the status = ApiMac_status_fhNotInNeighborTable */
+    else if(pDataCnf->status == ApiMac_status_fhNotInNeighborTable)
+    {
+        uint8_t searchIndex = 0;
+        ApiMac_msduAddrMap_t * last_invalid_data_req;
+        ApiMac_sAddrExt_t extendedAddr;
+        for(searchIndex = 0; searchIndex < MAX_DATA_REQ_MSDU_MAP_TABLE_SIZE; searchIndex++)
+        {
+            if(pDataCnf->msduHandle == dataRequestMsduMappingTable[searchIndex].msduHandle)
+            {
+                /* msdu handle matches, so this data callback correlates with
+                last data request information */
+                last_invalid_data_req = &dataRequestMsduMappingTable[searchIndex];
+
+                Llc_deviceListItem_t item;
+                if(Csf_getDevice((&last_invalid_data_req->dstAddr), &item))
+                {
+                    /* Switch to the long address */
+                    memcpy(extendedAddr, &item.devInfo.extAddress,
+                           (APIMAC_SADDR_EXT_LEN));
+                }
+
+                Cllc_removeDevice(&extendedAddr);
+                break;
+            }
+        }
+
+    }
     else if(pDataCnf->status != ApiMac_status_success)
     {
         Collector_statistics.otherTxFailures++;
     }
+
 
 #ifdef POWER_MEAS
     /* Back to back data messages to ensure a response for every poll message */
@@ -1618,6 +1666,7 @@ static void processDeviceTypeResponse(ApiMac_mcpsDataInd_t *pDataInd)
     /* Make sure the message is the correct size */
     if(pDataInd->msdu.len == SMSGS_DEVICE_TYPE_RESPONSE_MSG_LEN)
     {
+#ifndef CUI_DISABLE
         uint8_t *pBuf = pDataInd->msdu.p;
 
         /* Command format
@@ -1630,6 +1679,7 @@ static void processDeviceTypeResponse(ApiMac_mcpsDataInd_t *pDataInd)
 
         /* Notify the user */
         Csf_deviceSensorDeviceTypeResponseUpdate(deviceFamilyID, deviceTypeID);
+#endif
     }
 }
 #endif /* DEVICE_TYPE_MSG */
@@ -1968,6 +2018,7 @@ static bool sendMsg(Smsgs_cmdIds_t type, uint16_t dstShortAddr, bool rxOnIdle,
                     uint16_t len,
                     uint8_t *pData)
 {
+    static uint8_t map_index = 0;
     ApiMac_mcpsDataReq_t dataReq;
 
     /* Fill the data request field */
@@ -2028,15 +2079,19 @@ static bool sendMsg(Smsgs_cmdIds_t type, uint16_t dstShortAddr, bool rxOnIdle,
 #endif /* FEATURE_SECURE_COMMISSIONING */
 #endif /* FEATURE_MAC_SECURITY */
 
-    /* Send the message */
-    if(ApiMac_mcpsDataReq(&dataReq) != ApiMac_status_success)
+    ApiMac_status_t status = ApiMac_mcpsDataReq(&dataReq);
+    if(status != ApiMac_status_success)
     {
         /*  Transaction overflow occurred */
         return (false);
     }
     else
     {
-        return (true);
+        /* Structure is used to track data request handles to help remove unresponsive devices from macSecurity table in FH mode */
+       dataRequestMsduMappingTable[map_index % MAX_DATA_REQ_MSDU_MAP_TABLE_SIZE].dstAddr = dataReq.dstAddr;
+       dataRequestMsduMappingTable[map_index % MAX_DATA_REQ_MSDU_MAP_TABLE_SIZE].msduHandle = dataReq.msduHandle;
+       map_index ++;
+       return (true);
     }
 }
 
@@ -2641,7 +2696,9 @@ static void orphanIndCb(ApiMac_mlmeOrphanInd_t *pData)
     /* get the short address of the device */
     if(CSF_INVALID_SHORT_ADDR != shortAddr)
     {
+#ifndef CUI_DISABLE
         Csf_IndicateOrphanReJoin(shortAddr);
+#endif /* CUI_DISABLE */
     }
 
 }
@@ -2654,7 +2711,7 @@ static void orphanIndCb(ApiMac_mlmeOrphanInd_t *pData)
 static void initializeNtwkDiscoverClock(void)
 {
     /* Initialize the timers needed for this application */
-    ntwkDiscoverClkHandle = Timer_construct(&ntwkDiscoverClkStruct,
+    ntwkDiscoverClkHandle = UtilTimer_construct(&ntwkDiscoverClkStruct,
                                         processnwtkDiscoverTimeoutCallback,
                                         NTWK_DISCOVER_TIMER,
                                         0,
@@ -2668,9 +2725,9 @@ static void initializeNtwkDiscoverClock(void)
 static void setNtwkDiscoverClock(uint16_t devAddr)
 {
 
-    Timer_setTimeout(ntwkDiscoverClkHandle, NTWK_DISCOVER_TIMER);
-    Timer_setFunc(ntwkDiscoverClkHandle, processnwtkDiscoverTimeoutCallback, devAddr);
-    Timer_start(&ntwkDiscoverClkStruct);
+    UtilTimer_setTimeout(ntwkDiscoverClkHandle, NTWK_DISCOVER_TIMER);
+    UtilTimer_setFunc(ntwkDiscoverClkHandle, processnwtkDiscoverTimeoutCallback, devAddr);
+    UtilTimer_start(&ntwkDiscoverClkStruct);
 }
 
 /*!

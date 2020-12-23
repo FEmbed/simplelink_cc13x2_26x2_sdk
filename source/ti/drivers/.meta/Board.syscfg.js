@@ -42,126 +42,58 @@
 /* get ti/drivers common utility functions */
 let Common = system.getScript("/ti/drivers/Common.js");
 
+/* get /ti/drivers family name from device object */
+let family = Common.device2Family(system.deviceData, "Board");
+
+let config = [];
+
 /*
  *  ======== getLibs ========
  */
 function getLibs(mod)
 {
-    let FAMILY2LIBS = {
-        CC26X2: {
-            drivers: ["ti/drivers/lib/drivers_cc26x2"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_cc26x2"],
-                nortos: ["lib/nortos_cc26x2"],
-                freertos: [""]
-            }
-        },
-        CC13X2: {
-            drivers: ["ti/drivers/lib/drivers_cc13x2"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_cc13x2"],
-                nortos: ["lib/nortos_cc13x2"],
-                freertos: [""]
-            }
-        },
-        CC26X0: {
-            drivers: ["ti/drivers/lib/drivers_cc26x0"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_cc26x0"],
-                nortos: ["lib/nortos_cc26x0"],
-                freertos: [""]
-            }
-        },
-        CC26X0R2: {
-            drivers: ["ti/drivers/lib/drivers_cc26x0r2"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_cc26x0r2"],
-                nortos: ["lib/nortos_cc26x0r2"],
-                freertos: [""]
-            }
-        },
-        CC13X0: {
-            drivers: ["ti/drivers/lib/drivers_cc13x0"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_cc13x0"],
-                nortos: ["lib/nortos_cc13x0"],
-                freertos: [""]
-            }
-        },
-        CC32XX: {
-            drivers: ["ti/drivers/lib/drivers_cc32xx"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_cc32xx"],
-                nortos: ["lib/nortos_cc32xx"],
-                freertos: [""]
-            }
-        },
-        MSP432E4: {
-            drivers: ["ti/drivers/lib/drivers_msp432e4"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_msp432e4"],
-                nortos: ["lib/nortos_msp432e4"],
-                freertos: [""]
-            }
-        },
-        MTL: {
-            drivers: ["ti/drivers/lib/drivers_mtxx"],
-            dpl: {
-                tirtos: ["ti/dpl/lib/dpl_mtxx"],
-                nortos: ["lib/nortos_mtxx"],
-                freertos: [""]
-            }
-        }
-    };
-
     /* get device ID to select appropriate libs */
     let devId = system.deviceData.deviceId;
 
     /* get device information from DriverLib */
     var DriverLib = system.getScript("/ti/devices/DriverLib");
-    let attrs = DriverLib.getAttrs(devId);
+    let family = DriverLib.getAttrs(devId).deviceDefine;
 
     /* Get current RTOS configuration information */
     var RTOS = system.modules["/ti/drivers/RTOS"];
-    let rtos = "tirtos";
+    let rtos = "TI-RTOS";
     if (RTOS != undefined) {
         rtos = RTOS.$static.name;
-
-        switch (true) {
-            case (/TI-RTOS/i).test(rtos): rtos = "tirtos";
-                break;
-            case (/FreeRTOS/i).test(rtos): rtos = "freertos";
-                break;
-            case (/NoRTOS/i).test(rtos): rtos = "nortos";
-                break;
-            default: rtos = "tirtos";
-                break;
-        }
     }
 
     /* Get toolchain specific information from GenLibs */
     let GenLibs = system.getScript("/ti/utils/build/GenLibs");
-    let toolchain = GenLibs.getToolchainDir();
-    let isa = GenLibs.getDeviceIsa();
-    let suffix = Common.getLibSuffix(isa, toolchain);
+    let libPath = GenLibs.libPath;
+    let getToolchainDir = GenLibs.getToolchainDir;
+    let getDeviceIsa = GenLibs.getDeviceIsa;
+    let libs = [];
 
-    /* select a device family-specific set of libs */
-    let libs;
-    let family = attrs.deviceDefine;
     if (family != "") {
-        family = family.replace(/^DeviceFamily_/, "");
-        if (family.indexOf("MSP432E") == 0) {
-            family = "MSP432E4";
+        family = family.replace(/^DeviceFamily_/, "").toLowerCase();
+        if (family.indexOf("msp432e") == 0) {
+            family = "msp432e4";
         }
-        else if (family.indexOf("CC32") == 0) {
-            family = "CC32XX";
+        else if (family.indexOf("cc32") == 0) {
+            family = "cc32xx";
         }
-        libs = FAMILY2LIBS[family].drivers;
-        if (FAMILY2LIBS[family].dpl[rtos] != "") {
-            libs.push(FAMILY2LIBS[family].dpl[rtos]);
+
+        libs.push(libPath("ti/drivers","drivers_" + family + ".a"));
+        libs.push(libPath("ti/grlib", "grlib.a"));
+
+        if (rtos == "TI-RTOS") {
+            libs.push(libPath("ti/dpl","dpl_" + family + ".a"));
         }
-        libs = libs.map(function(lib) { return (lib += suffix); });
+        else if (rtos == "NoRTOS") {
+            libs.push("lib/" + getToolchainDir() + "/" + getDeviceIsa() +
+                "/nortos_" + family + ".a");
+        }
     }
+
     if (libs == null) {
         throw Error("device2LinkCmd: unknown device family ('"
             + family + "') for deviceId '" + devId + "'");
@@ -171,11 +103,62 @@ function getLibs(mod)
     var linkOpts = {
         name: "/ti/drivers",
         vers: "1.0.0.0",
-        deps: ["/ti/devices/driverlib"],
+        deps: [],
         libs: libs
     };
 
+    /* add dependency on useFatFS configuration (if needed) */
+    if (system.modules["/ti/drivers/SD"]) {
+        let sdModule = system.modules["/ti/drivers/SD"];
+        for (let i = 0; i < sdModule.$instances.length; i++) {
+            let inst = sdModule.$instances[i];
+            if (inst.useFatFS === true) {
+                linkOpts.deps.push("/third_party/fatfs");
+                break;
+            }
+        }
+    }
+
     return (linkOpts);
+}
+
+/*
+ *  ======== modules ========
+ *  Reflect on HW components to "autoload" any support modules required
+ */
+function modules(mod)
+{
+    let reqs = [];
+
+    reqs.push({
+        name      : "Driverlib",
+        moduleName: "/ti/devices/DriverLib",
+        hidden    : true
+    });
+
+    if (system.deviceData.board && system.deviceData.board.components) {
+
+        /* accumulate all modules required by the board's components */
+        let mods = {};
+        let comps = system.deviceData.board.components;
+        for (let cname in comps) {
+            let comp = comps[cname];
+            if (comp.settings && comp.settings.requiredModule) {
+                mods[comp.settings.requiredModule] = comp;
+            }
+        }
+
+        /* create module requirements */
+        for (let mname in mods) {
+            reqs.push({
+                name: mname.replace(/\//g, '_'), // private property name
+                moduleName: mname,               // module to implicitly add
+                hidden: true                     // don't show it as dependency
+            });
+        }
+    }
+
+    return (reqs);
 }
 
 /*
@@ -184,6 +167,52 @@ function getLibs(mod)
 let base = {
     displayName  : "Board",
     staticOnly   : true,
+    maxInstances : 1,
+    description  : "Board Support Module",
+    alwaysShowLongDescription : true,
+    longDescription: `
+This module supports users utilizing Texas Instruments boards by generating
+board-specific support functions. For more details, please visit the
+[__Configuration Options__][1] and the [__Board Description__][2].
+
+[1]: /drivers/syscfg/html/ConfigDoc.html#Board_Configuration_Options "Configuration options reference"
+[2]: /drivers/syscfg/html/ConfigDoc.html#Board_Description "Board description reference"
+`,
+
+    documentation: `
+This module provides basic validation required by any Hardware
+Component that has been added to the board.
+
+Hardware Components that require validation simply declare the name of
+a module that must be added to a configuration.  The declaration is
+made by adding a "requiredModule" field to the settings structure of the
+Hardware Component.
+
+The module named by a requiredModule field implements a validation
+function that can reflect on the state of the configuration and plant
+errors, warnings, and/or info messages throughout the system as
+needed.
+
+The example below is a fragment of the TMP116 component from the
+BOOSTXL-BASSENSORS.syscfg.json:
+
+        "TMP116": {
+            "type": "TMP116",
+            "displayName": "TMP116 Temperature Sensor",
+            "description": "Accurate Digital Temperature Sensor ...",
+            "settings": {
+                "requiredModule": "/ti/boards/boosterpacks/bas/BAS",
+                :
+            },
+            :
+        }
+
+In this case, whenever this TMP116 component is added to the board's
+Hardware Components, the /ti/boards/boosterpacks/bas/BAS module will
+be implicitly added to the application's configuration.  This, in
+turn, will ensure that any validation functions defined by the BAS
+module will execute.
+`,
 
     templates    : {
         /* contribute TI-DRIVERS libraries to linker command file */
@@ -196,13 +225,12 @@ let base = {
     },
 
     moduleStatic : {
-        /* ensure somthing supplies appropriate DriverLib library */
-        modules  : Common.autoForceModules(["/ti/devices/DriverLib"]),
-        config   : []
+        /* ensure something supplies appropriate DriverLib library */
+        modules  : modules,
+        config   : config
     }
 };
 
-/*
- *  ======== exports ========
- */
-exports = base;
+/* extend the base exports to include family-specific content */
+let deviceBoard = system.getScript("/ti/drivers/Board" + family);
+exports = deviceBoard.extend(base);

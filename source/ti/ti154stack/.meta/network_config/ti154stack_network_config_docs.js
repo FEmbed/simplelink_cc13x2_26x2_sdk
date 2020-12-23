@@ -356,7 +356,9 @@ slots`,
     longDescription: `
 Configures the interval in milliseconds for broadcast message generation \
 in frequency hopping. If set to 0, it shall disable broadcast messages and \
-will not cause sleepy devices any additional power overhead.
+will not cause sleepy devices any additional power overhead. Note that the \
+stack frequency hopping broadcast interval is half of this value to prevent \
+overflow of the transmit queue.
 \n\
 It is recommended that this value be set above 200 ms.
 \n\

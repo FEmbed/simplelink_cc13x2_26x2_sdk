@@ -445,6 +445,7 @@ extern char *BLEEventCode_BleLogStrings[];
 #define HCI_BLE_CHANNEL_MAP_UPDATE_EVENT                  0x82    //!< event of type @ref hciEvt_BLEChanMapUpdate_t
 #define HCI_BLE_CONN_UPDATE_REJECT_EVENT                  0x83      //!< event of type @ref hciEvt_BLEConnUpdateComplete_t
 
+#define HCI_TEST_EVENT_CODE                               0xFE      //!< test event code use for cte test
 #define HCI_VE_EVENT_CODE                                 0xFF      //!< event of type @ref hciEvt_VSCmdComplete_t
 
 // LE Vendor Specific LL Extension Events

@@ -34,6 +34,10 @@
  *  sensor.syscfg
  */
 
+/* ======== RTOS ======== */
+var RTOS = scripting.addModule("/ti/drivers/RTOS");
+RTOS.name = "TI-RTOS";
+
 /* ======== RF ======== */
 var RF = scripting.addModule("/ti/drivers/RF");
 

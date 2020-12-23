@@ -164,6 +164,8 @@ function filterHardware(component)
 exports = {
     config: config,
 
+    displayName: "ADCBuf_Channel",
+
     /* override generic requirements with  device-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
 

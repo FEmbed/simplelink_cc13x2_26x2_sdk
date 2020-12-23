@@ -92,7 +92,7 @@
 
 
 /* ------------------ Unrecognized Compiler ------------------ */
-#elif defined (ccs) || defined __TI_COMPILER_VERSION__ || defined (__GNUC__)
+#elif defined (ccs) || defined __TI_COMPILER_VERSION__ || defined (__GNUC__) || defined(__clang__)
 #define HAL_MCU_LITTLE_ENDIAN()   1
 //do nothing for now
 #else
@@ -143,19 +143,9 @@ typedef ICall_CSState halIntState_t;
 
 #elif defined OSAL_PORT2TIRTOS
 
-#include <ti/sysbios/hal/Hwi.h>
-#include <ti/sysbios/knl/Task.h>
 #include <ti/drivers/dpl/HwiP.h>
 
 typedef int halIntState_t;
-
-/* Enable interrupts */
-#define HAL_ENABLE_INTERRUPTS()                 \
-  do { Hwi_enable(); Task_enable(); } while (0)
-
-/* Disable interrupts */
-#define HAL_DISABLE_INTERRUPTS()                \
-  do { Task_disable(); Hwi_disable(); } while (0)
 
 /* Enter critical section */
 #define HAL_ENTER_CRITICAL_SECTION(x)                   \
@@ -164,12 +154,6 @@ typedef int halIntState_t;
 /* Exit critical section */
 #define HAL_EXIT_CRITICAL_SECTION(x)                    \
   do { HwiP_restore(x); } while (0)
-
-/* Enable RF interrupt */
-#define HAL_ENABLE_RF_INTERRUPT() Hwi_enableInterrupt(INT_RFCORERTX)
-
-/* Enable RF error interrupt */
-#define HAL_ENABLE_RF_ERROR_INTERRUPT() Hwi_enableInterrupt(INT_RFCOREERR)
 
 /* Note that check of whether interrupts are enabled or not is not supported
  * by any random operating system.

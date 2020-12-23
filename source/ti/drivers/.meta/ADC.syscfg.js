@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -101,10 +101,10 @@ via simple and portable APIs.
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_a_d_c_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_d_c_8h.html#ti_drivers_ADC_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_d_c_8h.html#ti_drivers_ADC_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#ADC_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_a_d_c_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_a_d_c_8h.html#ti_drivers_ADC_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_a_d_c_8h.html#ti_drivers_ADC_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#ADC_Configuration_Options "Configuration options reference"
 `,
 
     defaultInstanceName: "CONFIG_ADC_",

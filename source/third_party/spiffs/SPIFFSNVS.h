@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -248,6 +248,19 @@ typedef struct SPIFFSNVS_Data_ {
     NVS_Handle     nvsHandle;    /*!< Handle to NVS driver instance */
     SPIFFSNVS_Lock lock;         /*!< Thread-safety lock object */
 } SPIFFSNVS_Data;
+
+/*!
+ *  @brief  Closes the NVS flash region used for the file system.
+ *
+ *  This function closes the flash region used for the file system
+ *  by the NVS driver interface configured in SPIFFSNVS_config().
+ *  This allows the SPIFFS interface to issue low power commands
+ *  to any external flash interfaces.
+ *
+ *  @param  spiffsnvsData       Pointer to a #SPIFFSNVS_Data structure
+ *
+ */
+void SPIFFSNVS_close(SPIFFSNVS_Data *spiffsnvsData);
 
 /*!
  *  @brief  Initializes #spiffs, #spiffs_config and #SPIFFSNVS_Data structures

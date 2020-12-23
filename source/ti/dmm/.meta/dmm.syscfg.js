@@ -39,6 +39,8 @@
 
 const docs = system.getScript("/ti/dmm/dmm_docs.js");
 const commonConfig = system.getScript("/ti/dmm/dmm_common.js");
+const easylinkUtil = system.getScript("/ti/easylink/easylink_common.js");
+const genLibs = system.getScript("/ti/utils/build/GenLibs.syscfg.js");
 
 const stackDisplayNameMap = {
     ble: "BLE",
@@ -184,6 +186,13 @@ const dmmConfig = [
         description: docs.applicationStates.description,
         collapsed: false,
         config: generateAppStatesConfig()
+    },
+    {
+        name: "genLibs",
+        displayName: "GenLibs",
+        description: docs.genLibs.description,
+        default: true,
+        hidden: true
     }
 ];
 
@@ -262,7 +271,7 @@ function modules(inst)
     dependencyModule.push({
         name: "multiStack",
         displayName: "Multi-Stack Validation",
-        moduleName: "/ti/easylink/multi_stack_validate",
+        moduleName: "/ti/common/multi_stack_validate",
         hidden: true
     });
 
@@ -376,6 +385,37 @@ function validateProjectStacks(inst, validation)
     }
 }
 
+function getLibs(mod) {
+    let result = {
+        name: "/ti/dmm/dmm",    // products that use NDK reference this
+                                // "group" name in their deps
+        libs: [],               // libraries that are needed by the current
+                                // configuration
+        deps: []                // our libs require TI-DRIVERS libraries
+    }
+
+    if (mod.$static.genLibs == true) {
+        const boardName = easylinkUtil.getDeviceOrLaunchPadName(true);
+
+        let lib = "ti/dmm/library/tirtos/";
+        let compiler = system.compiler;
+        let product = "";
+
+        if (boardName.includes("CC13")) {
+            product = "cc13x2";
+        } else if (boardName.includes("CC26")) {
+            product = "cc26x2";
+        }
+
+        lib += compiler + "/bin/";
+        lib += "dmmlib_" + product + ".a";
+
+        result.libs.push(lib);
+    }
+
+    return result;
+}
+
 /*
  *  ======== exports ========
  *  Export the DMM module definition
@@ -392,7 +432,12 @@ exports = {
     },
     templates: {
         "/ti/dmm/templates/ti_dmm_application_policy.c.xdt": true,
-        "/ti/dmm/templates/ti_dmm_application_policy.h.xdt": true
+        "/ti/dmm/templates/ti_dmm_application_policy.h.xdt": true,
+
+        "/ti/utils/build/GenLibs.cmd.xdt": {
+            modName: "/ti/dmm/dmm",
+            getLibs: getLibs
+        }
     },
     validateProjectStacks: validateProjectStacks
 };

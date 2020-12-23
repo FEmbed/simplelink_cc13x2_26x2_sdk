@@ -25,13 +25,16 @@
     </tests>
     <releases relDir="package/rel/">
     <release name="ti_utils"
-        pname="../../../exports/ti_utils.zip"
+        pname="ti_utils.zip"
         label="default"
     >
         <file name="package/package.bld.xml"/>
         <file name="package/build.cfg"/>
         <file name="package/package.xdc.inc"/>
         <file name=".meta/Common.js"/>
+        <file name=".meta/JSON.syscfg.js"/>
+        <file name=".meta/RTOS.syscfg.js"/>
+        <file name=".meta/tiutils.component.js"/>
         <file name="package.bld"/>
         <file name="package/package.cfg.xdc.inc"/>
     </release>

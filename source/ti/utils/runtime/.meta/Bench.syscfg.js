@@ -91,7 +91,7 @@ let config_instance = [
     },
     {
         name: "section",
-        displayName: "Section name",
+        displayName: "Section Name",
         default: ""
     }
 ];
@@ -103,12 +103,12 @@ let config_instance = [
 let config_module = [
     {
         name: "numEntries",
-        displayName: "Number of entries",
+        displayName: "Number of Entries",
         default: 100
     },
     {
         name: "timestampHz",
-        displayName: "Timestamp Ticks per Second",
+        displayName: "Timestamp Ticks Per Second",
         default: 4000000
     }
 ];

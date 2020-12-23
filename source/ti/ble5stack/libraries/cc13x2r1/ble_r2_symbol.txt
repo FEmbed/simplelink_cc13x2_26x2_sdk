@@ -104,6 +104,8 @@ hide llSetNextDataChan
 hide smpResponderProcessPairingPublicKey
 hide llExtScan_PostProcess
 hide linkDB_NumActive
+hide llTimeCompare
+hide GapScan_disable
 //
 rename ECC_keyGen                 as eccRom_genKeys
 rename ECDH_commonKey             as eccRom_genSharedSecret

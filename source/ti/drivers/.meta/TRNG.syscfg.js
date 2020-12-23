@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,10 +72,10 @@ private or symmetric keys.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration Options][4]
-[1]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#TRNG_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_t_r_n_g_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#TRNG_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName : "CONFIG_TRNG_",
     config              : Common.addNameConfig(config, "/ti/drivers/TRNG", "CONFIG_TRNG_"),

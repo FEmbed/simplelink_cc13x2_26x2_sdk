@@ -169,3 +169,10 @@ Changelog
 ### Version 3.10.01
 
 - Added support for calling RF_runScheduleCmd() based on rfModeMultiClient
+
+### Version 3.20.00
+
+- Added freertos support
+- Added support for LP-CC2652RSIP and LP-CC2652PSIP modules
+- Fixed security vulnerability where received packet length was not being
+  verified before copying

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,14 @@
 static s32_t spiffs_hal_erase(spiffs *fs, u32_t addr, u32_t size);
 static s32_t spiffs_hal_read(spiffs *fs, u32_t addr, u32_t size, u8_t *dst);
 static s32_t spiffs_hal_write(spiffs *fs, u32_t addr, u32_t size, u8_t *src);
+
+/*
+ *  ======== SPIFFSNVS_close ========
+ */
+void SPIFFSNVS_close(SPIFFSNVS_Data *spiffsnvsData)
+{
+    NVS_close(spiffsnvsData->nvsHandle);
+}
 
 /*
  *  ======== SPIFFSNVS_config ========

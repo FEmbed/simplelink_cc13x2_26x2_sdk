@@ -62,7 +62,7 @@
 
     let driver = "";  /* String to attach to "UART" for driver name */
     if (devId.match(/CC13.2/) || devId.match(/CC26.2/)) {
-        if (uartGlobal.useUARTCC26X2) {
+        if (uartGlobal.uartImplementation == "UARTCC26X2") {
             driver = 'CC26X2';
             attrsVer = '';
             powerDriver = 'CC26X2';
@@ -148,7 +148,7 @@ static const UART`driver`_HWAttrs`attrsVer` uart`driver`HWAttrs[`countDef`] = {
     .intNum             = INT_`peripheral.name`_COMB,
     .intPriority        = `Common.intPriority2Hex(inst.interruptPriority)`,
     .swiPriority        = `Common.swiPriority2Int(inst.softwareInterruptPriority)`,
-% if (uartGlobal.useUARTCC26X2) {
+% if (uartGlobal.uartImplementation == "UARTCC26X2") {
 % if (uart.flowControl) {
     .flowControl        = UARTCC26X2_FLOWCTRL_HARDWARE,
 % }

@@ -1338,9 +1338,6 @@ int_fast16_t ECJPAKE_roundTwoGenerateKeys(ECJPAKE_Handle handle, ECJPAKE_Operati
 int_fast16_t ECJPAKE_computeSharedSecret(ECJPAKE_Handle handle, ECJPAKE_OperationComputeSharedSecret *operation);
 
 /*!
- *  @deprecated This function will be deprecated in the 3Q20 SDK release. The
- *  asynchronicity of the function can not be handled by all accelerators.
- *
  *  @brief Cancels an ongoing ECJPAKE operation.
  *
  *  Asynchronously cancels an ECJPAKE operation. Only available when using

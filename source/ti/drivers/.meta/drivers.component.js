@@ -42,7 +42,53 @@ let displayName = "TI Drivers";
 let description = "TI Drivers System Configuration";
 let deviceId = system.deviceData.deviceId;
 
-if (deviceId.match(/CC13.2|CC26.2/)) {
+if (deviceId.match(/CC13.2..F6|CC26.2..F6/)) {
+    /* CC13X2 & CC26X2 */
+    topModules = [
+        {
+            displayName: displayName,
+            description: description,
+            modules: [
+                "/ti/display/Display",
+                "/ti/drivers/ADC",
+                "/ti/drivers/ADCBuf",
+                "/ti/drivers/AESCBC",
+                "/ti/drivers/AESCTR",
+                "/ti/drivers/AESCTRDRBG",
+                "/ti/drivers/AESCCM",
+                "/ti/drivers/AESECB",
+                "/ti/drivers/Board",
+                "/ti/drivers/DMA",
+                "/ti/drivers/GPIO",
+                "/ti/drivers/I2C",
+                "/ti/drivers/I2S",
+                "/ti/drivers/ITM",
+                "/ti/drivers/NVS",
+                "/ti/drivers/Power",
+                "/ti/drivers/PWM",
+                "/ti/drivers/RTOS",
+                "/ti/drivers/SD",
+                "/ti/drivers/SPI",
+                "/ti/drivers/Temperature",
+                "/ti/drivers/Timer",
+                "/ti/drivers/TRNG",
+                "/ti/drivers/UART",
+                "/ti/drivers/UART2",
+                "/ti/drivers/Watchdog"
+            ],
+            "categories": [
+                {
+                    "displayName" : "TI Driver Apps",
+                    "description" : "TI Drivers Apps Configuration",
+                    "modules" : [
+                        "/ti/drivers/apps/Button",
+                        "/ti/drivers/apps/LED"
+                    ]
+                }
+            ]
+        }
+    ];
+} else if (deviceId.match(/CC13.2|CC26.2/)) {
     /* CC13X2 & CC26X2 */
     topModules = [
         {
@@ -58,10 +104,60 @@ if (deviceId.match(/CC13.2|CC26.2/)) {
                 "/ti/drivers/AESCCM",
                 "/ti/drivers/AESGCM",
                 "/ti/drivers/AESECB",
+                "/ti/drivers/Board",
                 "/ti/drivers/DMA",
                 "/ti/drivers/ECDH",
                 "/ti/drivers/ECDSA",
                 "/ti/drivers/ECJPAKE",
+                "/ti/drivers/GPIO",
+                "/ti/drivers/I2C",
+                "/ti/drivers/I2S",
+                "/ti/drivers/ITM",
+                "/ti/drivers/NVS",
+                "/ti/drivers/Power",
+                "/ti/drivers/PWM",
+                "/ti/drivers/RTOS",
+                "/ti/drivers/SD",
+                "/ti/drivers/SHA2",
+                "/ti/drivers/SPI",
+                "/ti/drivers/Temperature",
+                "/ti/drivers/Timer",
+                "/ti/drivers/TRNG",
+                "/ti/drivers/UART",
+                "/ti/drivers/UART2",
+                "/ti/drivers/Watchdog"
+            ],
+            "categories": [
+                {
+                    "displayName" : "TI Driver Apps",
+                    "description" : "TI Drivers Apps Configuration",
+                    "modules" : [
+                        "/ti/drivers/apps/Button",
+                        "/ti/drivers/apps/LED"
+                    ]
+                }
+            ]
+        }
+    ];
+} else if (deviceId.match(/CC13.1|CC26.1/)) {
+    /* CC13X1 & CC26X1 */
+    topModules = [
+        {
+            displayName: displayName,
+            description: description,
+            modules: [
+                "/ti/display/Display",
+                "/ti/drivers/ADC",
+                "/ti/drivers/ADCBuf",
+                "/ti/drivers/AESCBC",
+                "/ti/drivers/AESCTR",
+                "/ti/drivers/AESCTRDRBG",
+                "/ti/drivers/AESCCM",
+                "/ti/drivers/AESECB",
+                "/ti/drivers/Board",
+                "/ti/drivers/DMA",
+                "/ti/drivers/ECDH",
+                "/ti/drivers/ECDSA",
                 "/ti/drivers/GPIO",
                 "/ti/drivers/I2C",
                 "/ti/drivers/I2S",
@@ -106,6 +202,7 @@ if (deviceId.match(/CC13.2|CC26.2/)) {
                 "/ti/drivers/GPIO",
                 "/ti/drivers/I2C",
                 "/ti/drivers/I2S",
+                "/ti/drivers/ITM",
                 "/ti/drivers/NVS",
                 "/ti/drivers/Power",
                 "/ti/drivers/PWM",
@@ -152,11 +249,13 @@ if (deviceId.match(/CC13.2|CC26.2/)) {
                 "/ti/drivers/EMAC",
                 "/ti/drivers/GPIO",
                 "/ti/drivers/I2C",
+                "/ti/drivers/ITM",
                 "/ti/drivers/NVS",
                 "/ti/drivers/Power",
                 "/ti/drivers/PWM",
                 "/ti/drivers/RTOS",
                 "/ti/drivers/SD",
+                "/ti/drivers/SHA2",
                 "/ti/drivers/SPI",
                 "/ti/drivers/Timer",
                 "/ti/drivers/UART",

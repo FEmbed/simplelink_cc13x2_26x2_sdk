@@ -12,8 +12,8 @@
             {
                 "_name": "LAUNCHXL-CC1352P-4",
                 "Target": [
-                    "..\/..\/cc1352p\/targets\/target_launchxl-cc1352p_2_4_ghz.json",
-                    "..\/..\/cc1352p\/targets\/target_launchxl-cc1352p-4_highPA.json"
+                    "target_launchxl-cc1352p-4.json",
+                    "target_launchxl-cc1352p-4_highPA.json"
                 ]
             }
         ]

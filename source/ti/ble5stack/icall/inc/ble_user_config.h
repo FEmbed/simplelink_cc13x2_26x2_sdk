@@ -235,8 +235,12 @@ extern "C"
 #define MAX_NUM_WL_ENTRIES             16  // at 8 bytes per WL entry
 #endif
 
-#ifndef MAX_NUM_RL_ENTRIES
-#define MAX_NUM_RL_ENTRIES             10  // at 8 bytes per WL entry
+#ifndef CFG_MAX_NUM_RL_ENTRIES
+#ifdef GAP_BOND_MGR
+#define CFG_MAX_NUM_RL_ENTRIES             GAP_BONDINGS_MAX // at 8 bytes per WL entry
+#else
+#define CFG_MAX_NUM_RL_ENTRIES             10  // at 8 bytes per WL entry
+#endif
 #endif
 
 // Inactivity timeout in us

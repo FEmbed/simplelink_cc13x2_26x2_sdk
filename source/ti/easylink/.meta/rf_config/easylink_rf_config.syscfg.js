@@ -254,6 +254,14 @@ function getRfDesignOptions(deviceId)
     {
         newRfDesignOptions = [{name: "LAUNCHXL-CC2652RB"}];
     }
+    else if(deviceId === "CC2652P1FSIP")
+    {
+        newRfDesignOptions = [{name: "LP_CC2652PSIP"}];
+    }
+    else if(deviceId === "CC2652R1FSIP")
+    {
+        newRfDesignOptions = [{name: "LP_CC2652RSIP"}];
+    }
 
     return(newRfDesignOptions);
 }
@@ -319,6 +327,16 @@ function getPropPhySettings(inst, deviceId)
     {
         phySettings = system.getScript("/ti/easylink/rf_config/"
             + "CC26X2R1_LAUNCHXL_rf_defaults.js").defaultPropPhyList;
+    }
+    else if(deviceId === "CC2652P1FSIP")
+    {
+        phySettings = system.getScript("/ti/easylink/rf_config/"
+            + "LP_CC2652PSIP_rf_defaults.js").defaultPropPhyList;
+    }
+    else if(deviceId === "CC2652R1FSIP")
+    {
+        phySettings = system.getScript("/ti/easylink/rf_config/"
+            + "LP_CC2652RSIP_rf_defaults.js").defaultPropPhyList;
     }
 
     return(phySettings);
@@ -551,6 +569,11 @@ function validate(inst, validation)
             srfStudioBoardName = "LAUNCHXL-"
                 + srfStudioBoardName.replace("_LAUNCHXL", "");
             srfStudioBoardName = srfStudioBoardName.replace("_", "-");
+        }
+        else if(srfStudioBoardName.includes("LP_"))
+        {
+            // SIP LaunchPads; SmartRF Studio and SysConfig board
+            // names are identical
         }
         else
         {

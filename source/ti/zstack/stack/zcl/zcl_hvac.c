@@ -37,11 +37,10 @@
   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **************************************************************************************************/
 
-#ifdef ZCL_HVAC_CLUSTER
-
 /*********************************************************************
  * INCLUDES
  */
+#include "ti_zstack_config.h"
 #include "zcl.h"
 #include "zcl_general.h"
 #include "zcl_hvac.h"
@@ -49,6 +48,8 @@
 #if defined ( INTER_PAN ) || defined ( BDB_TL_INITIATOR ) || defined ( BDB_TL_TARGET )
   #include "stub_aps.h"
 #endif
+
+#ifdef ZCL_HVAC_CLUSTER
 
 /*********************************************************************
  * MACROS
@@ -175,7 +176,7 @@ ZStatus_t zclHVAC_SendSetpointRaiseLower( uint8_t srcEP, afAddrType_t *dstAddr,
   buf[1] = amount;
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
-                          COMMAND_THERMOSTAT_SETPOINT_RAISE_LOWER, TRUE,
+                          COMMAND_THERMOSTAT_SETPOINT_RAISE_OR_LOWER, TRUE,
                           ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0,
                           seqNum, PAYLOAD_LEN_SETPOINT_RAISE_LOWER, buf );
 }
@@ -437,7 +438,7 @@ ZStatus_t zclHVAC_SendGetWeeklyScheduleRsp( uint8_t srcEP, afAddrType_t *dstAddr
   }
 
   status = zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
-                           COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE_RSP, TRUE,
+                           COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE_RESPONSE, TRUE,
                            ZCL_FRAME_SERVER_CLIENT_DIR, disableDefaultRsp, 0, seqNum, calculatedBufSize, pBuf );
   zcl_mem_free( pBuf );
 
@@ -475,7 +476,7 @@ ZStatus_t zclHVAC_SendGetRelayStatusLogRsp( uint8_t srcEP, afAddrType_t *dstAddr
   buf[10] = HI_UINT16( pPayload->unreadEntries );
 
   return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
-                          COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG_RSP, TRUE,
+                          COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG_RESPONSE, TRUE,
                           ZCL_FRAME_SERVER_CLIENT_DIR, disableDefaultRsp, 0,
                           seqNum, PAYLOAD_LEN_GET_RELAY_STATUS_LOG_RSP, buf );
 }
@@ -629,7 +630,7 @@ static ZStatus_t zclHVAC_ProcessInThermostatCmds( zclIncoming_t *pInMsg,
   {
     switch( pInMsg->hdr.commandID )
     {
-      case COMMAND_THERMOSTAT_SETPOINT_RAISE_LOWER:
+      case COMMAND_THERMOSTAT_SETPOINT_RAISE_OR_LOWER:
         stat = zclThermostat_ProcessInCmd_SetpointRaiseLower( pInMsg, pCBs);
         break;
 
@@ -660,11 +661,11 @@ static ZStatus_t zclHVAC_ProcessInThermostatCmds( zclIncoming_t *pInMsg,
   {
     switch( pInMsg->hdr.commandID )
     {
-      case COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE_RSP:
+      case COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE_RESPONSE:
         stat = zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp( pInMsg, pCBs );
         break;
 
-      case COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG_RSP:
+      case COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG_RESPONSE:
         stat = zclThermostat_ProcessInCmd_GetRelayStatusLogRsp( pInMsg, pCBs );
         break;
 

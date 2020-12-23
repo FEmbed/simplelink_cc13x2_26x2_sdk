@@ -1021,7 +1021,8 @@ static bool RF_ratDispatchTime(uint32_t* dispatchTimeClockTicks)
             else
             {
                 /* Decode the compareTime field. */
-                uint32_t compareTime = ((rfc_CMD_SET_RAT_CMP_t*)&ratCh->chCmd)->compareTime;
+                rfc_CMD_SET_RAT_CMP_t* cmd = (rfc_CMD_SET_RAT_CMP_t *)&ratCh->chCmd;
+                uint32_t compareTime = cmd->compareTime;
 
                 /* Calculate the remained time until this RAT event. The calculation takes
                    into account the minimum power cycle time. */
@@ -2902,18 +2903,27 @@ static void RF_radioOpDoneCb(void)
         if (pCmd->pCb)
         {
             /* If any of the cancel events are set, mask out the other events. */
-            RF_EventMask exclusiveEvents = (RF_EventCmdCancelled
-                                            | RF_EventCmdAborted
-                                            | RF_EventCmdStopped
-                                            | RF_EventCmdPreempted);
+            RF_EventMask abortMask = (RF_EventCmdCancelled
+                                      | RF_EventCmdAborted
+                                      | RF_EventCmdStopped
+                                      | RF_EventCmdPreempted);
 
             /* Mask out the other events if any of the above is set. */
-            if (events & exclusiveEvents)
+            if (events & abortMask)
             {
-                events &= exclusiveEvents;
+                RF_EventMask nonTerminatingEvents = events & ~(abortMask | RF_EventCmdDone | RF_EventLastCmdDone |
+                                                               RF_EventLastFGCmdDone | RF_EventFGCmdDone);
+                if (nonTerminatingEvents)
+                {
+                    /* Invoke the user callback with any pending non-terminating events, since bare abort will follow */
+                    pCmd->pCb(pCmd->pClient, pCmd->ch, nonTerminatingEvents);
+                }
+
+                /* Mask out the other events if any of the above is set. */
+                events &= abortMask;
             }
 
-            /* Invoke the use callback */
+            /* Invoke the user callback */
             pCmd->pCb(pCmd->pClient, pCmd->ch, events);
         }
 
@@ -3884,7 +3894,7 @@ static RF_Stat RF_abortCmd(RF_Handle h, RF_CmdHandle ch, bool graceful, bool flu
 
     /* Return with the result:
      - RF_StatSuccess if at least one command was cancelled.
-     - RF_StatCmdEnded, when the command already finished.
+     - RF_StatCmdEnded, when the command already finished (in the Done Q, but not deallocated yet).
      - RF_StatInvalidParamsError otherwise.  */
     return(status);
 }
@@ -4681,7 +4691,7 @@ RF_CmdHandle RF_postCmd(RF_Handle h, RF_Op* pOp, RF_Priority ePri, RF_Callback p
     /* Try to allocate container */
     RF_Cmd* pCmd = RF_cmdAlloc();
 
-    /* If allocation failed */
+    /* If allocation succeeded */
     if (pCmd)
     {
         /* Stop inactivity clock if running */

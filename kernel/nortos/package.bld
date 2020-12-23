@@ -90,6 +90,10 @@ var tiFilesCC32xx = [
     "startup/startup_cc32xx_ccs.c"
 ];
 
+var ticlangFilesCC32xx = [
+    "startup/startup_cc32xx_ticlang.c"
+];
+
 var gccFilesCC32xx = [
     "startup/startup_cc32xx_gcc.c"
 ];
@@ -100,6 +104,10 @@ var iarFilesCC32xx = [
 
 var tiFilesMSP432E4 = [
     "startup/startup_msp432e4_ccs.c"
+];
+
+var ticlangFilesMSP432E4 = [
+    "startup/startup_msp432e4_ticlang.c"
 ];
 
 var gccFilesMSP432E4 = [
@@ -127,57 +135,74 @@ var packageFiles = [
 
 /* Generate libraries for products which have been defined */
 if (deviceWareOpts.cc26xxware) {
-    var iarM4F = xdc.module('iar.targets.arm.M4F');
-    var iarM4FCopts = iarM4F.profiles["release"].compileOpts.copts; /* must restore after use */
-    iarM4F.profiles["release"].compileOpts.copts =
-        iarM4F.profiles["release"].compileOpts.copts.replace("Ohs", "Ohz");
 
-    var tiM4F = xdc.module('ti.targets.arm.elf.M4F');
-    var tiM4FCopts = tiM4F.profiles["release"].compileOpts.copts; /* must restore after use */
-    tiM4F.profiles["release"].compileOpts.copts =
-        tiM4F.profiles["release"].compileOpts.copts.replace("-O2", "-O3");
-
-    if ((tiM4F.profiles["release"].compileOpts.copts).indexOf(" --opt_for_speed=0") < 0) {
-        tiM4F.profiles["release"].compileOpts.copts += " --opt_for_speed=0";
-    }
-
-    var targets;
-    var sources;
-
-    targets = libBuilder.cc26xxTargets;
-    cc26xxSources = dplFiles.concat(cc26xxSrcList);
-    cc26x2Sources = dplFiles.concat(cc26x2SrcList);
+    var targets = libBuilder.cc26xxTargets;
 
     /* loop through each target and add right target src file list */
     for each (var target in targets) {
-        var srcs;
+
+        var sources = dplFiles.concat(cc26x2SrcList);
 
         if (target.match(/clang/)) {
-            srcs = ticlangFiles;
+            sources = sources.concat(ticlangFiles);
         }
         else if (target.match(/ti/)) {
-            srcs = tiFiles;
+            sources = sources.concat(tiFiles);
         }
         else if (target.match(/gnu/)) {
-            srcs = gccFiles;
+            sources = sources.concat(gccFiles);
         }
         else if (target.match(/iar/)) {
-            srcs = iarFiles;
+            sources = sources.concat(iarFiles);
         }
         else {
             throw ("target not recognized: " + target);
         }
 
-        libBuilder.makeLibs("lib/nortos_cc13x2", [target],
-            cc26x2Sources.concat(srcs), " -DDeviceFamily_CC13X2");
+        libBuilder.makeLibs("nortos_cc13x2", [target],
+            sources, " -DDeviceFamily_CC13X2");
 
-        libBuilder.makeLibs("lib/nortos_cc26x2", [target],
-            cc26x2Sources.concat(srcs), " -DDeviceFamily_CC26X2");
+        libBuilder.makeLibs("nortos_cc26x2", [target],
+            sources, " -DDeviceFamily_CC26X2");
+
+        //libBuilder.makeLibs("nortos_cc13x2f6", [target],
+            //sources, " -DDeviceFamily_CC13X2F6");
+
+        //libBuilder.makeLibs("nortos_cc26x2f6", [target],
+            //sources, " -DDeviceFamily_CC26X2F6");
     }
 
-    /* restore M4F profile options for subsequent users */
-    iarM4F.profiles["release"].compileOpts.copts = iarM4FCopts;
-    tiM4F.profiles["release"].compileOpts.copts = tiM4FCopts;
+    /* Re-assign to M4 targets, overwrite sources */
+    targets = libBuilder.cc26x1Targets;
+
+    /* loop through each target and add right target src file list
+    for each (var target in targets) {
+
+        sources = dplFiles.concat(cc26x2SrcList);
+
+        if (target.match(/clang/)) {
+            sources = sources.concat(ticlangFiles);
+        }
+        else if (target.match(/ti/)) {
+            sources = sources.concat(tiFiles);
+        }
+        else if (target.match(/gnu/)) {
+            sources = sources.concat(gccFiles);
+        }
+        else if (target.match(/iar/)) {
+            sources = sources.concat(iarFiles);
+        }
+        else {
+            throw ("target not recognized: " + target);
+        }
+
+        libBuilder.makeLibs("nortos_cc13x1", [target],
+            sources, " -DDeviceFamily_CC13X1");
+
+        libBuilder.makeLibs("nortos_cc26x1", [target],
+            sources, " -DDeviceFamily_CC26X1");
+    }
+    */
 }
 
 if (deviceWareOpts.cc32xxware) {
@@ -194,7 +219,7 @@ if (deviceWareOpts.cc32xxware) {
         var srcs = sources;
 
         if (target.match(/clang/)) {
-            ; // TODO
+            srcs = srcs.concat(ticlangFilesCC32xx);
         }
         else if (target.match(/ti/)) {
             srcs = srcs.concat(tiFilesCC32xx);
@@ -209,7 +234,7 @@ if (deviceWareOpts.cc32xxware) {
             throw ("target not recognized: " + target);
         }
 
-        libBuilder.makeLibs("lib/nortos_cc32xx", [target], srcs, copts);
+        libBuilder.makeLibs("nortos_cc32xx", [target], srcs, copts);
     }
 }
 
@@ -225,7 +250,7 @@ if (deviceWareOpts.msp432e4DriverLib) {
         var srcs = sources;
 
         if (target.match(/clang/)) {
-            ; // TODO
+            srcs = srcs.concat(ticlangFilesMSP432E4);
         }
         else if (target.match(/ti/)) {
             srcs = srcs.concat(tiFilesMSP432E4);
@@ -240,8 +265,8 @@ if (deviceWareOpts.msp432e4DriverLib) {
             throw ("target not recognized: " + target);
         }
 
-	/* build one library for the super-set part */
-        libBuilder.makeLibs("lib/nortos_msp432e4", [target], srcs,
+        /* build one library for the super-set part */
+        libBuilder.makeLibs("nortos_msp432e4", [target], srcs,
             " -DDeviceFamily_MSP432E411Y");
     }
 }

@@ -67,7 +67,8 @@ extern const PIN_Config BoardGpioInitTable[];
     % if (comment != "") {
 `comment`
     % }
-#define `inst.$name`    `PIN.getIOIDValue(inst)`
+#define `inst.$name`                   `PIN.getIOIDValue(inst)`
     %
 % }
+#define CONFIG_TI_DRIVERS_PIN_COUNT    `instances.length`
 % }

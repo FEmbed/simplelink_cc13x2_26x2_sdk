@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,8 +69,9 @@ extern "C" {
  *
  *  nortos:   12
  *  SysBIOS:  40
+ *  FreeRTOS: 80
  */
-#define MutexP_STRUCT_SIZE   (40)
+#define MutexP_STRUCT_SIZE   (80)
 
 /*!
  *  @brief    MutexP structure.

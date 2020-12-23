@@ -53,13 +53,19 @@ intPriority.displayName = "Interrupt Priority";
 /* generic configuration parameters for GPIO instances */
 let config = [
     {
+        name: "$hardware",
+        getDisabledOptions: getDisabledHWOptions,
+        filterHardware: filterHardware,
+        onChange: onHardwareChanged
+    },
+    {
         name: "mode",
         displayName: "Mode",
         description: "Select the GPIO mode",
         longDescription: "The mode configuration parameter is used to"
             + " determine the initial state of GPIO, eliminating the need to"
             + " configure the GPIO pin at runtime prior to using it."
-            + "\n[More ...](/tidrivers/syscfg/html/ConfigDoc.html"
+            + "\n[More ...](/drivers/syscfg/html/ConfigDoc.html"
             + "#ti_drivers_GPIO_mode \"Full descriptions of all GPIO modes\""
             + ")",
 
@@ -82,7 +88,7 @@ let config = [
                   + " runtime using the GPIO APIs. As a result, it's assumed"
                   + " that this GPIO requires an entry in the table of GPIO"
                   + " callback functions; see [Optimize Callback Table Size]"
-                  + "(/tidrivers/syscfg/html/ConfigDoc.html#"
+                  + "(/drivers/syscfg/html/ConfigDoc.html#"
                   + "ti_drivers_GPIO_optimizeCallbackTableSize)."
             }
         ],
@@ -150,7 +156,7 @@ let config = [
         description: "Specifies when or if interrupts are triggered",
         longDescription: `
 This parameter configures when the GPIO pin interrupt will trigger. Even when this config is set, interrupts are not enabled until
-[\`GPIO_enableInt()\`](/tidrivers/doxygen/html/_g_p_i_o_8h.html#a31c4e65b3855424418262e35521c7051) is called at runtime. If using
+[\`GPIO_enableInt()\`](/drivers/doxygen/html/_g_p_i_o_8h.html#a31c4e65b3855424418262e35521c7051) is called at runtime. If using
 GPIO interrupts, the __Callback Function__ cannot be empty.`,
         hidden: false,
         default: "None",
@@ -170,7 +176,7 @@ GPIO interrupts, the __Callback Function__ cannot be empty.`,
         description: "The name of the callback function called when this GPIO pin triggers an interrupt, or 'NULL' if it's specified at runtime",
         longDescription: `
 If you need to set the callback at runtime, set this configuration parameter
-to 'NULL' and call [\`GPIO_setCallback()\`](/tidrivers/doxygen/html/_g_p_i_o_8h.html#a24c401f32e65f60f11a1594fdafb9d2a) with the name of the function you
+to 'NULL' and call [\`GPIO_setCallback()\`](/drivers/doxygen/html/_g_p_i_o_8h.html#a24c401f32e65f60f11a1594fdafb9d2a) with the name of the function you
 want to be triggered.
 
 If this config is not set (empty text field), GPIO assumes that no callback will ever be set for
@@ -178,20 +184,18 @@ this GPIO instance at runtime and, as a result, no space will be allocated to sa
 the callback; thus, it's important to never use \`GPIO_setCallback()\` on a
 GPIO for which this config is empty.
 
-[More ...](/tidrivers/syscfg/html/ConfigDoc.html#ti_drivers_GPIO_callbackFunction "Function's type signature and an example")
+[More ...](/drivers/syscfg/html/ConfigDoc.html#ti_drivers_GPIO_callbackFunction "Function's type signature and an example")
 `,
         documentation: `
-This function is of type [\`GPIO_CallbackFxn\`](/tidrivers/doxygen/html/_g_p_i_o_8h.html#a46b0c9afbe998c88539abc92082a1173),
+This function is of type [\`GPIO_CallbackFxn\`](/drivers/doxygen/html/_g_p_i_o_8h.html#a46b0c9afbe998c88539abc92082a1173),
 it's called in the context of a hardware ISR, and it's passed
 a single parameter: the index of the GPIO that triggered the interrupt.
 
-Example: [Creating an input callback](/tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_callback "C/C++ source").
+Example: [Creating an input callback](/drivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_callback "C/C++ source").
 `,
 
         placeholder: "<a callback is never needed>",
-        default: "NULL", /* a callback may be set at runtime */
-
-        onChange: updateConfigs
+        default: "NULL" /* a callback may be set at runtime */
     },
     {
         name: "comment",
@@ -201,6 +205,47 @@ Example: [Creating an input callback](/tidrivers/doxygen/html/_g_p_i_o_8h.html#t
         description: "User specified comment to add the generated files."
     }
 ];
+
+/*
+ *  ======== getDisabledHWOptions ========
+ *  Disable $hardware options that are incompatible with the readOnly mode
+ *  setting to prevent exceptions from being thrown. When changing from one
+ *  $hardware to another $hardware with incompatible mode settings, exceptions
+ *  would be thrown from trying to change the readOnly mode that was locked by
+ *  a parent module.
+ */
+function getDisabledHWOptions(inst, comps)
+{
+    let disabled = [];
+    if (inst.$uiState.mode.readOnly) {
+        let modeCfg = system.getReference(inst, "mode");
+        for (let i = 0; i < comps.length; i++) {
+            let comp = comps[i];
+            for (let sig in comp.signals) {
+                let type = comp.signals[sig].type;
+
+                if (inst.mode == "Input"
+                    && !Common.typeMatches(type, ["DIN"])) {
+                    disabled.push({
+                        component: comp,
+                        reason: "This hardware component does not support 'Input' "
+                                + modeCfg
+                    });
+                }
+                else if (inst.mode == "Output"
+                         && !Common.typeMatches(type, ["DOUT"])) {
+                    disabled.push({
+                        component: comp,
+                        reason: "This hardware component does not support 'Output' "
+                                + modeCfg
+                    });
+                }
+            }
+        }
+    }
+
+    return (disabled);
+}
 
 /*
  *  ======== pinmuxRequirements ========
@@ -300,6 +345,10 @@ function updateConfigs(inst, ui)
                 ui.pull.hidden = false;
                 ui.interruptTrigger.hidden = false;
                 ui.callbackFunction.hidden = false;
+                inst.interruptTrigger = "None";
+                if (inst.callbackFunction === "") {
+                    inst.callbackFunction = "NULL";
+                }
                 break;
             }
         case "Dynamic":
@@ -310,6 +359,9 @@ function updateConfigs(inst, ui)
                 ui.pull.hidden = true;
                 ui.callbackFunction.hidden = false;
                 ui.interruptTrigger.hidden = true;
+                if (inst.callbackFunction === "") {
+                    inst.callbackFunction = "NULL";
+                }
                 break;
             }
     }
@@ -378,7 +430,6 @@ function validate(inst, validation)
 
 
     if (inst.$hardware) {
-
         /*
          * This hardware only supports outputs at runtime.
          */
@@ -459,7 +510,6 @@ function getPinName(pinNum)
  */
 function onHardwareChanged(inst, ui)
 {
-    let compatible = false;
 
     if (inst.$hardware) {
         let key = Object.keys(inst.$hardware.signals)[0];
@@ -469,29 +519,33 @@ function onHardwareChanged(inst, ui)
         if (Common.typeMatches(type, ["DOUT"])) {
             if (Common.typeMatches(type, ["DIN"])) {
                 inst.mode = "Dynamic";
+                updateConfigs(inst, ui);
             }
             else {
                 inst.mode = "Output";
+                updateConfigs(inst, ui);
                 Common.setDefaults(inst, signal, "DOUT");
             }
-            compatible = true;
         }
         else if (Common.typeMatches(type, ["DIN"])) {
             inst.mode = "Input";
+            updateConfigs(inst, ui);
             Common.setDefaults(inst, signal, "DIN");
-            compatible = true;
         }
     }
     else {
         /* Return to default settings */
-        inst.mode = "Input";
-        inst.pull = "None";
-        inst.interruptTrigger = "None";
-        inst.callbackFunction = "NULL";
-        compatible = true;
-    }
+        if (!inst.$uiState.mode.readOnly) {
+            inst.mode = "Input";
+        }
 
-    if (compatible) {
+        inst.pull = "None";
+
+        if (!inst.$uiState.interruptTrigger.readOnly) {
+            inst.interruptTrigger = "None";
+        }
+
+        inst.callbackFunction = "NULL";
         updateConfigs(inst, ui);
     }
 }
@@ -723,11 +777,11 @@ configured statically, but can also be [reconfigured at runtime][2].
 * [Examples][4]
 * [Configuration Options][5]
 
-[1]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_reconfigure "Example: Reconfiguring a GPIO pin"
-[3]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Synopsis "Basic C usage summary"
-[4]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Examples "C usage examples"
-[5]: /tidrivers/syscfg/html/ConfigDoc.html#GPIO_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_g_p_i_o_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_reconfigure "Example: Reconfiguring a GPIO pin"
+[3]: /drivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Synopsis "Basic C usage summary"
+[4]: /drivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Examples "C usage examples"
+[5]: /drivers/syscfg/html/ConfigDoc.html#GPIO_Configuration_Options "Configuration options reference"
 `,
 
     pinmuxRequirements: pinmuxRequirements,
@@ -778,8 +832,6 @@ configured statically, but can also be [reconfigured at runtime][2].
 
     /* common sort for GPIO tables to minimize GPIO ISR table size */
     sort: sort,
-    filterHardware: filterHardware,
-    onHardwareChanged: onHardwareChanged,
 
     _getPinResources: _getPinResources
 };

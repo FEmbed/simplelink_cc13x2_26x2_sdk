@@ -64,11 +64,11 @@ extern "C"
 #define NPI_UART_INT_ENABLE TRUE
 
 #if !defined(NPI_UART_BR)
-#if defined( USE_FPGA ) && defined( HOST_CONFIG )
+#if defined( HOST_CONFIG )
 #define NPI_UART_BR 19200
-#else // !USE_FPGA | !HOST_CONFIG
+#else // !HOST_CONFIG
 #define NPI_UART_BR 115200
-#endif // USE_FPGA & HOST_CONFIG
+#endif // HOST_CONFIG
 #endif // !NPI_UART_BR
 
 // UART ISR Buffer define

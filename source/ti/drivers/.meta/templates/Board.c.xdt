@@ -44,6 +44,11 @@
     let part = system.deviceData.part;
     let devFamily = Common.device2DeviceFamily(devId, part);
     let boardName = Common.boardName();
+    let family = Common.device2Family(system.deviceData);
+
+    /* get board-specific prologue and epilogue content */
+    let template = system.getTemplate("/ti/drivers/templates/Board" + family +
+        ".c.xdt");
 %%}
 /*
  *  ======== ti_drivers_config.c ========
@@ -59,24 +64,14 @@
 #ifndef `devFamily`
 #define `devFamily`
 #endif
-% /* Temporarily define MTXX needed definitions */
-% if (boardName.match(/MTL/)) {
-% let core = boardName.match(/CORE\d/)[0].replace("CORE", "");
-
-const uint8_t TI_DRIVERS_COREID = `core`;
-
-#ifndef __CPUSS`core`__
-#define __CPUSS`core`__
-#endif
-
-#include <ti/devices/mtxx/mtl1/mtl1.h>
-#include <ti/devices/mtxx/mtl1/mtl1_iomux.h>
-% }
 
 #include <ti/devices/DeviceFamily.h>
 
 #include "ti_drivers_config.h"
-
+%
+% /* Get board-specific prologue template content */
+`template("prologue")`
+%
 % /* compute a canonical order for the used modules */
 % let keys = Object.keys(system.modules).sort();
 %
@@ -88,11 +83,13 @@ const uint8_t TI_DRIVERS_COREID = `core`;
     % if (mod.templates && mod.templates.boardc) {
         % /* load its template and expand it with args */
         % let gen = system.getTemplate(mod.templates.boardc);
-
 `gen(mod)`
         % }
 % }
-
+% /* Get board-specific initialization functions */
+% if (system.modules["/ti/drivers/Board"].$static.generateInitializationFunctions) {
+`template("initFunctions")`
+% }
 #include <ti/drivers/Board.h>
 
 /*
@@ -137,43 +134,13 @@ void Board_init(void)
 %     }
 % }
 %
+% /* Call board-specific initialization functions */
+% if (system.modules["/ti/drivers/Board"].$static.generateInitializationFunctions) {
+% let callInit = system.getTemplate("/ti/drivers/templates/Board" + family +
+%    ".Board_init.c.xdt");
+`callInit()`
+% }
     Board_initHook();
 }
-% /* Temporary fix for CC32XXSF LaunchPads */
-% if (boardName.match(/CC32[23][05].*SF/)) {
-
-/*
- *  ======== Board_debugHeader ========
- *  This structure prevents the CC32XXSF bootloader from overwriting the
- *  internal FLASH; this allows us to flash a program that will not be
- *  overwritten by the bootloader with the encrypted program saved in
- *  "secure/serial flash".
- *
- *  This structure must be placed at the beginning of internal FLASH (so
- *  the bootloader is able to recognize that it should not overwrite
- *  internal FLASH).
- */
-#if defined (__SF_DEBUG__) || defined(__SF_NODEBUG__)
-#if defined(__TI_COMPILER_VERSION__)
-#pragma DATA_SECTION(Board_debugHeader, ".dbghdr")
-#pragma RETAIN(Board_debugHeader)
-#elif defined(__IAR_SYSTEMS_ICC__)
-#pragma location=".dbghdr"
-#elif defined(__GNUC__)
-__attribute__ ((section (".dbghdr")))
-#endif
-#if defined(__SF_DEBUG__)
-const uint32_t Board_debugHeader[] = {
-    0x5AA5A55A,
-    0x000FF800,
-    0xEFA3247D
-};
-#elif defined (__SF_NODEBUG__)
-const uint32_t Board_debugHeader[] = {
-    0xFFFFFFFF,
-    0xFFFFFFFF,
-    0xFFFFFFFF
-};
-#endif
-#endif
-% }
+% /* Get board-specific epilogue template content */
+`template("epilogue")`

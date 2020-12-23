@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -167,7 +167,7 @@ int mq_getattr(mqd_t mqdes, struct mq_attr *mqstat)
 mqd_t mq_open(const char *name, int oflags, ...)
 {
     va_list             va;
-    mode_t              mode;
+    unsigned int        mode;
     struct mq_attr     *attrs = NULL;
     MQueueObj          *msgQueue;
     MQueueDesc         *msgQueueDesc = NULL;
@@ -196,7 +196,7 @@ mqd_t mq_open(const char *name, int oflags, ...)
     va_start(va, oflags);
 
     if (oflags & O_CREAT) {
-        mode = va_arg(va, mode_t);
+        mode = va_arg(va, unsigned int);
         attrs = va_arg(va, struct mq_attr *);
 
         if (attrs == NULL) {

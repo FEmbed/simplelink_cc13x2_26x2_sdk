@@ -46,6 +46,12 @@ const Docs = system.getScript("/ti/drivers/rf/RF.docs.js");
 /* Pin symbol default prefix */
 const SYM_PREFIX = "CONFIG_RF_";
 
+/* HW supported for antenna switch code generation */
+const hwSupported = [
+    "SKY13317-373LF", // CC1352P
+    "XMSSJJ3G0PA-054" // CC2652PSIP
+];
+
 /* Options for global event mask */
 const globalEventOptions = [
     {
@@ -1098,7 +1104,6 @@ function getLibs(mod) {
             `ti/drivers/rf/lib/${prefix}${deviceFamily}${suffix}`
         ],
         deps: [
-            "/ti/devices/driverlib",
             "/ti/drivers"
         ]
     };
@@ -1126,11 +1131,6 @@ function validate(inst, validation) {
             Common.logError(validation, inst, "coexEnable",
             "'RF Coexistence' is only supported with BLE PHY.");
         }
-        /* Coexistence feature can not be selected with hardware */
-        if(hardware !== null){
-            Common.logError(validation, inst, "coexEnable",
-            "'RF Coexistence' can not be enabled when antenna switching hardware is selected.");
-        }
     }
 
     /* Check that globalCallbackFunction is a C identifier */
@@ -1139,7 +1139,11 @@ function validate(inst, validation) {
         "'" + cbFxn + "' is not a valid a C identifier");
     }
 
-    if ((cbFxn !== "NULL") && (nAntennaPins > 0) && (hardware === null)) {
+    if (
+        (cbFxn !== "NULL") && 
+        (nAntennaPins > 0) && 
+        ((hardware === null) || (!hwSupported.includes(hardware.name)))
+    ) {
         /* Notify user that the antenna switching callback function must be implemented */
         Common.logInfo(validation, inst, "globalCallbackFunction",
         `Please see function '${cbFxn}AntennaSwitching' in 'ti_drivers_config.c'. The antenna switching functionality must be implemented by the user.`);

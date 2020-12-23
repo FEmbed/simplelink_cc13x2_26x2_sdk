@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019, Texas Instruments Incorporated
+ * Copyright (c) 2017-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1152,9 +1152,28 @@ static int_fast16_t ECJPAKECC26X2_runFSM(ECJPAKE_Handle handle) {
             return ECJPAKECC26X2_convertReturnValue(pkaResult);
 
         case ECJPAKECC26X2_FSM_ROUND_ONE_GENERATE_RETURN:
+            /* Mark the public key and public V CryptoKeys as non-empty */
+            object->operation.generateRoundOneKeys->myPublicKey1->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundOneKeys->myPublicKey2->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundOneKeys->myPublicV1->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundOneKeys->myPublicV2->encoding = CryptoKey_PLAINTEXT;
+            return ECJPAKE_STATUS_SUCCESS;
+
         case ECJPAKECC26X2_FSM_ROUND_TWO_GENERATE_RETURN:
-        case ECJPAKECC26X2_FSM_ZKP_GENERATE_RETURN:
+            /* Mark the public key, generators, and V CryptoKeys as non-empty */
+            object->operation.generateRoundTwoKeys->theirNewGenerator->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundTwoKeys->myNewGenerator->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundTwoKeys->myCombinedPrivateKey->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundTwoKeys->myCombinedPublicKey->encoding = CryptoKey_PLAINTEXT;
+            object->operation.generateRoundTwoKeys->myPublicV->encoding = CryptoKey_PLAINTEXT;
+            return ECJPAKE_STATUS_SUCCESS;
+
         case ECJPAKECC26X2_FSM_GENERATE_SHARED_SECRET_RETURN:
+            /* Mark the public key, generators, and V CryptoKeys as non-empty */
+            object->operation.computeSharedSecret->sharedSecret->encoding = CryptoKey_PLAINTEXT;
+            return ECJPAKE_STATUS_SUCCESS;
+
+        case ECJPAKECC26X2_FSM_ZKP_GENERATE_RETURN:
             return ECJPAKE_STATUS_SUCCESS;
         default:
             return ECJPAKE_STATUS_ERROR;

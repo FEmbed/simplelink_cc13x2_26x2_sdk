@@ -52,7 +52,9 @@
 #include "llc.h"
 #include "jdllc.h"
 #include "smsgs.h"
+#ifndef CUI_DISABLE
 #include "cui.h"
+#endif /* CUI_DISABLE */
 #ifdef FEATURE_SECURE_COMMISSIONING
 #include "sm_ti154.h"
 #endif
@@ -373,7 +375,7 @@ extern bool Ssf_getFrameCounter(ApiMac_sAddr_t *pDevAddr,
  * @param       pTxt - Text string to display.
  * @param       code -  numeric code to display
  */
-extern void Ssf_displayError(uint8_t *pTxt, uint8_t code);
+extern void Ssf_displayError(const char *pTxt, uint8_t code);
 
 /*!
  * @brief       Assert Indication
@@ -442,6 +444,17 @@ extern void Ssf_initializeProvisioningClock(void);
  *                          false to set disassociation delay.
  */
 extern void Ssf_setProvisioningClock(bool provision);
+
+#ifndef CUI_DISABLE
+/*!
+ * @brief       Validate and handle errors in channel mask entered through a UI
+ *
+ * @param       _chanMask - channel mask updated with user input
+ * @param       byteIdx   - index of modified byte
+ */
+extern void Ssf_validateChMask(uint8_t *_chanMask, uint8_t byteIdx);
+#endif /* CUI_DISABLE */
+
 #endif
 /*!
  * @brief       A callback calls this function to post the application task semaphore..

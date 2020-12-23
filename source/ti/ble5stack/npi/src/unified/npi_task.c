@@ -247,7 +247,8 @@ const NPI_Params NPI_defaultParams = {
     .portBoardID        = 0,                     /* CC2650_SPI0, conflicts with SRF06 display so both can't be enabled */
 #elif (defined(CC2650DK_7ID) || defined(CC2650_LAUNCHXL) || \
     defined(CC2640R2_LAUNCHXL) || defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || \
-    defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL)))
+    defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL) || \
+    defined (CC2652PSIP_LP) || defined (CC2652RSIP_LP)))
     .portBoardID        = 1,                     /* CC2650_SPI1 */
 #elif (defined(CC2650DK_5XD) || defined(CC2650DK_4XS)) && defined(TI_DRIVERS_DISPLAY_INCLUDED)
 #error "WARNING! CC2650_SPI0, is used to drive the SmartRF06 display. Cannot use SPI0 if display is enabled."

@@ -261,18 +261,16 @@ function createCommandList(phyGroup) {
     const cmdMap = {};
     // Collect all commands used by this PHY group
     const settingMap = DevInfo.getSettingMap(phyGroup);
-    _.each(settingMap, (s) => {
-        const phyType = s.name;
-        const cmdHandler = CmdHandler.get(phyGroup, phyType);
-        const cmdList = cmdHandler.getCmdList("all");
-        _.each(cmdList, (cmd) => {
-            const id = _.camelCase(cmd);
-            cmdMap[id] = {
-                id: id,
-                cmd: cmd,
-                description: cmdHandler.getCommandDescription(cmd)
-            };
-        });
+    const phyType = settingMap[0].name;
+    const cmdHandler = CmdHandler.get(phyGroup, phyType);
+    const cmdList = cmdHandler.getCmdList("all");
+    _.each(cmdList, (cmd) => {
+        const id = _.camelCase(cmd);
+        cmdMap[id] = {
+            id: id,
+            cmd: cmd,
+            description: cmdHandler.getCommandDescription(cmd)
+        };
     });
     CmdMap[phyGroup] = _.cloneDeep(cmdMap);
 

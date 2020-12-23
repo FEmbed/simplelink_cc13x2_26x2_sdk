@@ -555,9 +555,6 @@ int_fast16_t AESECB_oneStepEncrypt(AESECB_Handle handle, AESECB_Operation *opera
 int_fast16_t AESECB_oneStepDecrypt(AESECB_Handle handle, AESECB_Operation *operation);
 
 /*!
- *  @deprecated This function will be deprecated in the 3Q20 SDK release. The
- *  asynchronicity of the function can not be handled by all accellerators.
- *
  *  @brief Cancels an ongoing AESECB operation.
  *
  *  Asynchronously cancels an AESECB operation. Only available when using

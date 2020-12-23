@@ -1,6 +1,6 @@
 {
     "setting": {
-        "Name": "9.6 kbps, 2-GFSK, 2.4 kHz deviation (TCXO)",
+        "Name": "9.6 kbps, 2-GFSK, 2.4 kHz deviation",
         "Description": "9.6 kbps, 2-GFSK, 2.4 kHz deviation for 863-930 MHz band. Needs to be used with TCXO.",
         "Frequency": "868",
         "Patch": {
@@ -62,6 +62,10 @@
                         "$": "154"
                     },
                     {
+                        "_name": "modulation.deviationStepSz",
+                        "$": "2"
+                    },
+                    {
                         "_name": "symbolRate.preScale",
                         "$": "252"
                     },
@@ -120,6 +124,10 @@
                     {
                         "_name": "config.bNoFsPowerUp",
                         "$": "0"
+                    },
+                    {
+                        "_name": "config.bSynthNarrowBand",
+                        "$": "1"
                     },
                     {
                         "_name": "txPower",

@@ -37,33 +37,86 @@
 
 "use strict";
 
+const displayName = "TI Utils Runtime (experimental)";
+
 let description =
     "TI Utils Run-time provides foundational components for target software.";
 
+let desc_execGraph =
+    "Configuration and data connectors for the Execution Graph ROV Addon";
+
+let desc_instrumentation =
+    "Enable run-time instrumentation events";
+
 let topModules = [
+    {
+        displayName: "Instrumentation",
+        description: desc_instrumentation,
+        expanded: false,
+        modules: [
+            "/ti/utils/runtime/Bench",
+            "/ti/utils/runtime/LogMain",
+            "/ti/utils/runtime/LogSite",
+            "/ti/utils/runtime/LoggerText"
+        ]
+    },
     {
         displayName: "TI Utils Run-time",
         description: description,
-        modules: [
-            "/ti/utils/runtime/Bench",
-            "/ti/utils/runtime/LoggerText"
+        categories: [
+            {
+                displayName: "Execution Graph",
+                description: desc_execGraph,
+                expanded: false,
+                modules: [
+                    "/ti/utils/runtime/ExecGraphAdapter",
+                    "/ti/utils/runtime/ExecGraphFilter",
+                    "/ti/utils/runtime/ExecGraphLogger",
+                    "/ti/utils/runtime/ExecGraphSettings",
+                    "/ti/utils/runtime/ExGr_SYSBIOS",
+                    "/ti/utils/runtime/ExGr_XDCtools",
+                    "/ti/utils/runtime/ExGr_tiutils"
+                ]
+            }
         ]
     }
 ];
 
 let templates = [
     {
-        "name": "/ti/utils/runtime/Config.c.xdt",
-        "outputPath": "ti_utils_runtime_config.c"
+        name: "/ti/utils/runtime/Config.c.xdt",
+        outputPath: "ti_utils_runtime_config.c"
     },
     {
-        "name": "/ti/utils/runtime/Config.h.xdt",
-        "outputPath": "ti_utils_runtime_config.h"
+        name: "/ti/utils/runtime/Config.h.xdt",
+        outputPath: "ti_utils_runtime_config.h"
+    },
+    {
+        name: "/ti/utils/runtime/model.gv.xdt",
+        outputPath: "ti_utils_runtime_model.gv",
+        alwaysRun: true
+    },
+    {
+        name: "/ti/utils/runtime/Makefile.xdt",
+        outputPath: "ti_utils_runtime_Makefile",
+        alwaysRun: true
+    },
+    {
+        name: "/ti/utils/runtime/ExecGraph.js.xdt",
+        outputPath: "ti_utils_runtime_execgraph.js.xs"
+    },
+    {
+        name: "/ti/utils/runtime/rov.js.xdt",
+        outputPath: "ti_utils_runtime_rov.js.xs"
+    },
+    {
+        name: "/ti/utils/runtime/LogSite.cmd.xdt",
+        outputPath: "ti_utils_runtime_LogSite.cmd.genlibs"
     }
 ];
 
 exports = {
-// Disabled from public view as these are currently limited to internal use
-//    topModules,
+    displayName,
+    topModules,
     templates
 };

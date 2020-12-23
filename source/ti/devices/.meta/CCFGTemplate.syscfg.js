@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,9 +38,15 @@
  "use strict";
 
 exports = {
-    templates: 
+    templates:
         {
-            "/ti/devices/templates/ti_devices_config.c.xdt": "/ti/devices/templates/ti_devices_config.c.xdt"
+            "/ti/devices/templates/ti_devices_config.c.xdt": "/ti/devices/templates/ti_devices_config.c.xdt",
+            board_initc : "/ti/devices/CCFG.Board_init.c.xdt",
+            boardh : "/ti/devices/CCFG.Board.h.xdt"
         },
+    /* We need to initialise this quite early. Ideally as the first thing
+     * after getting to main
+     */
+    initPriority: 0,
     config: {}
 };

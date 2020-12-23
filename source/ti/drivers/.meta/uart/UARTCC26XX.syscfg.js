@@ -117,16 +117,8 @@ in the ring buffer. The size can be changed to suit the application.`,
                 name        : "useUARTCC26X2",
                 displayName : "Use UARTCC26X2",
                 default     : false,
-                description : "Use UARTCC26X2 driver instead of UARTCC26XX",
-                longDescription : `
-The [__UARTCC26XX__][1] driver does not support polling mode or text mode
-processing for data.  Text mode processing allows UART_read() to return on
-receiving a newline character.  Support for polling mode and text mode has
-been added to the [__UARTCC26X2__][2] driver.
-
-[1]: /tidrivers/doxygen/html/_u_a_r_t_c_c26_x_x_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_u_a_r_t_c_c26_x2_8h.html#details "C API reference"
-`
+                deprecated  : true,
+                onChange    : onChangeUpdateImplementation
             }
         ]
     },
@@ -187,6 +179,22 @@ function _getPinResources(inst)
     }
 
     return (pin);
+}
+
+/*
+ *  ======== onChangeUpdateImplementation ========
+ *  If users utilized the deprecated "useUARTCC26X2" configuration to select a
+ *  UART implementation, use the new "uartImplementation" config to do so.
+ */
+function onChangeUpdateImplementation(inst, ui)
+{
+    if (inst.useUARTCC26X2 !== inst.$module.$configByName.useUARTCC26X2.default) {
+        inst.uartImplementation = "UARTCC26X2";
+    }
+    else if (inst.useUARTCC26X2 ===
+             inst.$module.$configByName.useUARTCC26X2.default) {
+        inst.uartImplementation = "UARTCC26XX";
+    }
 }
 
 /*
@@ -336,7 +344,6 @@ function moduleInstances(inst)
     }
 
     if (inst.flowControl) {
-
         pinInstances.push({
                 name: "ctsPinInstance",
                 displayName: "CTS PIN Configuration While Pin is Not In Use",
@@ -401,6 +408,20 @@ function validate(inst, validation, $super)
  */
 function extend(base)
 {
+    let driverDescription = `
+The [__UARTCC26XX__][1] driver does not support polling mode or text mode
+processing for data.  Text mode processing allows UART_read() to return on
+receiving a newline character.  Support for polling mode and text mode has
+been added to the [__UARTCC26X2__][2] driver.
+
+[1]: /drivers/doxygen/html/_u_a_r_t_c_c26_x_x_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_u_a_r_t_c_c26_x2_8h.html#details "C API reference"
+    `;
+
+    /* display which driver implementation can be used */
+    devSpecific = Common.addImplementationConfig(devSpecific, "UART", "UARTCC26XX",
+        [{name: "UARTCC26XX"}, {name: "UARTCC26X2"}], driverDescription);
+
     /* override base validate */
     devSpecific.validate = function (inst, validation) {
         return validate(inst, validation, base);

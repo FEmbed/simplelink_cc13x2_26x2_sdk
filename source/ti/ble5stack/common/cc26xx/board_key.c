@@ -98,7 +98,7 @@ Hwi_Struct callbackHwiKeys;
 // PIN configuration structure to set all KEY pins as inputs with pullups enabled
 PIN_Config keyPinsCfg[] =
 {
-#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL))
+#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL) || defined (CC2652PSIP_LP) || defined (CC2652RSIP_LP))
     CONFIG_PIN_BTN1   | PIN_GPIO_OUTPUT_DIS  | PIN_INPUT_EN  |  PIN_PULLUP,
     CONFIG_PIN_BTN2   | PIN_GPIO_OUTPUT_DIS  | PIN_INPUT_EN  |  PIN_PULLUP,
 #elif defined(CC2650_LAUNCHXL) || defined(CC2640R2_LAUNCHXL) || defined(CC1350_LAUNCHXL)
@@ -135,7 +135,7 @@ void Board_initKeys(keysPressedCB_t appKeyCB)
   hKeyPins = PIN_open(&keyPins, keyPinsCfg);
   PIN_registerIntCb(hKeyPins, Board_keyCallback);
 
-#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL))
+#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL) || defined (CC2652PSIP_LP) || defined (CC2652RSIP_LP))
   PIN_setConfig(hKeyPins, PIN_BM_IRQ, CONFIG_PIN_BTN1 | PIN_IRQ_NEGEDGE);
   PIN_setConfig(hKeyPins, PIN_BM_IRQ, CONFIG_PIN_BTN2 | PIN_IRQ_NEGEDGE);
 #elif defined(CC2650_LAUNCHXL) || defined(CC2640R2_LAUNCHXL) || defined(CC1350_LAUNCHXL)
@@ -151,7 +151,7 @@ void Board_initKeys(keysPressedCB_t appKeyCB)
 
 #ifdef POWER_SAVING
   //Enable wakeup
-#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL))
+#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL) || defined (CC2652PSIP_LP) || defined (CC2652RSIP_LP))
   PIN_setConfig(hKeyPins, PINCC26XX_BM_WAKEUP, CONFIG_PIN_BTN1 | PINCC26XX_WAKEUP_NEGEDGE);
   PIN_setConfig(hKeyPins, PINCC26XX_BM_WAKEUP, CONFIG_PIN_BTN2 | PINCC26XX_WAKEUP_NEGEDGE);
 #elif defined(CC2650_LAUNCHXL) || defined(CC2640R2_LAUNCHXL) || defined(CC1350_LAUNCHXL)
@@ -186,7 +186,7 @@ void Board_initKeys(keysPressedCB_t appKeyCB)
 static void Board_keyCallback(PIN_Handle hPin, PIN_Id pinId)
 {
   keysPressed = 0;
-#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL))
+#if defined(CC26X2R1_LAUNCHXL) || defined(CC2652RB_LAUNCHXL) || defined(CC13X2R1_LAUNCHXL) || (defined (CC13X2P1_LAUNCHXL) || defined (CC13X2P_2_LAUNCHXL) || defined (CC13X2P_4_LAUNCHXL) || defined (CC2652PSIP_LP) || defined (CC2652RSIP_LP))
   if ( PIN_getInputValue(CONFIG_PIN_BTN1) == 0 )
   {
     keysPressed |= KEY_LEFT;

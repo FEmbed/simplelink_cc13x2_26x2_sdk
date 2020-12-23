@@ -40,11 +40,11 @@
 
 const sharedDocs = [
     {
-        configurable: ["phyType", "phyType868", "phyType433"],
+        configurable: ["phyType", "phyType868", "phyType433", "phyType169"],
         longDescription: "Select the desired PHY type."
     },
     {
-        configurable: ["txPower", "txPowerHi", "txPower433", "txPower433Hi"],
+        configurable: ["txPower", "txPowerHi", "txPower169", "txPower433", "txPower433Hi"],
         longDescription: "TX power, short for transmit power, a parameter used to set "
             + "the desired output power during packet transmissions."
     },

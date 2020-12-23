@@ -25,6 +25,10 @@
                     "target_launchxl-cc1352p-4_highPA.json",
                     "target_launchxl-cc1352p_2_4_ghz.json"
                 ]
+            },
+            {
+                "_name": "CC1352EM-XS169-XS24, 10 dBm",
+                "Target": "..\/..\/cc1352r\/targets\/target_refdesign_cc1352r1_169_mhz.json"
             }
         ]
     }

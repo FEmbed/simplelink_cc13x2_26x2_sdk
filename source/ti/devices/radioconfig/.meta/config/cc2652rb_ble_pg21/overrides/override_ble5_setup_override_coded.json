@@ -2,11 +2,6 @@
     "overridebuffer": {
         "Element32b": [
             {
-                "_type": "MCE_RFE_OVERRIDE",
-                "_comment": "PHY: Use MCE ROM, RFE ROM",
-                "$": "0,9,1,0,3,1"
-            },
-            {
                 "_type": "HW_REG_OVERRIDE",
                 "_comment": "Bluetooth 5: Set pilot tone length to 20 us",
                 "$": "0x5320,0x03C0"

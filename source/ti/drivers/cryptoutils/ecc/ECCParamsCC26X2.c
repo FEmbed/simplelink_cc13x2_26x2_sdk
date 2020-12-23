@@ -170,8 +170,8 @@ int_fast16_t ECCParams_getUncompressedGeneratorPoint(const ECCParams_CurveParams
     /* Reverse and concatenate x and y */
     uint32_t i = 0;
     for (i = 0; i < paramLength; i++) {
-        buffer[i + 1]               = curveParams->generatorX[paramLength - i];
-        buffer[i + 1 + paramLength] = curveParams->generatorY[paramLength - i];
+        buffer[i + 1]               = curveParams->generatorX[paramLength - i - 1];
+        buffer[i + 1 + paramLength] = curveParams->generatorY[paramLength - i - 1];
     }
 
     buffer[0] = 0x04;

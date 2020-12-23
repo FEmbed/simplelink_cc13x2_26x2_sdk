@@ -248,6 +248,7 @@ function generateStruct(override, data, custom) {
     };
     ret.code += "uint32_t " + override.ptrName + "[] =\n{\n";
     let nEntries = 0;
+    const coExEnabled = Common.getCoexConfig() !== null;
 
     // Generate the code
     for (const key in override) {
@@ -267,7 +268,15 @@ function generateStruct(override, data, custom) {
         }
         // Skip Co-Ex unless available and enabled
         if (key.includes("coex")) {
-            if (Common.getCoexConfig() === null) {
+            const isCoExOvr = !key.includes("non_coex");
+            let generateCode;
+            if (coExEnabled) {
+                generateCode = isCoExOvr;
+            }
+            else {
+                generateCode = !isCoExOvr; 
+            }
+            if (!generateCode) {
                 // eslint-disable-next-line no-continue
                 continue;
             }

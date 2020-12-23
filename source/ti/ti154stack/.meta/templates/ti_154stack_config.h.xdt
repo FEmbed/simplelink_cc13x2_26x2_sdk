@@ -216,7 +216,11 @@ validate user input during runtime channel mask configuration.
 
 % // FH broadcast configs required to be generated for collector projects only
 % if (inst.project.includes("collector")) {
-/* Setting for FH application broadcast msg generation interval in ms */
+/*
+ Setting for FH application broadcast msg generation interval in ms. 
+ The stack FH broadcast interval is half of this value to prevent
+ transmit queue overflow.
+ */
 #define FH_BROADCAST_INTERVAL           `inst.fhBroadcastInterval`
 
 /* Setting for FH application broadcast dwell time in ms */

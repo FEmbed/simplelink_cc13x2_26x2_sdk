@@ -126,7 +126,7 @@
  *
  * The NV definitions:
  *     BLE_NVID_GAP_BOND_START - starting NV ID
- *     gapBond_maxBonds - Maximum number of bonding allowed (10 is max for
+ *     gapBond_maxBonds - Maximum number of bonding allowed (32 is max for
  *                        number of NV IDs allocated in bcomdef.h).
  *
  * A single bonding entry consists of 6 components (NV items):
@@ -267,7 +267,7 @@ static uint8_t gapBond_MITM = FALSE;
 static uint8_t gapBond_IOCap = GAPBOND_IO_CAP_DISPLAY_ONLY;
 static uint8_t gapBond_Bonding = FALSE;
 static uint8_t gapBond_sc_host_debug = FALSE;
-static uint8_t gapBond_maxBonds = 10;
+static uint8_t gapBond_maxBonds = GAP_BONDINGS_MAX;
 static uint8_t gapBond_maxCharCfg = 4;
 static uint8_t gapBond_gatt_no_client = 0;
 static uint8_t gapBond_gatt_no_service_changed = 1;
@@ -4118,6 +4118,11 @@ static bStatus_t gapBondStateEnd(uint16_t connHandle)
       }
 
       // Free the node.
+      if(pCurr->pPairReq)
+      {
+        MAP_osal_mem_free(pCurr->pPairReq);
+      }
+
       MAP_osal_mem_free(pCurr);
 
       // We're done.

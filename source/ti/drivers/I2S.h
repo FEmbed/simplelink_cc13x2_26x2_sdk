@@ -943,7 +943,7 @@ typedef struct {
      *   All the data buffers used (both for input and output) must contain N*x bytes (with N an integer verifying N>0). */
 
     uint16_t              startUpDelay;
-    /*!< Time (in number of WS cycles) to wait before the first transfer. */
+    /*!< Number of WS periods to wait before the first transfer. */
 
     uint16_t              MCLKDivider;
     /*!< Select the frequency divider for MCLK signal. Final value of MCLK is 48MHz/MCLKDivider. Value must be selected between 2 and 1024. */

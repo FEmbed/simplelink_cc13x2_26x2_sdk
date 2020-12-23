@@ -752,9 +752,6 @@ int_fast16_t ECDSA_sign(ECDSA_Handle handle, ECDSA_OperationSign *operation);
 int_fast16_t ECDSA_verify(ECDSA_Handle handle, ECDSA_OperationVerify *operation);
 
 /*!
- *  @deprecated This function will be deprecated in the 3Q20 SDK release. The
- *  asynchronicity of the function can not be handled by all accelerators.
- *
  *  @brief Cancels an ongoing ECDSA operation.
  *
  *  Asynchronously cancels an ECDSA operation. Only available when using

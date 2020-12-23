@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,6 +65,7 @@ function validate(inst, validation)
 let base = {
     displayName         : "ECDH",
     description         : "Elliptic Curve Diffie-Hellman (ECDH) Key Generation Driver",
+    alwaysShowLongDescription : true,
     longDescription     : `
 The [__ECDH driver__][1] provides APIs for shared secret
 and symmetric key generation between two parties, based on
@@ -73,10 +74,10 @@ the Diffie-Hellman key exchange protocol.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration Options][4]
-[1]: /tidrivers/doxygen/html/_e_c_d_h_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_e_c_d_h_8h.html#ti_drivers_ECDH_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_e_c_d_h_8h.html#ti_drivers_ECDH_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#ECDH_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_e_c_d_h_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_e_c_d_h_8h.html#ti_drivers_ECDH_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_e_c_d_h_8h.html#ti_drivers_ECDH_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#ECDH_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
     defaultInstanceName : "CONFIG_ECDH_",

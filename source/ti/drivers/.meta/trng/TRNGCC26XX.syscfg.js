@@ -107,6 +107,10 @@ function validate(inst, validation, $super)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "TRNG", null,
+        [{name: "TRNGCC26XX"}], null);
+
     /* override base validate */
     devSpecific.validate = function (inst, validation) {
         return validate(inst, validation, base);

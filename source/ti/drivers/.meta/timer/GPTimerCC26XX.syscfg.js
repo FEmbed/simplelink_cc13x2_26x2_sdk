@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,6 @@ let intPriority = Common.newIntPri()[0];
 intPriority.name = "interruptPriority";
 intPriority.displayName = "Interrupt Priority";
 intPriority.description = "Timer Interrupt Priority";
-
 
 /*
  *  ======== devSpecific ========
@@ -113,6 +112,15 @@ function getDisabledOptions(inst, components)
 }
 
 /*
+ *  ======== ADCBufPeripheralMatch ========
+ *  ADCBufCC26XX requires Timer0
+ */
+function ADCBufPeripheralMatch(peripheral)
+{
+    return (peripheral.name.match(/GPTM0/));
+}
+
+/*
  *  ======== pinmuxRequirements ========
  *  Return peripheral pin requirements as a function of config
  */
@@ -137,11 +145,7 @@ function pinmuxRequirements(inst)
         case "ADCBuf": {
             timer.canShareWith = "ADCBuf";
             timer.maxShareCount = 2;
-            /* ADCBufCC26XX requires Timer0 */
-            timer.filter = function (peripheral) {
-                    return (peripheral.name.match(/GPTM0/));
-                },
-
+            timer.filter = ADCBufPeripheralMatch,
             timer.resources = []; // no resources required for Timer
             break;
         }
@@ -305,8 +309,8 @@ and non-portable APIs.
 
 * [Configuration Options][2]
 
-[1]: /tidrivers/doxygen/html/_g_p_timer_c_c26_x_x_8h.html#details "C API reference"
-[2]: /tidrivers/syscfg/html/ConfigDoc.html#Timer_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_g_p_timer_c_c26_x_x_8h.html#details "C API reference"
+[2]: /drivers/syscfg/html/ConfigDoc.html#Timer_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName : "CONFIG_GPTIMER_",
     config              : Common.addNameConfig(config, "/ti/drivers/timer/GPTimerCC26XX", "CONFIG_GPTIMER_"),

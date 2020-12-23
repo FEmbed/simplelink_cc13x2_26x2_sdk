@@ -109,6 +109,7 @@ extern "C"
 #define RAT_CHAN_7_CAPT_COMP_REG       HWREG(RAT_BASE + RFC_RAT_O_RATCH7VAL)
 
 #define LL_MAX_32BIT_TIME_IN_625US     0x07A12000  // 32s in 625us ticks (LSTO limit)
+#define LL_MAX_OVERLAP_TIME_LIMIT      0x7270E000  // 8 minutes in 625us ticks. chosen to be half of 17 minutes RF overlap.
 #define LL_MAX_32BIT_TIME              0xFFFFFFFF
 
 /*******************************************************************************

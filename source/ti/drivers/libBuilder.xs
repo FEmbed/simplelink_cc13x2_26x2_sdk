@@ -34,7 +34,29 @@
  *  ======== libBuilder.xs ========
  */
 
-var buildInstrumentedLibrary = false; /* don't build instrumented libraries */
+/* Return the lib path based on SimpleLink Library conventions */
+function getLibPath(targetString)
+{
+    let isa = targetString.split(".").pop().toLowerCase();
+    let toolchain = "undefined";
+
+    if (targetString.match(/ti/)) {
+        if (targetString.match(/clang/)) {
+            toolchain = "ticlang";
+        }
+        else {
+            toolchain = "ccs";
+        }
+    }
+    else if (targetString.match(/gnu/)) {
+        toolchain = "gcc";
+    }
+    else if (targetString.match(/iar/)) {
+        toolchain = "iar";
+    }
+
+    return ("lib/" + toolchain + "/" + isa + "/");
+}
 
 /*
  *  ======== makeLibs ========
@@ -43,10 +65,65 @@ function makeLibs(name, targets, objects, cOpts)
 {
     var lib;
     var gccOpts;
+    /* http://rtsc.eclipseprojects.io/cdoc-tip/index.html#xdc/bld/Library.html#.Attrs */
     var attrs = {
         copts: "",
-        profile: "release"
+        profile: "",
+        suffix: ".a"
     };
+    /* Legacy attributes to maintain compatibility */
+    var attrs_legacy = {
+        copts: "",
+        profile: ""
+    };
+
+    /*
+     * Array of build profiles to build libs for. Profile must be supported by
+     * the XDC ITarget.xdc (ie ti.arm.clang.M4) interface.
+     *
+     * Disabling coverage profiles. Currently, only ticlang supports
+     * coverage.
+     */
+    var profiles = [ "release_lto", "release" /*, "coverage" */];
+
+    function addLibraryProfiles()
+    {
+        for (var i = 0; i < profiles.length; i++) {
+            if (target.profiles[profiles[i]] != undefined) {
+
+                /* Add appropriate build profile name */
+                var libName = (profiles[i] == "release" ? name :
+                    [ name, profiles[i] ].join("_"));
+
+                /*
+                 * Construct the output path to follow SimpleLink library
+                 * naming conventions.
+                 *
+                 *  <namespace>/lib/<toolchain>/<isa>/<libname>.a
+                 *  drivers/lib/ticlang/m4f/drivers_cc32xx_release.a
+                 */
+                let libOutput = getLibPath(targetName) + libName;
+
+                /*
+                 * Construct the output path for legacy libraries to maintain
+                 * compatibility
+                 */
+                let libOutput_legacy = "lib/" + libName;
+
+                /* Specify the build profile to use for the target library */
+                attrs.profile = profiles[i];
+                attrs_legacy.profile = profiles[i];
+
+                /* Generate libraries following SimpleLink Library naming */
+                lib = Pkg.addLibrary(libOutput, target, attrs);
+                lib.addObjects(objs);
+
+                /* Generate legacy libraries to maintain compatibility */
+                lib = Pkg.addLibrary(libOutput_legacy, target, attrs_legacy);
+                lib.addObjects(objs);
+            }
+        }
+    }
 
     for each (var targetName in targets) {
         /* Only proceed if target already in Build object */
@@ -95,8 +172,19 @@ function makeLibs(name, targets, objects, cOpts)
         }
 
         /*
-         *  Suppress GCC 4.90's auto check-for-null-pointer-dereference
-         *  'UDF' instruction generation
+         *  When using '-O2' optimizations, GCC automatically sets the
+         *  '-fisolate-erroneous-paths-dereference' flag.
+         *
+         *  From 'Using the GNU Compiler Collection - For GCC version 9.2.1':
+         *  "-fisolate-erroneous-paths-dereference -- Detect paths that
+         *  trigger erroneous or undefined behavior due to dereferencing a
+         *  null pointer. Isolate those paths from the main control flow and
+         *  turn the statement with erroneous or undefined behavior into a
+         *  trap. This flag is enabled by default at '-O2' and higher and
+         *  depends on '-fdelete-null-pointer-checks' also being enabled."
+         *
+         *  The '-fdelete-null-pointer-checks' option is also enabled by
+         *  default when using '-O2' optimization.
          */
         if (targetName.match('gnu.targets')) {
             gccOpts = " -fno-isolate-erroneous-paths-dereference ";
@@ -108,19 +196,19 @@ function makeLibs(name, targets, objects, cOpts)
         /* Disable asserts & logs for the non-instrumented library */
         attrs.copts = cOpts + gccOpts +
             " -Dxdc_runtime_Log_DISABLE_ALL -Dxdc_runtime_Assert_DISABLE_ALL";
-        lib = Pkg.addLibrary(name, target, attrs);
-        lib.addObjects(objs);
+        attrs_legacy.copts = attrs.copts;
 
-        if (buildInstrumentedLibrary) {
-            /* Enable asserts & logs for the instrumented library */
-            attrs.copts = cOpts + gccOpts +
-                " -Dxdc_runtime_Assert_DISABLE_CONDITIONAL_ASSERT" +
-                " -DDebugP_ASSERT_ENABLED -DDebugP_LOG_ENABLED";
-            lib = Pkg.addLibrary(name + "_instrumented", target, attrs);
-            lib.addObjects(objs);
-        }
+        /* Create library instances to generate libraries */
+        lib = addLibraryProfiles();
     }
 }
+
+var cc26x1Targets = [
+    "ti.targets.arm.clang.M4",
+    "ti.targets.arm.elf.M4",
+    "gnu.targets.arm.M4",
+    "iar.targets.arm.M4",
+];
 
 var cc26xxTargets = [
     "ti.targets.arm.clang.M4F",

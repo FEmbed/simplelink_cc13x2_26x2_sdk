@@ -38,7 +38,7 @@
 
 const advParamsRanges = {
   priAdvIntMinValue:            "20",                 // Min value of Primary Advertising Interval (ms)
-  priAdvIntMaxValue:            "10485759.375",       // Max value of Primary Advertising Interval (ms)
+  priAdvIntMaxValue:            "480000",             // Max value of Primary Advertising Interval (ms)
   priAdvIntMaxValueAdvData:     "40959.375",          // Max value of Advertising Interval (ms)
   advDataTXPowerMinValue:       "-127",               // Min value of TX Power (dBm)
   advDataTXPowerMaxValue:       "127",                // Max value of TX Power (dBm)
@@ -81,7 +81,9 @@ const deviceToBoard = {
   CC1352P1: "CC1352P1_LAUNCHXL",
   CC2642R1: "CC26X2R1_LAUNCHXL",
   CC2652R1: "CC26X2R1_LAUNCHXL",
-  CC2652RB: "CC2652RB_LAUNCHXL"
+  CC2652RB: "CC2652RB_LAUNCHXL",
+  CC2652P1FSIP: "LP_CC2652PSIP",
+  CC2652R1FSIP: "LP_CC2652RSIP"
 };
 
 // Settings for ti/devices/CCFG module
@@ -92,6 +94,8 @@ const bleCentralCCFGSettings = {
   CC1352P_2_LAUNCHXL_CCFG_SETTINGS: {},
   CC1352P_4_LAUNCHXL_CCFG_SETTINGS: {},
   CC26X2R1_LAUNCHXL_CCFG_SETTINGS: {},
+  LP_CC2652RSIP_CCFG_SETTINGS: {},
+  LP_CC2652PSIP_CCFG_SETTINGS: {},
   CC2652RB_LAUNCHXL_CCFG_SETTINGS: {
     srcClkLF: "Derived from HF XOSC"
   }
@@ -617,7 +621,17 @@ function getRadioScript(rfDesign, deviceId)
         radioSettings = system.getScript("/ti/ble5stack/rf_config/"
             + "CC2652RB_LAUNCHXL_rf_defaults.js");
     }
+    else if(deviceId === "CC2652R1FSIP")
+    {
+        radioSettings = system.getScript("/ti/ble5stack/rf_config/"
+            + "LP_CC2652RSIP_rf_defaults.js");
+    }
 
+    else if(deviceId === "CC2652P1FSIP")
+    {
+        radioSettings = system.getScript("/ti/ble5stack/rf_config/"
+            + "LP_CC2652PSIP_rf_defaults.js");
+    }
     return(radioSettings);
 }
 

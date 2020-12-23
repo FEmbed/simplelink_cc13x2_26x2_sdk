@@ -80,7 +80,12 @@ const generateRfCallback = ( (callbackFxn.length !== 0) && (callbackFxn.toLowerC
 
 /* Determine if to generate specific callback for antenna switching */
 const generateRfAntennaCallback = ( generateRfCallback && nAntennaPins > 0 );
-const useAntennaSwitchHW = ( rfStatic.$hardware !== null );
+const antennaSwitchName = (rfStatic.$hardware !== null) ?  rfStatic.$hardware.name : undefined;
+const hwSupported = [
+    "SKY13317-373LF",
+    "XMSSJJ3G0PA-054"
+];
+const useAntennaSwitchHW = !!hwSupported.includes(antennaSwitchName);
 
 /* Determine if to generate specific callback for coex */
 const generateRfCoexCallback = ( generateRfCallback && coexEnable );
@@ -194,14 +199,14 @@ void __attribute__((weak)) `callbackFxn`(RF_Handle client, RF_GlobalEvent events
 %   const coexPinConfig = {
 %       CONFIG_RF_COEX_REQUEST: {
 %           pinMask: `PIN_GPIO_OUTPUT_EN | PIN_PUSHPULL | PIN_DRVSTR_MAX | ${reqIdleLvl ? "PIN_GPIO_LOW | PIN_INV_INOUT" : "PIN_GPIO_LOW"}`,
-%           rfCoreMux: "PINCC26XX_MUX_RFC_GPO3"
+%           rfCoreMux: "PINCC26XX_MUX_RFC_GPO1"
 %       },
 %       CONFIG_RF_COEX_PRIORITY: {
 %           pinMask: `PIN_GPIO_OUTPUT_EN | PIN_PUSHPULL | PIN_DRVSTR_MAX | ${priIdleLvl ? "PIN_GPIO_LOW | PIN_INV_INOUT" : "PIN_GPIO_LOW"}`,
 %           rfCoreMux: "PINCC26XX_MUX_RFC_GPO2"
 %       },
 %       CONFIG_RF_COEX_GRANT: {
-%           pinMask: `PIN_INPUT_EN${grantIdleLvl ? " | PIN_INV_INOUT" : ""}`,
+%           pinMask: `PIN_INPUT_EN${grantIdleLvl ? "" : " | PIN_INV_INOUT"}`,
 %           rfCoreMux: "PINCC26XX_MUX_RFC_GPI1"
 %       }
 %   }
@@ -318,7 +323,7 @@ void __attribute__((weak)) `callbackFxn`Coex(RF_Handle client, RF_GlobalEvent ev
 %   } // End: if (useRequestPin)
 %   if (useGrantPin) {
         // Enable interrupt on GRANT pin deasserted
-        PIN_setInterrupt(coexPins, CONFIG_RF_COEX_GRANT | PINCC26XX_IRQ_NEGEDGE);
+        PIN_setInterrupt(coexPins, CONFIG_RF_COEX_GRANT | PINCC26XX_IRQ_POSEDGE);
 
 %   } // End: if (useGrantPin)
     }
@@ -365,7 +370,7 @@ void rfDriverCoexPinsHwi(PIN_Handle handle, PIN_Id pinId)
 /*
  * ======== Antenna switching ========
  */
-% if (useAntennaSwitchHW) {
+% if (useAntennaSwitchHW ) {
 static PIN_Handle antennaPins;
 static PIN_State antennaState;
 
@@ -384,7 +389,7 @@ static void initAntennaSwitch()
 % } // End: if (useAntennaSwitchHW) 
 /*
  * ======== `callbackFxn`AntennaSwitching ========
-% if (useAntennaSwitchHW) {
+% if (antennaSwitchName === "SKY13317-373LF") {
  * Sets up the antenna switch depending on the current PHY configuration.
  * 
  * Truth table:
@@ -395,13 +400,23 @@ static void initAntennaSwitch()
  * Sub-1 GHz   0     0     1
  * 2.4 GHz     1     0     0
  * 20 dBm TX   0     1     0
-% } else { // else not useAntennaSwitchHW
+% } else if (antennaSwitchName === "XMSSJJ3G0PA-054") {
+ * Sets up the antenna switch according to the TX power table PA type.
+ * 
+ * Truth table:
+ *
+ * Path        DIO0 DIO3
+ * =========== ==== ====
+ * Off         0     0
+ * 5  dBm PA   1     0
+ * 10 dBm PA   0     1
+% } else { // else not supported HW
  * Function to handle antenna switching.
-% } // End: if/else (useAntennaSwitchHW)
+% } // End: if/else (antennaSwitchName = "...")
  */
 void __attribute__((weak)) `callbackFxn`AntennaSwitching(RF_Handle client, RF_GlobalEvent events, void *arg)
 {
-% if (useAntennaSwitchHW) {
+% if (antennaSwitchName === "SKY13317-373LF") {
     /* Protect against repeated RF_init */
     static bool initialized = false;
 
@@ -497,7 +512,46 @@ void __attribute__((weak)) `callbackFxn`AntennaSwitching(RF_Handle client, RF_Gl
         PINCC26XX_setMux(antennaPins, CONFIG_RF_HIGH_PA, PINCC26XX_MUX_GPIO);
         PINCC26XX_setMux(antennaPins, CONFIG_RF_SUB1GHZ, PINCC26XX_MUX_GPIO);
     }
-% } else { // else not useAntennaSwitchHW
+% } else if (antennaSwitchName === "XMSSJJ3G0PA-054") {
+    /* Protect against repeated RF_init */
+    static bool initialized = false;
+
+    if (!initialized && events & RF_GlobalEventInit) {
+        /* Don't do it again */
+        initialized = true;
+        initAntennaSwitch();
+    }
+    else if (events & RF_GlobalEventRadioSetup) {
+        /* Switch off all paths. */
+        PINCC26XX_setOutputValue(CONFIG_RF_5_DBM_PA, 0);
+        PINCC26XX_setOutputValue(CONFIG_RF_10_DBM_PA, 0);
+
+        /* Decode the current PA configuration. */
+        RF_TxPowerTable_PAType paType = (RF_TxPowerTable_PAType)RF_getTxPower(client).paType;
+
+        if (paType == RF_TxPowerTable_HighPA) {
+            /* 
+            * Mux GPIOs to RF Core signals:
+            * - High PA    --> 10_DBM_PA
+            * - LNA enable --> 5_DBM_PA
+            */
+            PINCC26XX_setMux(antennaPins, CONFIG_RF_5_DBM_PA, PINCC26XX_MUX_RFC_GPO0);
+            PINCC26XX_setMux(antennaPins, CONFIG_RF_10_DBM_PA, PINCC26XX_MUX_RFC_GPO3);
+        } else {
+            /* RF Core active --> 5_DBM */
+            PINCC26XX_setOutputValue(CONFIG_RF_5_DBM_PA, 1);
+        }
+    }
+    else if (events & RF_GlobalEventRadioPowerDown) {
+        /* Switch off all paths. */
+        PINCC26XX_setOutputValue(CONFIG_RF_5_DBM_PA, 0);
+        PINCC26XX_setOutputValue(CONFIG_RF_10_DBM_PA, 0);
+
+        /* Reset the IO multiplexer to GPIO functionality */
+        PINCC26XX_setMux(antennaPins, CONFIG_RF_5_DBM_PA, PINCC26XX_MUX_GPIO);
+        PINCC26XX_setMux(antennaPins, CONFIG_RF_10_DBM_PA, PINCC26XX_MUX_GPIO);
+    }
+% } else { // else not supported HW
     /* ======== PLEASE READ THIS ========
     *
     * This function is declared weak for the application to override it,
@@ -545,7 +599,7 @@ void __attribute__((weak)) `callbackFxn`AntennaSwitching(RF_Handle client, RF_Gl
     */
     extern void you_must_implement_`callbackFxn`AntennaSwitching_see_generated_ti_drivers_config_c_in_debug_folder_or_sysconfig_preview(void);
     you_must_implement_`callbackFxn`AntennaSwitching_see_generated_ti_drivers_config_c_in_debug_folder_or_sysconfig_preview();
-% } // End: if/else (useAntennaSwitchHW)
+% } // End: if/else (antennaSwitchName = "...")
 }
 %   } // End: if (generateRfAntennaCallback)
 %   } // End: if (generateRfCallback)

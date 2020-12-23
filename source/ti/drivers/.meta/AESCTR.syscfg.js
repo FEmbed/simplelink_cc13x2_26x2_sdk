@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,6 +65,7 @@ function validate(inst, validation)
 let base = {
     displayName         : "AESCTR",
     description         : "AES (Advanced Encryption Standard) Counter Mode Driver",
+    alwaysShowLongDescription : true,
     longDescription     : `
 The [__AESCTR driver__][1] encrypts messages of any practical
 length. Unlike AESECB, it guarantees confidentiality of the
@@ -73,10 +74,10 @@ entire message when the message is larger than one block.
 * [Usage Synopsis][2]
 * [Examples][3]
 * [Configuration Options][4]
-[1]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_AESCTR_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_AESCTR_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCTR_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_a_e_s_c_t_r_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_AESCTR_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_AESCTR_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#AESCTR_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
     defaultInstanceName : "CONFIG_AESCTR_",

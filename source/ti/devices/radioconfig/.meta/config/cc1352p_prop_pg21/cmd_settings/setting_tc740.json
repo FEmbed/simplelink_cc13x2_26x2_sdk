@@ -1,7 +1,7 @@
 {
     "setting": {
-        "Name": "100 kbps, 2-GFSK, 25 kHz deviation, 915 MHz",
-        "Description": "100 kbps, 2-GFSK, 25 kHz deviation WiSUN PHY.",
+        "Name": "100 kbps, 2-GFSK, 25 kHz deviation, 915 MHz, WiSUN mode #2a",
+        "Description": "100 kbps, 2-GFSK, 25 kHz deviation WiSUN mode #2a compatible PHY.",
         "Frequency": "915",
         "Patch": {
             "Define": "RF_MODE_AUTO",
@@ -103,7 +103,7 @@
                     },
                     {
                         "_name": "formatConf.whitenMode",
-                        "$": "0"
+                        "$": "7"
                     },
                     {
                         "_name": "config.frontEndMode",
@@ -240,8 +240,8 @@
         "TestFunc": {
             "ContTX": "testfunction_prop_cont_tx_WiSUN.json",
             "ContRX": "testfunction_prop_cont_rx_WiSUN.json",
-            "PacketTX": "testfunction_prop_packet_tx_WiSUN.json",
-            "PacketRX": "testfunction_prop_packet_rx_WiSUN.json"
+            "PacketTX": "testfunction_prop_packet_tx_genfsk_adv.json",
+            "PacketRX": "testfunction_prop_packet_rx_genfsk_adv.json"
         }
     }
 }

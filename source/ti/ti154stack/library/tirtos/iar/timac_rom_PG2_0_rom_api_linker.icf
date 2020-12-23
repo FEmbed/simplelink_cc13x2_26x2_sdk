@@ -245,7 +245,7 @@
 --define_symbol MAC_InitDevice=0x10037c45
 --define_symbol MAC_MlmeAssociateReq=0x10037ea5
 --define_symbol MAC_MlmePollReq=0x10037ebd
---define_symbol macBuildHeaderIes=0x10038005
+// --define_symbol macBuildHeaderIes=0x10038005
 --define_symbol macBuildPayloadCoexistIe=0x100380d9
 --define_symbol macBuildPayloadIes=0x10037ee9
 --define_symbol macUpdateHeaderIEPtr=0x10038349

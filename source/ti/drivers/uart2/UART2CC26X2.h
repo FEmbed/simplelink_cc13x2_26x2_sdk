@@ -69,16 +69,6 @@
 extern "C" {
 #endif
 
-/*!
- * @brief No hardware flow control
- */
-#define UART2CC26X2_FLOWCTRL_NONE 0
-
-/*!
- * @brief Hardware flow control
- */
-#define UART2CC26X2_FLOWCTRL_HARDWARE 1
-
 /*! Size of the TX and RX FIFOs is 32 items */
 #define UART2CC26X2_FIFO_SIZE 32
 
@@ -97,21 +87,6 @@ typedef enum {
     UART2CC26X2_FIFO_THRESHOLD_6_8 = 3,     /*!< FIFO threshold of 6/8 full */
     UART2CC26X2_FIFO_THRESHOLD_7_8 = 4      /*!< FIFO threshold of 7/8 full */
 } UART2CC26X2_FifoThreshold;
-
-/* UART2CC26X2 functions */
-extern void UART2CC26X2_close(UART2_Handle handle);
-extern void UART2CC26X2_flushRx(UART2_Handle handle);
-extern UART2_Handle UART2CC26X2_open(uint_least8_t, UART2_Params *params);
-extern int_fast16_t UART2CC26X2_read(UART2_Handle handle, void *buffer,
-        size_t size, size_t *bytesRead, uint32_t timeout);
-extern void UART2CC26X2_readCancel(UART2_Handle handle);
-extern int_fast16_t UART2CC26X2_write(UART2_Handle handle,
-        const void *buffer, size_t size, size_t *bytesWritten,
-        uint32_t timeout);
-extern void UART2CC26X2_writeCancel(UART2_Handle handle);
-
-/* UART2 function table pointer */
-extern const UART2_FxnTable UART2CC26X2_fxnTable;
 
 /*!
  *  @brief      UART2CC26X2 Hardware attributes
@@ -150,7 +125,7 @@ extern const UART2_FxnTable UART2CC26X2_fxnTable;
  *          .baseAddr     = UARTA0_BASE,
  *          .intNum       = INT_UART0_COMB,
  *          .intPriority  = (~0),
- *          .flowControl  = UART2CC26X2_FLOWCTRL_NONE,
+ *          .flowControl  = UART2_FLOWCTRL_NONE,
  *          .rxPin        = IOID_2,
  *          .txPin        = IOID_3,
  *          .ctsPin       = PIN_UNASSIGNED,
@@ -164,7 +139,7 @@ extern const UART2_FxnTable UART2CC26X2_fxnTable;
  *          .baseAddr     = UART1_BASE,
  *          .intNum       = INT_UART1_COMB,
  *          .intPriority  = (~0),
- *          .flowControl  = UART2CC26X2_FLOWCTRL_NONE,
+ *          .flowControl  = UART2_FLOWCTRL_NONE,
  *          .rxPin        = PIN_UNASSIGNED,
  *          .txPin        = PIN_UNASSIGNED,
  *          .ctsPin       = PIN_UNASSIGNED,
@@ -178,25 +153,12 @@ extern const UART2_FxnTable UART2CC26X2_fxnTable;
  *  @endcode
  *
  *  To enable flow control, the .ctsPin and/or .rtsPin must be assigned.
- *  In addition, .flowControl must be set to UART2CC26X2_FLOWCTL_HARDWARE.
+ *  In addition, .flowControl must be set to UART2_FLOWCTRL_HARDWARE.
  */
+
 typedef struct {
-    /*! UART Peripheral's base address */
-    uint32_t        baseAddr;
-    /*! UART Peripheral's interrupt vector */
-    int             intNum;
-    /*! UART Peripheral's interrupt priority */
-    uint8_t         intPriority;
-    /*! Hardware flow control setting */
-    uint32_t        flowControl;
-    /*! UART RX pin assignment */
-    uint8_t         rxPin;
-    /*! UART TX pin assignment */
-    uint8_t         txPin;
-    /*! UART clear to send (CTS) pin assignment */
-    uint8_t         ctsPin;
-    /*! UART request to send (RTS) pin assignment */
-    uint8_t         rtsPin;
+    UART2_BASE_HWATTRS
+    
     /*! Mask for UDMA channel number for RX data (1 << channel number) */
     uint32_t        rxChannelMask;
     /*! Mask for UDMA channel number for TX data (1 << channel number) */
@@ -213,55 +175,19 @@ typedef struct {
  *  The application must not access any member variables of this structure!
  */
 typedef struct {
-    /* UART2 state variable */
-    struct {
-        bool             opened:1;         /* Has the obj been opened */
-        UART2_Mode       readMode;         /* Mode for read calls */
-        UART2_Mode       writeMode;        /* Mode for write calls */
-        UART2_ReadReturnMode readReturnMode:1; /* RX return mode (partial/full) */
-        /* Flag to indicate ongoing transmit */
-        bool             txEnabled:1;
-    } state;
+    UART2_BASE_OBJECT
 
-    HwiP_Struct          hwi;              /* Hwi object for interrupts */
-    uint32_t             baudRate;         /* Baud rate for UART */
-    UART2_DataLen        dataLength;       /* Data length for UART */
-    UART2_StopBits       stopBits;         /* Stop bits for UART */
-    UART2_Parity         parityType;       /* Parity bit type for UART */
-    int32_t              rxStatus;         /* RX status */
-    int32_t              txStatus;         /* TX status */
-    void                *userArg;          /* User supplied arg for callbacks */
-    UDMACC26XX_Handle    udmaHandle;       /* For setting power dependency */
+    UDMACC26XX_Handle    udmaHandle; /* For setting power dependency */
+
     volatile tDMAControlTable    *rxDmaEntry;
     volatile tDMAControlTable    *txDmaEntry;
-
-    /* UART read variables */
-    unsigned char       *readBuf;          /* Buffer data pointer */
-    size_t               readSize;         /* Number of bytes to read */
-    uint32_t             nReadTransfers;   /* Number of DMA transfers needed */
-    size_t               readCount;        /* Number of bytes left to read */
-    size_t               rxSize;           /* # of bytes to read in DMA xfer */
-    size_t               bytesRead;        /* Number of bytes read */
-    SemaphoreP_Struct    readSem;          /* UART read semaphore */
-    UART2_Callback       readCallback;     /* Pointer to read callback */
-
-    /* UART write variables */
-    const unsigned char *writeBuf;         /* Buffer data pointer */
-    size_t               writeSize;        /* Number of bytes to write*/
-    uint32_t             nWriteTransfers;  /* Number of DMA transfers needed */
-    size_t               writeCount;       /* Number of bytes left to write */
-    size_t               txSize;           /* # of bytes to write with DMA */
-    size_t               bytesWritten;     /* Number of bytes written */
-    SemaphoreP_Struct    writeSem;         /* UART write semaphore*/
-    UART2_Callback       writeCallback;    /* Pointer to write callback */
-
+    
     /* PIN driver state object and handle */
     PIN_State            pinState;
     PIN_Handle           hPin;
 
     /* For Power management */
     Power_NotifyObj      postNotify;
-    unsigned int         powerMgrId;       /* Determined from base address */
 } UART2CC26X2_Object, *UART2CC26X2_Handle;
 
 #ifdef __cplusplus

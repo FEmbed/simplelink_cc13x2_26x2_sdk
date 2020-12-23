@@ -153,7 +153,7 @@ uint8_t MtUtil_commandProcessing(Mt_mpb_t *pMpb)
 void MtUtil_init(void)
 {
     /* Allocate a loopback timer but don't start it */
-    clkHandle = Timer_construct(&clkStruct, loopTimerCB, 100, 0, false, 0);
+    clkHandle = UtilTimer_construct(&clkStruct, loopTimerCB, 100, 0, false, 0);
 }
 /******************************************************************************
  Local Functions
@@ -305,10 +305,10 @@ static void sendLoopBack(Mt_mpb_t *pMpb)
                     memcpy(pLoopData, pBuf, rspLen);
 
                     /* Set up the callback timeout */
-                    Timer_setTimeout(clkHandle, timeout);
+                    UtilTimer_setTimeout(clkHandle, timeout);
 
                     /* Schedule the first callback */
-                    Timer_start(&clkStruct);
+                    UtilTimer_start(&clkStruct);
                 }
             }
         }
@@ -345,12 +345,12 @@ static void loopTimerCB(UArg a0)
         if(loopCount > 0)
         {
             /* Schedule next callback */
-            Timer_start(&clkStruct);
+            UtilTimer_start(&clkStruct);
         }
         else
         {
             /* No more callbacks */
-            Timer_stop(&clkStruct);
+            UtilTimer_stop(&clkStruct);
 
             /* Give back the buffer */
             MAP_ICall_free(pLoopData);

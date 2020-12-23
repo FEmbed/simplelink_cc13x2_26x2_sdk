@@ -36,6 +36,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <ti/drivers/ITM.h>
 #include <ti/drivers/Power.h>
 #include <ti/drivers/power/PowerCC26X2.h>
 
@@ -95,7 +96,12 @@ void PowerCC26XX_standbyPolicy()
             (1 << PowerCC26XX_DISALLOW_IDLE))) ==
         ((1 << PowerCC26XX_DISALLOW_STANDBY) |
             (1 << PowerCC26XX_DISALLOW_IDLE))) {
+
+        /* Flush any remaining log messages in the ITM */
+        ITM_flush();
         PRCMSleep();
+        /* Restore ITM settings */
+        ITM_restore();
     }
     /*
      *  check if any sleep modes are allowed for automatic activation
@@ -126,8 +132,15 @@ void PowerCC26XX_standbyPolicy()
                 ClockP_start(ClockP_handle((ClockP_Struct *)
                     &PowerCC26X2_module.clockObj));
 
+                /* Flush any remaining log messages in the ITM */
+                ITM_flush();
+
                 /* go to standby mode */
                 Power_sleep(PowerCC26XX_STANDBY);
+
+                /* Restore ITM settings */
+                ITM_restore();
+
                 ClockP_stop(ClockP_handle((ClockP_Struct *)
                     &PowerCC26X2_module.clockObj));
                 justIdle = false;
@@ -136,6 +149,9 @@ void PowerCC26XX_standbyPolicy()
 
         /* idle if allowed */
         if (justIdle) {
+
+            /* Flush any remaining log messages in the ITM */
+            ITM_flush();
 
             /*
              * Power off the CPU domain; VIMS will power down if SYSBUS is
@@ -172,6 +188,9 @@ void PowerCC26XX_standbyPolicy()
             else {
                 PRCMSleep();
             }
+
+            /* Restore ITM settings */
+            ITM_restore();
         }
     }
 

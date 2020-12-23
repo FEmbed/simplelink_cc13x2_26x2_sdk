@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -335,7 +335,8 @@ function calculateDecimationFactor(rxBw) {
  */
 function rxBwToRegValue(RxBw) {
     // Conversion table stored in SysConfig Params
-    const paramFile = Common.flattenConfigs(system.getScript(DevInfo.getSyscfgParams(Common.PHY_PROP)));
+    const devCfg = DevInfo.getConfiguration(Common.PHY_PROP);
+    const paramFile = Common.flattenConfigs(devCfg.configs);
     // Find the parameter object in the param File
     const parameterObject = _.find(paramFile, ["name", "rxFilterBw"]);
     // Find the RxBwValue in the parameterObjects options
@@ -370,7 +371,7 @@ function calculateVcoFrequency(frequency) {
  *  @param frequency - carrier frequency
  */
 function getLoDivider(frequency) {
-    let loDiv = 15;
+    let loDiv;
 
     if (frequency >= 2158) {
         loDiv = 0;
@@ -381,11 +382,18 @@ function getLoDivider(frequency) {
     else if (frequency >= 719) {
         loDiv = 6;
     }
-    else if (frequency >= 430) {
+    else if (frequency >= 431) {
         loDiv = 10;
     }
     else if (frequency >= 348) {
         loDiv = 12;
+    }
+    else if (frequency >= 288) {
+        loDiv = 15;
+    }
+    else {
+        // 169 MHz
+        loDiv = 30;
     }
     return loDiv;
 }

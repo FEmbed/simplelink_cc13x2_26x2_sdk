@@ -53,11 +53,15 @@ extern "C"
 
 #ifdef OSAL_PORT2TIRTOS
 #include "osal_port.h"
+#include <ti/sysbios/knl/Semaphore.h>
 #else
-#include "icall.h" // for ICall_Semephore
+#include "icall.h" // for ICall_Semaphore
 #endif /*OSAL_PORT2TIRTOS */
 #include "native_oad/oad_protocol.h"
+
+#ifndef CUI_DISABLE
 #include "cui.h"
+#endif
 
 
 /** @brief RF parameter struct
@@ -71,7 +75,9 @@ typedef struct {
     ICall_Semaphore eventSem;    ///< Semaphore to post event
 #endif /*OSAL_PORT2TIRTOS */
 
+#ifndef CUI_DISABLE
     CUI_clientHandle_t *pOadCuiHndl; ///< Handle for outputting OAD status messages
+#endif
 } OADClient_Params_t;
 
  /** @brief  Function to open the SOADProtocol module

@@ -290,6 +290,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+
+#include <ti/drivers/dpl/HwiP.h>
+#include <ti/drivers/dpl/SemaphoreP.h>
 /*! @endcond */
 
 #ifdef __cplusplus
@@ -604,63 +607,71 @@ typedef struct {
     void *custom;
 } I2C_Params;
 
-/*!
- *  @private
- *  @brief      A function pointer to a driver-specific implementation of
- *              I2C_cancel().
- */
-typedef void (*I2C_CancelFxn) (I2C_Handle handle);
+/*! @cond NODOC */
+#define I2C_BASE_OBJECT \
+    /* I2C control variables */ \
+    I2C_TransferMode           transferMode;        /* Blocking or Callback mode */ \
+    I2C_CallbackFxn            transferCallbackFxn; /* Callback function pointer */ \
+    I2C_Transaction           *currentTransaction;  /* Ptr to current I2C transaction */ \
+    \
+    /* I2C transaction pointers for I2C_MODE_CALLBACK */ \
+    I2C_Transaction * volatile headPtr;            /* Head ptr for queued transactions */ \
+    I2C_Transaction           *tailPtr;            /* Tail ptr for queued transactions */ \
+    \
+    /* I2C RTOS objects */ \
+    HwiP_Struct                hwi;                /* Hwi object handle */ \
+    SemaphoreP_Struct          mutex;              /* Grants exclusive access to I2C */ \
+    SemaphoreP_Struct          transferComplete;   /* Signal I2C transfer complete */ \
+    \
+    /* Read and write variables */ \
+    const uint8_t             *writeBuf;           /* Internal inc. writeBuf index */ \
+    size_t                     writeCount;         /* Internal dec. writeCounter */ \
+    uint8_t                   *readBuf;            /* Internal inc. readBuf index */ \
+    size_t                     readCount;          /* Internal dec. readCounter */ \
+    \
+    bool                       isOpen;             /* Flag to show module is open */ \
+/*! @endcond */
 
 /*!
- *  @private
- *  @brief      A function pointer to a driver-specific implementation of
- *              I2C_close().
- */
-typedef void (*I2C_CloseFxn) (I2C_Handle handle);
-
-/*!
- *  @private
- *  @brief      A function pointer to a driver-specific implementation of
- *              I2C_control().
- */
-typedef int_fast16_t (*I2C_ControlFxn) (I2C_Handle handle, uint_fast16_t cmd,
-    void *controlArg);
-
-/*!
- *  @private
- *  @brief      A function pointer to a driver-specific implementation of
- *              I2C_init().
- */
-typedef void (*I2C_InitFxn) (I2C_Handle handle);
-
-/*!
- *  @private
- *  @brief      A function pointer to a driver-specific implementation of
- *              I2C_open().
- */
-typedef I2C_Handle (*I2C_OpenFxn) (I2C_Handle handle, I2C_Params *params);
-
-/*!
- *  @private
- *  @brief      A function pointer to a driver-specific implementation of
- *              I2C_transfer().
- */
-typedef int_fast16_t (*I2C_TransferFxn) (I2C_Handle handle,
-                      I2C_Transaction *transaction, uint32_t timeout);
-
-/*!
- *  @brief      The definition of an I2C function table that contains the
- *              required set of functions to control a specific I2C driver
- *              implementation.
+ *  @cond NODOC
+ *  I2C Object. Applications must not access any member variables of
+ *  this structure!
  */
 typedef struct {
-    I2C_CancelFxn   cancelFxn;
-    I2C_CloseFxn    closeFxn;
-    I2C_ControlFxn  controlFxn;
-    I2C_InitFxn     initFxn;
-    I2C_OpenFxn     openFxn;
-    I2C_TransferFxn transferFxn;
-} I2C_FxnTable;
+    I2C_BASE_OBJECT
+} I2C_Object;
+/*! @endcond */
+
+/*! @cond NODOC */
+#define I2C_BASE_HWATTRS \
+    /*! I2C Peripheral's base address */ \
+    uint32_t baseAddr; \
+    /*! I2C Peripheral's interrupt vector */ \
+    uint32_t intNum; \
+    /*! I2C Peripheral's interrupt priority. \
+     * \
+     *  Note for CC26XX: The CC26XX uses three of the priority bits, \
+     *  meaning ~0 has the same effect as (7 << 5). \
+     * \
+     *  (7 << 5) will apply the lowest priority. \
+     *  (1 << 5) will apply the highest priority. \
+     * \
+     *  Setting the priority to 0 is not supported by the I2CCC26XX driver. \
+     * \
+     *  Hwi's with priority 0 ignore the Hwi dispatcher to support zero-latency \
+     *  interrupts, thus invalidating the critical sections in this driver. \
+     */ \
+    uint32_t intPriority;
+/*! @endcond */
+
+/*!
+ *  @cond NODOC
+ *  I2C HWAttrs.
+ */
+typedef struct {
+    I2C_BASE_HWATTRS
+} I2C_HWAttrs;
+/*! @endcond */
 
 /*!
  *  @brief I2C driver's custom @ref driver_configuration "configuration"
@@ -670,10 +681,6 @@ typedef struct {
  *  @sa     I2C_open()
  */
 typedef struct I2C_Config_ {
-    /*! Pointer to a @ref driver_function_table "function pointer table"
-     *  with driver-specific implementations of I2C APIs */
-    I2C_FxnTable const *fxnTablePtr;
-
     /*! Pointer to a driver specific @ref driver_objects "data object". */
     void               *object;
 
@@ -681,6 +688,9 @@ typedef struct I2C_Config_ {
      *  "hardware attributes structure". */
     void         const *hwAttrs;
 } I2C_Config;
+
+extern const I2C_Config I2C_config[];
+extern const uint_least8_t I2C_count;
 
 /*!
  *  @brief  Cancels all I2C transfers
@@ -791,6 +801,30 @@ extern I2C_Handle I2C_open(uint_least8_t index, I2C_Params *params);
  *  @arg #I2C_Params.custom = @p NULL
  */
 extern void I2C_Params_init(I2C_Params *params);
+
+/*!
+ *  @brief  Set the I2C SCL clock timeout.
+ *
+ *  An I2C slave can extend a I2C transaction by periodically pulling the
+ *  clock low to create a slow bit transfer rate. The application can use this
+ *  API to program a counter in the I2C module. The count is used to force a
+ *  timeout if an I2C slave holds the clock line low for longer than the
+ *  @p timeout duration. An #I2C_STATUS_CLOCK_TIMEOUT status indicates a
+ *  timeout event occured.
+ *
+ *  @param[in]  handle      An #I2C_Handle returned from I2C_open()
+ *
+ *  @param[in]  timeout     Timeout in units of I2C clock cycles. Refer to
+ *                          the device specifc reference manual to determine
+ *                          how to calculate the timeout value.
+ *
+ *  @return  Possible return values include:
+ *            @li #I2C_STATUS_SUCCESS
+ *            @li #I2C_STATUS_ERROR
+ *
+ *  @sa I2C_transfer()
+ */
+extern int_fast16_t I2C_setClockTimeout(I2C_Handle handle, uint32_t timeout);
 
 /*!
  *  @brief  Perform an I2C transaction with an I2C slave peripheral.

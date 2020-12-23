@@ -275,6 +275,10 @@ const buildDefine = {
     description: "Define to enable this policy entry"
 };
 
+const genLibs = {
+    description: "Set this option to false in order to disable genLibs usage"
+};
+
 /*
  *  ======== exports ========
  *  Export documentation
@@ -299,5 +303,6 @@ exports = {
     states: states,
     appliedActivity: appliedActivity,
     isDefineSpecific: isDefineSpecific,
-    buildDefine: buildDefine
+    buildDefine: buildDefine,
+    genLibs: genLibs,
 };

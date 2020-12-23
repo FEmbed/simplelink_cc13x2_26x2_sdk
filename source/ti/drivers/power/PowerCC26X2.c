@@ -104,7 +104,6 @@ PowerCC26X2_ModuleState PowerCC26X2_module = {
     .tcxoEnableClock = {0},         /* Clock object for TCXO startup       */
     .tdcHwi = {0},                  /* hwi object for calibration          */
     .oscHwi = {0},                  /* hwi object for oscillators          */
-    .hposcRtcCompNotifyObj = {0},   /* Temperature notification            */
     .nDeltaFreqCurr = 0,            /* RCOSC calibration variable          */
     .nCtrimCurr = 0,                /* RCOSC calibration variable          */
     .nCtrimFractCurr = 0,           /* RCOSC calibration variable          */
@@ -132,6 +131,12 @@ PowerCC26X2_ModuleState PowerCC26X2_module = {
     },                              /* special resource handler functions */
     .policyFxn = 0                  /* power policyFxn */
 };
+
+/*! Temperature notification to compensate the RTC when SCLK_LF is derived
+ *  from SCLK_HF when SCLK_HF is configured as HPOSC.
+ */
+static Temperature_NotifyObj PowerCC26X2_hposcRtcCompNotifyObj = {0};
+
 
 /* resource database */
 const PowerCC26XX_ResourceRecord resourceDB[PowerCC26X2_NUMRESOURCES] = {
@@ -264,15 +269,6 @@ int_fast16_t Power_init()
 {
     ClockP_Params clockParams;
     uint32_t ccfgLfClkSrc;
-
-    /* CC26X2 PG1.0 trap. If we are running on PG1.0, spin forever.
-     * This hardware revision is no longer supported. This trap is
-     * provided to aid in automatically identifying PG1.0 devices
-     * in circulation and will be removed later in the year.
-     */
-    if (!((HWREG(FCFG1_BASE + FCFG1_O_TFW_FT) % 10000) >= 683)) {
-        while (1);
-    }
 
     /* if this function has already been called, just return */
     if (PowerCC26X2_module.initialized) {
@@ -956,7 +952,7 @@ void PowerCC26X2_enableHposcRtcCompensation(void) {
         hposcRtcCompensateFxn(currentTemperature,
                               currentTemperature + PowerCC26X2_HPOSC_RTC_COMPENSATION_DELTA,
                               (uintptr_t)NULL,
-                              &PowerCC26X2_module.hposcRtcCompNotifyObj);
+                              &PowerCC26X2_hposcRtcCompNotifyObj);
     }
 }
 

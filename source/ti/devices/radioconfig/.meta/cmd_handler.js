@@ -55,12 +55,15 @@ const calculateWidth = Common.calculateWidth;
 // Constants
 const BLE_DEVICE_ADDRESS_LENGTH = 6;
 
+const DeviationSteps = [250.0, 1000.0, 15.625, 62.5];
+
 // Ensure that Command Handlers are not created twice
 const cmdHandlerCache = {};
 
 // TX power cache
 const TxPowerCache = {
     default: "-1",
+    t169: "-1",
     t433: "-1",
     t2400: "-1",
     high: "-1",
@@ -95,13 +98,15 @@ function get(phyGroup, phyName) {
  *  This leaves the original PHY setting unchanged.
  *
  *  @param inst - inst from which update data are fetched
+ *  @param phyGroup - BLE, IEEE_15_4 or PROP
  */
-function getUpdatedRfCommands(inst) {
-    const phyName = Common.getPhyType(inst);
-    const cmdHandler = cmdHandlerCache[phyName];
-    const phyGroup = cmdHandler.getPhyGroup();
+function getUpdatedRfCommands(inst, phyGroup) {
+    const phyName = Common.getPhyType(inst, phyGroup);
 
-    // Update a duplicate instance
+    // Ensure the PHY is loaded
+    get(phyGroup, phyName);
+
+    // Update performed on the duplicate instance
     const cmdHandlerClone = create(phyGroup, phyName, false);
     cmdHandlerClone.updateRfCommands(inst);
 
@@ -119,10 +124,11 @@ function getUpdatedRfCommands(inst) {
 function create(phyGroup, phyName, first) {
     const PhyName = phyName;
     const PhyGroup = phyGroup;
+    const devCfg = DeviceInfo.getConfiguration(phyGroup);
+    const Config = devCfg.configs;
+    const SettingPath = DeviceInfo.getSettingPath(phyGroup);
     const settingsInfo = _.find(DeviceInfo.getSettingMap(phyGroup), (s) => s.name === phyName);
     const SettingFileName = settingsInfo.file;
-    const Config = system.getScript(DeviceInfo.getSyscfgParams(phyGroup));
-    const SettingPath = DeviceInfo.getSettingPath(phyGroup);
 
     // Command buffers
     const CmdBuf = {};
@@ -314,8 +320,16 @@ function create(phyGroup, phyName, first) {
                     TxPowerCache.default = item.default;
                 }
                 break;
+            case "txPower169":
+                // 169 MHz band uses "txPower169"
+                if (freqBand === 169) {
+                    item.options = RfDesign.getTxPowerOptions(169, false);
+                    item.default = item.options[0].name;
+                    TxPowerCache.t169 = item.default;
+                }
+                break;
             case "txPower433":
-                // 433-527 MHz band uses "txPower433"
+                // 420-527 MHz band uses "txPower433"
                 if (freqBand === 433) {
                     item.options = RfDesign.getTxPowerOptions(433, false);
                     item.default = item.options[0].name;
@@ -333,7 +347,7 @@ function create(phyGroup, phyName, first) {
             case "txPowerHi":
                 // CC1352P: 868 + 2400 MHz bands use "txPowerHi" for High PA
                 if (freqBand === 868 || freqBand === 2400) {
-                    // NB! Using dynamic enumerable due to 10 dBm PA table for P4 Launchpad
+                    // NB! Using dynamic enumerable due to 10 dBm PA table for P4 Launchpad and CC2652PSIP
                     const txOptions = RfDesign.getTxPowerOptionsDefault(freq, true);
                     item.options = (inst) => RfDesign.getTxPowerOptions(freq, true);
                     item.default = txOptions[0].name;
@@ -341,7 +355,7 @@ function create(phyGroup, phyName, first) {
                 }
                 break;
             case "txPower433Hi":
-                // CC1352P/P4: 470-527 MHz band uses "txPower433Hi" for High PA
+                // CC1352P4: 433 MHz band uses "txPower433Hi" for High PA
                 if (freqBand === 433) {
                     item.options = RfDesign.getTxPowerOptions(433, true);
                     item.default = item.options[0].name;
@@ -451,6 +465,9 @@ function create(phyGroup, phyName, first) {
             if (UseTxPower2400 && FreqBand === 2400) {
                 cfgTxPower.txPower2400 = txPower.t2400;
             }
+            else if (FreqBand === 169) {
+                cfgTxPower.txPower169 = txPower.t169;
+            }
             else if (FreqBand === 433) {
                 cfgTxPower.txPower433 = txPower.t433;
             }
@@ -515,8 +532,9 @@ function create(phyGroup, phyName, first) {
      *  @returns number as string - deviation
      */
     function getDeviation() {
-        const cmd = getCmdFieldValue("modulation.deviation");
-        const deviation = (cmd * 250.0) / 1e3;
+        const dev = getCmdFieldValue("modulation.deviation");
+        const stepSz = getCmdFieldValue("modulation.deviationStepSz");
+        const deviation = (dev * DeviationSteps[stepSz]) / 1e3;
 
         return deviation.toFixed(1);
     }
@@ -589,7 +607,8 @@ function create(phyGroup, phyName, first) {
      */
     function getTxPower(txPowerAll) {
         const freq = getFrequency();
-        const loFreq = freq < Common.LowFreqLimit;
+        const freq433 = freq > Common.FreqHigher169 && freq < Common.FreqHigher433;
+        const freq169 = freq < Common.FreqHigher169;
         let ret;
 
         if (DeviceInfo.hasHighPaSupport()) {
@@ -597,14 +616,17 @@ function create(phyGroup, phyName, first) {
                 ret = txPowerAll.t2400;
             }
             else {
-                ret = loFreq ? txPowerAll.t433Hi : txPowerAll.high;
+                ret = freq433 ? txPowerAll.t433Hi : txPowerAll.high;
             }
         }
         else if (UseTxPower2400) {
             ret = txPowerAll.t2400;
         }
+        else if (freq169) {
+            ret = txPowerAll.t169;
+        }
         else {
-            ret = loFreq ? txPowerAll.t433 : txPowerAll.default;
+            ret = freq433 ? txPowerAll.t433 : txPowerAll.default;
         }
         return ret;
     }
@@ -618,7 +640,9 @@ function create(phyGroup, phyName, first) {
      */
     function getTxPowerFromInst(inst) {
         const freq = getFrequency();
-        const loFreq = freq < Common.LowFreqLimit;
+        const freq433 = freq > Common.FreqHigher169 && freq < Common.FreqHigher433;
+        const freq169 = freq < Common.FreqHigher169;
+
         let ret;
 
         if ("highPA" in inst && inst.highPA) {
@@ -626,14 +650,17 @@ function create(phyGroup, phyName, first) {
                 ret = inst.txPower2400;
             }
             else {
-                ret = loFreq ? inst.txPower433Hi : inst.txPowerHi;
+                ret = freq433 ? inst.txPower433Hi : inst.txPowerHi;
             }
         }
         else if (UseTxPower2400) {
             ret = inst.txPower2400;
         }
+        else if (freq169) {
+            ret = inst.txPower169;
+        }
         else {
-            ret = loFreq ? inst.txPower433 : inst.txPower;
+            ret = freq433 ? inst.txPower433 : inst.txPower;
         }
         return ret;
     }
@@ -645,14 +672,15 @@ function create(phyGroup, phyName, first) {
     function getTxPowerAll() {
         const ret = TxPowerCache;
         const freq = getFrequency();
-        const loFreq = freq < Common.LowFreqLimit;
+        const freq433 = freq > Common.FreqHigher169 && freq < Common.FreqHigher433;
+        const freq169 = freq < Common.FreqHigher433;
 
         if (DeviceInfo.hasHighPaSupport() && !UseTxPower2400) {
             // High PA
             let raw = RfDesign.getTxPowerValueByDbm(freq, true, TxPowerHi.dbm);
             if (raw !== null) {
                 TxPowerHi.raw = raw;
-                if (loFreq) {
+                if (freq433) {
                     ret.t433Hi = TxPowerHi.dbm;
                 }
                 else {
@@ -660,14 +688,17 @@ function create(phyGroup, phyName, first) {
                 }
             }
             else {
-                TxPowerHi.dbm = loFreq ? TxPowerCache.t433Hi : TxPowerCache.high;
+                TxPowerHi.dbm = freq433 ? TxPowerCache.t433Hi : TxPowerCache.high;
                 TxPowerHi.raw = "0xFFFF";
             }
 
             // Default PA
             let dbm;
-            if (loFreq) {
+            if (freq433) {
                 dbm = getCmdFieldValueByOpt("txPower433", "txPower");
+            }
+            else if (freq169) {
+                dbm = getCmdFieldValueByOpt("txPower169", "txPower");
             }
             else {
                 dbm = getCmdFieldValueByOpt("txPower", "txPower");
@@ -675,17 +706,23 @@ function create(phyGroup, phyName, first) {
 
             raw = RfDesign.getTxPowerValueByDbm(freq, false, dbm);
             if (raw !== null) {
-                if (loFreq) {
+                if (freq433) {
                     ret.t433 = dbm;
+                }
+                else if (freq169) {
+                    ret.t169 = dbm;
                 }
                 else {
                     ret.default = dbm;
                 }
             }
         }
-        else if (loFreq) {
-            // Not P-device, read direct from register
+        // Not P-device, read direct from register
+        else if (freq433) {
             ret.t433 = getCmdFieldValueByOpt("txPower433", "txPower");
+        }
+        else if (freq169) {
+            ret.t169 = getCmdFieldValueByOpt("txPower169", "txPower");
         }
         else if (UseTxPower2400) {
             ret.t2400 = getCmdFieldValueByOpt("txPower2400", "txPower");
@@ -907,7 +944,9 @@ function create(phyGroup, phyName, first) {
         OverrideHandler.updateTxPowerOverride(txPower, frequency, highPA);
 
         // Deviation
-        const devField = Math.floor((inst.deviation * 1e3) / 250);
+        const stepSz = getCmdFieldValue("modulation.deviationStepSz");
+        const step = DeviationSteps[stepSz];
+        const devField = Math.floor(inst.deviation * 1e3) / step;
         setCmdFieldValue("deviation", "modulation.deviation", devField);
 
         // Symbol rate
@@ -1001,7 +1040,12 @@ function create(phyGroup, phyName, first) {
         }
 
         if ("Rfe" in patches) {
-            ret.rfe = patches.Rfe;
+            if (protocol === "coex") {
+                ret.rfe = "rf_patch_rfe_ble_coex";
+            }
+            else {
+                ret.rfe = patches.Rfe;
+            }
         }
 
         return ret;
@@ -1255,7 +1299,8 @@ function create(phyGroup, phyName, first) {
         const keys = [];
         const displayNames = [];
         const freq = getFrequency();
-        const loFreq = freq < Common.LowFreqLimit;
+        const freq433 = freq > Common.FreqHigher169 && freq < Common.FreqHigher433;
+        const freq169 = freq <= Common.FreqHigher169;
 
         function pushKeys(cfg) {
             const name = cfg.name;
@@ -1295,19 +1340,23 @@ function create(phyGroup, phyName, first) {
                 return true;
             }
 
-            if ((key === "txPower") && (useHighPA || loFreq || UseTxPower2400)) {
+            if ((key === "txPower") && (useHighPA || freq433 || freq169 || UseTxPower2400)) {
                 return true;
             }
 
-            if ((key === "txPowerHi") && (!useHighPA || loFreq)) {
+            if ((key === "txPowerHi") && (!useHighPA || freq433 || freq169)) {
                 return true;
             }
 
-            if ((key === "txPower433") && (useHighPA || !loFreq)) {
+            if ((key === "txPower433") && (useHighPA || !freq433)) {
                 return true;
             }
 
-            if ((key === "txPower433Hi") && (!useHighPA || !loFreq)) {
+            if ((key === "txPower169") && (useHighPA || !freq169)) {
+                return true;
+            }
+
+            if ((key === "txPower433Hi") && (!useHighPA || !freq433)) {
                 return true;
             }
 
@@ -1357,13 +1406,20 @@ function create(phyGroup, phyName, first) {
      *  Get the frequency band of this setting
      */
     function getFrequencyBand() {
-        let freqBand = 868;
+        let freqBand;
         const freq = Setting.Frequency;
-        if (freq <= Common.LowFreqLimit) {
+
+        if (freq < Common.FreqHigher169) {
+            freqBand = 169;
+        }
+        else if (freq <= Common.FreqHigher433) {
             freqBand = 433;
         }
-        else if (freq >= Common.HiFreqLimit) {
+        else if (freq >= Common.FreqLower24G) {
             freqBand = 2400;
+        }
+        else {
+            freqBand = 868;
         }
         return freqBand;
     }
@@ -1383,7 +1439,7 @@ function create(phyGroup, phyName, first) {
         const field = getCmdFieldByName(name);
 
         if (field != null) {
-            return ("value" in field ? field.value : field.default);
+            return ("value" in field && field.value !== null ? field.value : field.default);
         }
         return null;
     }
@@ -1780,7 +1836,7 @@ function create(phyGroup, phyName, first) {
         const opts = getOptions(paramName);
         let parameterName = paramName;
 
-        if (paramName === "txPower433" || paramName === "txPower2400") {
+        if (paramName === "txPower433" || paramName === "txPower169" || paramName === "txPower2400") {
             parameterName = "txPower";
         }
         _.each(opts, (opt) => {
@@ -1923,16 +1979,21 @@ function create(phyGroup, phyName, first) {
      */
     function updateTxPower(inst) {
         const freq = getFrequency();
-        const loFreq = freq < Common.LowFreqLimit;
+        const freq433 = freq > Common.FreqHigher169 && freq < Common.FreqHigher433;
+        const freq169 = freq < Common.FreqHigher169;
         let raw;
 
         if (inst.highPA) {
             // TX power is handled by overrides
             setCmdFieldValue("txPower", "txPower", "0xFFFF");
-            TxPowerHi.dbm = loFreq ? inst.txPower433Hi : inst.txPowerHi;
+            TxPowerHi.dbm = freq433 ? inst.txPower433Hi : inst.txPowerHi;
         }
-        else if (loFreq && "txPower433" in inst) {
+        else if (freq433 && "txPower433" in inst) {
             raw = RfDesign.getTxPowerValueByDbm(freq, false, inst.txPower433);
+            setCmdFieldValue("txPower", "txPower", raw);
+        }
+        else if (freq169 && "txPower169" in inst) {
+            raw = RfDesign.getTxPowerValueByDbm(freq, false, inst.txPower169);
             setCmdFieldValue("txPower", "txPower", raw);
         }
         else if (UseTxPower2400) {

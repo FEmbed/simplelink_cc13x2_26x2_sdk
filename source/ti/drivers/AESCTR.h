@@ -613,9 +613,6 @@ int_fast16_t AESCTR_oneStepEncrypt(AESCTR_Handle handle, AESCTR_Operation *opera
 int_fast16_t AESCTR_oneStepDecrypt(AESCTR_Handle handle, AESCTR_Operation *operationStruct);
 
 /*!
- *  @deprecated This function will be deprecated in the 3Q20 SDK release. The
- *  asynchronicity of the function can not be handled by all accelerators.
- *
  *  @brief Cancels an ongoing AESCTR operation.
  *
  *  Asynchronously cancels an AESCTR operation. Only available when using

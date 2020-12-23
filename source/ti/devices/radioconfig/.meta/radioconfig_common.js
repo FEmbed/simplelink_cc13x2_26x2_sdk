@@ -42,12 +42,12 @@ const Device = system.deviceData.deviceId;
 const BasePath = "/ti/devices/radioconfig/";
 
 // Manage protocol support
-const hasProp = Device.includes("CC1352") || Device.includes("CC1312")
-                || Device.includes("CC2652R1") || Device.includes("CC2652P");
+const hasProp = Device.includes("CC1352") || Device.includes("CC1312") || Device.includes("CC2642")
+                || Device.includes("CC2652R1FRGZ") || Device.includes("CC2652PRGZ");
 const hasBle = Device.includes("CC1352") || Device.includes("CC2652") || Device.includes("CC2642");
 const hasIeee = Device.includes("CC1352") || Device.includes("CC2652");
-const has24gProp = Device.includes("CC1352") || Device.includes("CC2652R1")
-                || Device.includes("CC2652P");
+const has24gProp = Device.includes("CC1352") || Device.includes("CC2652R1FRGZ")
+|| Device.includes("CC2642") || Device.includes("CC2652PRGZ");
 
 // Exported from this module
 exports = {
@@ -64,8 +64,11 @@ exports = {
     HAS_24G_PROP: has24gProp,
     isSub1gDevice: () => Device.includes("CC13"),
     isSub1gOnlyDevice: () => Device.includes("CC1312"),
-    LowFreqLimit: 528,
-    HiFreqLimit: 2400,
+    FreqLower169: 169.4,
+    FreqHigher169: 169.475,
+    FreqLower433: 420,
+    FreqHigher433: 528,
+    FreqLower24G: 2400,
     int2hex: int2hex,
     isHex: isHex,
     fract: fract,
@@ -75,7 +78,6 @@ exports = {
     getBoardName: getBoardName,
     getPhyType: getPhyType,
     getPhyGroup: getPhyGroup,
-    getDefaultFreqBand: getDefaultFreqBand,
     getCoexConfig: getCoexConfig,
     validateBasic: (inst, validation) => {
         validateNames(inst, validation);
@@ -107,14 +109,14 @@ const deferred = {
 
 /*!
  *  ======== getBoardName ========
- *  Get the name of the board
+ *  Get the SmartRF Studio name of the board
  *
  *  @returns String - Name of the board with prefix /ti/boards and
- *                    suffix .syscfg.json stripped off.  If no board
- *                    was specified, null is returned.
+ *                    suffix .syscfg.json stripped off. If no board
+ *                    was specified, an empty string  is returned.
  */
 function getBoardName() {
-    let boardName = null;
+    let boardName = "";
 
     if (system.deviceData.board != null) {
         boardName = system.deviceData.board.source;
@@ -130,8 +132,14 @@ function getBoardName() {
             boardName = "LAUNCHXL-" + boardName.replace("_LAUNCHXL", "");
             boardName = boardName.replace("_", "-");
         }
+        else if (boardName.includes("LPSTK")) {
+            boardName = boardName.replace("LPSTK_CC1352R", "LPSTK-CC1352R1");
+        }
+        else if (boardName.includes("LP_")) {
+            // SIP LaunchPads; SmartRF Studio and SysConfig board names are identical
+        }
         else {
-            throw new Error("Unknown board [" + boardName + "]");
+            throw new Error("RadioConfig: Unknown board [" + boardName + "]");
         }
     }
     return boardName;
@@ -276,20 +284,13 @@ function getPhyType(inst) {
         return inst.phyType868;
     case "433":
         return inst.phyType433;
+    case "169":
+        return inst.phyType169;
     case "2400":
         return inst.phyType2400;
     default:
     }
     return inst.phyType;
-}
-
-/*
- *  ======== getDefaultFreqBand ========
- *  Return the default frequency band of the current device
- *
- */
-function getDefaultFreqBand() {
-    return Device.includes("CC13") ? "868" : "2400";
 }
 
 /*
@@ -393,7 +394,8 @@ function validateTxPower(inst, validation) {
             const selectedOptions = inst.txPowerHi;
             const found = _.find(validOptions, (o) => o.name === selectedOptions);
             if (!found) {
-                validation[`log${"Error"}`]("Selected option is invalid, please reselect.", inst, "txPowerHi");
+                validation[`log${"Error"}`]("Selected option "
+                    + selectedOptions + " is invalid, please reselect.", inst, "txPowerHi");
             }
         }
     }

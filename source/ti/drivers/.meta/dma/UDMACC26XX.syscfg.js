@@ -37,6 +37,9 @@
 
 "use strict";
 
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js"); 
+
 /*!
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base DMA configuration
@@ -56,6 +59,10 @@ let devSpecific = {
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "DMA", null,
+        [{name: "UDMACC26XX"}], null);
+
     /*
      *  Hide the dmaErrorFxn for UDMACC26XX, since this in not configurable
      *  by the user.  It is hardcoded in the UDMACC26XX driver.

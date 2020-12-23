@@ -35,6 +35,41 @@
                 "_type": "ELEMENT",
                 "_comment": "Synth: Increase mid code calibration time to 5 us",
                 "$": "0x38183C30"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Move synth start code",
+                "$": "0x4064,0x3C"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set DTX threshold 1 Mbps",
+                "$": "0x00950803"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set DTX threshold 2 Mbps",
+                "$": "0x012A0823"
+            },
+            {
+                "_type": "HW32_ARRAY_OVERRIDE",
+                "_comment": "Bluetooth 5: Set synth fine code calibration interval",
+                "$": "0x4020,1"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set synth fine code calibration interval",
+                "$": "0x41005F00"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Adapt to synth fine code calibration interval",
+                "$": "0xC0040141"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Adapt to synth fine code calibration interval",
+                "$": "0x0007DD44"
             }
         ]
     }

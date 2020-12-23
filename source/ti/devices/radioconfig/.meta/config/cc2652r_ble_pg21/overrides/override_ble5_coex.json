@@ -4,7 +4,7 @@
             {
                 "_type": "HW_REG_OVERRIDE",
                 "_comment": "CoEx: set the radio IOMUX to enable coex signals",
-                "$": "0x1110,0x3E10"
+                "$": "0x1110,0xCE30"
             },
             {
                 "_type": "ELEMENT",

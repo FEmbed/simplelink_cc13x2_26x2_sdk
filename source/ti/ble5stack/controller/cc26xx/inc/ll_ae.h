@@ -90,7 +90,7 @@
 
 // Extended Advertising Interval
 #define AE_INTERVAL_MIN                                     32        // 20ms in 625us
-#define AE_INTERVAL_MAX                                     16777215  // 10,485.759375s (2.9 hrs) in 625us
+#define AE_INTERVAL_MAX                                     768000    // 480,000ms in 625us (=480000/0.625).
 
 // Extended Advertising Max Skip and Duration
 #define AE_MAX_SKIP_DEFAULT                                 0
@@ -1427,6 +1427,7 @@ extern uint8         llCheckCBack( uint8 );
 extern void          llEndExtAdvTask( advSet_t * );
 extern void          llEndExtScanTask( void );
 extern void          llEndExtInitTask( void );
+extern uint8         llGetRandChannelMapIndex( uint8 );
 // RF Post Processing
 extern void          llExtAdv_PostProcess( void );
 extern void          llExtScan_PostProcess( void );

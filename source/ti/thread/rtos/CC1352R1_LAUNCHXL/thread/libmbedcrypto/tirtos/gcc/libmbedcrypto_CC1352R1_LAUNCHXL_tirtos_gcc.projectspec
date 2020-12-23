@@ -14,7 +14,6 @@
         name="libmbedcrypto_CC1352R1_LAUNCHXL_tirtos_gcc"
         configurations="OptimizeSize"
         toolChain="GNU"
-        cgtVersion="GNU_9.0"
         outputType="staticLibrary"
         artifactName="mbedcrypto"
         artifactExtension="a"
@@ -63,7 +62,6 @@
         description="this is the mbeddtls library">
 
         <property name="isHybrid" value="true"/>
-        <group id="libmbedcrypto_CC1352R1_LAUNCHXL_tirtos_gcc.SIMPLELINK_CC13X2_26X2_SDK.thread.GCC"/>
         <file path="../../config/aes_alt.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="config">
         </file>
         <file path="../../config/ecjpake_alt.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="config">

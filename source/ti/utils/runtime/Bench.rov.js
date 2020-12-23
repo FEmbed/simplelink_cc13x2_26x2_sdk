@@ -103,14 +103,14 @@ function ReportView()
 function viewInitReport()
 {
 //  Monitor.println("Bench: viewInitReport");
-
+    var i;
     var data = Bench_fetchData();
     var table = new Array(data.count - 1);
 
     /* initialize table with segment names */
     var labels = segment_labels(data);
 
-    for (var i = 0; i < (data.count - 1); i++) {
+    for (i = 0; i < (data.count - 1); i++) {
         var view = new ReportView();
         view.Segment = labels[i];
         view.Ticks = 0;
@@ -125,11 +125,11 @@ function viewInitReport()
     var avg = new Array(data.count - 1);
     var num = new Array(data.count - 1);
 
-    for (var i = 0; i < (data.count - 1); i++) {
+    for (i = 0; i < (data.count - 1); i++) {
         avg[i] = 0;
         num[i] = data.numEntries;
     }
-    for (var i = 1; i < data.count; i++) {
+    for (i = 1; i < data.count; i++) {
         for (var r = 0; r < data.numEntries; r++) {
             var x0 = data.inst[i-1].samples[r].tick;
             var x1 = data.inst[i].samples[r].tick;
@@ -152,7 +152,7 @@ function viewInitReport()
     /* generate report */
     var totalTicks = 0;
 
-    for (var i = 0; i < (data.count - 1); i++) {
+    for (i = 0; i < (data.count - 1); i++) {
         table[i].Ticks = avg[i];
         table[i].Usecs = round(avg[i] * data.usec_tick, 3);
         totalTicks += table[i].Ticks;
@@ -215,7 +215,7 @@ function viewInitInstance()
         var inst = data.inst[i];
         var view = new InstanceView();
         view.BufAddr = inst.buffer;
-        view.Label = inst.label
+        view.Label = inst.label;
         view.Proxy = (inst.proxy ? "true" : "false");
         table.push(view);
     }
@@ -235,6 +235,8 @@ function viewInitBuffer(argstr)
 {
 //  Monitor.println("Bench: viewInitBuffer, argstr=" + argstr);
 
+    var i;
+
     /* extract arguments from arg string */
     var args = argstr.split(",");
     var addr = args[0];
@@ -242,7 +244,7 @@ function viewInitBuffer(argstr)
     /* find instance by its given address */
     var data = Bench_fetchData(Bench_Detail_INSTANCE);
     var index = -1;
-    for (var i = 0; i < data.count; i++) {
+    for (i = 0; i < data.count; i++) {
         if (addr == data.inst[i].buffer) {
             index = i;
             break;
@@ -262,7 +264,7 @@ function viewInitBuffer(argstr)
     var dtick = 0;
     var inst = data.inst[index];
 
-    for (var i = 0; i < data.numEntries; i++) {
+    for (i = 0; i < data.numEntries; i++) {
         var rec = new BufferView();
         rec.Serial = i + 1;
         tick = inst.samples[i].tick;
@@ -296,6 +298,8 @@ function viewInitDelta(argstr)
 {
 //  Monitor.println("Bench: viewInitDelta, argstr=" + argstr);
 
+    var i, j;
+
     /* extract arguments from arg string */
     var args = argstr.split(",");
     var msec = (args[0] == "false" ? false : true);
@@ -312,17 +316,17 @@ function viewInitDelta(argstr)
     header.Serial = "";
     header.Mark1 = "";
 
-    for (var i = 2; i <= data.count; i++) {
+    for (i = 2; i <= data.count; i++) {
         header["Mark" + i] = labels[i-2];
     }
     table.push(header);
 
     /* build the table one row at a time */
-    for (var i = 0; i < data.numEntries; i++) {
+    for (i = 0; i < data.numEntries; i++) {
 
         /* collect the samples for current row */
         var tsAry = new Array(data.count);
-        for (var j = 0; j < data.count; j++) {
+        for (j = 0; j < data.count; j++) {
             if (data.inst[j].buffer == 0) {
                 tsAry[j] = 0; /* null proxy instance */
             }
@@ -335,7 +339,7 @@ function viewInitDelta(argstr)
         var deltaCnt = data.count - 1;
         var deltaAry = new Array(deltaCnt);
 
-        for (var j = 1; j < data.count; j++) {
+        for (j = 1; j < data.count; j++) {
             var dx_tick = tsAry[j] - tsAry[j-1];
             /* apply trim indicator if delta exceeds trim value */
             var t = Math.abs(dx_tick) > ((100 + trim)/100.0 * mean[j-1]);
@@ -351,7 +355,7 @@ function viewInitDelta(argstr)
         rec.Serial = i + 1;
         rec.Mark1 = (msec ? "0 (0.00)" : "0");
 
-        for (var j = 0; j < deltaCnt; j++) {
+        for (j = 0; j < deltaCnt; j++) {
             rec["Mark"+(j+2)] = "" + deltaAry[j].tick;
             if (msec) {
                 rec["Mark"+(j+2)] += " ("+deltaAry[j].usec+")";
@@ -370,6 +374,8 @@ function viewInitDelta(argstr)
 function Bench_fetchData(detail, bufId)
 {
 //  Monitor.println("Bench: Bench_fetchData");
+
+    var inst, addr;
 
     /* function default value */
     detail = (detail === undefined ? Bench_Detail_ALL : detail);
@@ -390,11 +396,11 @@ function Bench_fetchData(detail, bufId)
 
     /* fetch instance information */
     for (var i = 0; i < data.count; i++) {
-        var addr = Program.lookupSymbolValue("Bench_config") +
+        addr = Program.lookupSymbolValue("Bench_config") +
             (i * typespecInst.size);
         var benchInst = Program.fetchFromAddr(addr, "Bench_Instance");
 
-        var inst = {};
+        inst = {};
         inst.addr = addr;
         inst.label = Program.fetchString(benchInst.label, false);
         inst.proxy = benchInst.proxy;
@@ -430,10 +436,10 @@ function Bench_fetchData(detail, bufId)
 
     /* fetch benchmark samples for all instances or just one */
     do {
-        var inst = data.inst[instId];
+        inst = data.inst[instId];
         inst.samples = new Array(data.numEntries);
         for (var r = 0; r < data.numEntries; r++) {
-            var addr = inst.buffer + (r * 4);
+            addr = inst.buffer + (r * 4);
             var tick = Program.fetchFromAddr(addr, "uint32_t");
             var ts_msec = (data.usec_tick * tick) / 1000;
             inst.samples[r] = { tick: tick, ts_msec: ts_msec };
@@ -456,14 +462,15 @@ function round(num, prec)
  */
 function arithmetic_mean(data)
 {
+    var i;
     var mean = new Array(data.count - 1);
 
-    for (var i = 0; i < (data.count - 1); i++) {
+    for (i = 0; i < (data.count - 1); i++) {
         mean[i] = 0;
     }
 
     /* compute the sum of all samples for each segment */
-    for (var i = 1; i < data.count; i++) {
+    for (i = 1; i < data.count; i++) {
         for (var r = 0; r < data.numEntries; r++) {
             var x0 = data.inst[i-1].samples[r].tick;
             var x1 = data.inst[i].samples[r].tick;

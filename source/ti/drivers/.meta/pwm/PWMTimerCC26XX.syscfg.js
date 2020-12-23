@@ -133,6 +133,10 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "PWM", null,
+        [{name: "PWMTimerCC26XX"}], null);
+
     /* merge and overwrite base module attributes */
     let result = Object.assign({}, base, devSpecific);
 

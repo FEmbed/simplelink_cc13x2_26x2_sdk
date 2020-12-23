@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,23 +43,11 @@ function modules(inst)
 {
     let modules = new Array();
 
-//  Cannot require GenLibs yet, still experimental
-//
-//  modules.push({
-//      name: "genlibs",
-//      displayName: "GenLibs",
-//      moduleName: "/ti/utils/build/GenLibs"
-//  });
-
-    let devId = system.deviceData.deviceId;
-
-    if (devId == "dragon") {
-        modules.push({
-            name: "cpuss",
-            displayName: "CPUSS",
-            moduleName: "/ti/soc/CPUSS"
-        });
-    }
+    modules.push({
+        name: "genlibs",
+        displayName: "GenLibs",
+        moduleName: "/ti/utils/build/GenLibs"
+    });
 
     return (modules);
 }
@@ -71,37 +59,11 @@ function getLibs(mod)
 {
     let GenLibs = system.getScript("/ti/utils/build/GenLibs.syscfg.js");
 
-    /* get device ID and toolchain to select appropriate libs */
-    let devId = system.deviceData.deviceId;
-    let toolchain = GenLibs.getToolchainDir();
-
     var libs = [];
     var deps = [];
-    var isa = "";
     var profile = "_release";
 
-    switch (devId) {
-        case "dragon": /* special handling for multi-core device */
-            let cpuss = system.modules["/ti/soc/CPUSS"];
-            if (cpuss.$static.cpuId == "CPUID_1") {
-                isa = "m33f";
-            }
-            else if (cpuss.$static.cpuId == "CPUID_2") {
-                isa = "m33";
-            }
-            else {
-                isa = devId;
-            }
-
-            libs.push("ti/utils/runtime/lib/" + toolchain + "/" + isa +
-                "/runtime" + profile + ".a");
-            break;
-
-        default:
-            libs.push(GenLibs.libPath("ti/utils/runtime",
-                "runtime" + profile + ".a"));
-            break;
-    }
+    libs.push(GenLibs.libPath("ti/utils/runtime", "runtime" + profile + ".a"));
 
     /* create a GenLibs input argument */
     var linkOpts = {

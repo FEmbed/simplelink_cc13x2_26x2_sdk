@@ -69,15 +69,6 @@
 #define CONFIG_SYSCONFIG_PREVIEW
 
 #define CONFIG_`boardName`
-% /* Temporarily define MTXX needed definitions */
-% if (boardName.match(/MTL/)) {
-% let core = boardName.match(/CORE\d/)[0].replace("CORE", "");
-
-#ifndef __CPUSS`core`__
-#define __CPUSS`core`__
-#endif
-
-% }
 #ifndef `devFamily`
 #define `devFamily`
 #endif

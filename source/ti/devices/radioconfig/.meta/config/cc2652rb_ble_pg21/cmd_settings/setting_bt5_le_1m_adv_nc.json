@@ -113,15 +113,25 @@
                     },
                     {
                         "_name": "pRegOverride1Mbps",
-                        "Block": "override_ble5_setup_override_1mbps.json"
+                        "Block": [
+                            "override_ble5_setup_override_1mbps_coex.json",
+                            "override_ble5_setup_override_1mbps.json"
+                        ]
                     },
                     {
                         "_name": "pRegOverride2Mbps",
-                        "Block": "override_ble5_setup_override_2mbps.json"
+                        "Block": [
+                            "override_ble5_setup_override_2mbps_coex.json",
+                            "override_ble5_setup_override_2mbps.json"
+                        ]
                     },
                     {
                         "_name": "pRegOverrideCoded",
-                        "Block": "override_ble5_setup_override_coded.json"
+                        "Block": [
+                            "override_ble5_setup_override_coded_coex.json",
+                            "override_ble5_setup_override_coded_non_coex.json",
+                            "override_ble5_setup_override_coded.json"
+                        ]
                     }
                 ]
             },

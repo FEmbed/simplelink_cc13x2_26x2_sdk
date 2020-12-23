@@ -56,7 +56,7 @@ let config = [
 
     {
         name        : "errorCallbackFunction",
-        displayName : "Error callback function",
+        displayName : "Error Callback Function",
         description : 'Optional application defined error function to be '
                       + 'called on receive errors.',
         default     : '',
@@ -134,10 +134,10 @@ and writing to the UART peripherals.
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#UART_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_u_a_r_t_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#UART_Configuration_Options "Configuration options reference"
 `,
     /* instance properties and methods */
     defaultInstanceName: "CONFIG_UART_",

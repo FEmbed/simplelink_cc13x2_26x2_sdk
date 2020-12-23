@@ -96,7 +96,7 @@
 #define IDX_GapAdv_getParam                           GapAdv_getParam
 #define IDX_GapAdv_getBuffer                          GapAdv_getBuffer
 #define IDX_GapAdv_loadByHandle                       GapAdv_loadByHandle
-#define IDX_GapAdv_loadByBuffer                       GapAdv_loadByBuffer
+#define IDX_GapAdv_loadByBuffer                       GapAdv_loadByBuffer_hook
 #define IDX_GapAdv_prepareLoadByHandle                GapAdv_prepareLoadByHandle
 #define IDX_GapAdv_prepareLoadByBuffer                GapAdv_prepareLoadByBuffer
 #define IDX_GapAdv_abortLoad                          GapAdv_abortLoad

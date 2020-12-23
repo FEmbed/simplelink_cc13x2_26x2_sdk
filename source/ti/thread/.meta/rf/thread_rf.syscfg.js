@@ -106,7 +106,7 @@ function moduleInstances(inst)
     }
 
     // Add high PA options if present
-    if(deviceId.match(/CC(2652|1352R1)/))
+    if(deviceId.match(/CC(2652R|1352R1)/))
     {
         cmdList.push("cmdRadioSetup");
         // set TX power to the max value, this config is not important because
@@ -115,7 +115,7 @@ function moduleInstances(inst)
         // paEnable = false; to force normal PA options
         radioConfigArgs.txPower = RfDesign.getTxPowerOptions(2405, false)[0].name;
     }
-    else if(deviceId.match(/CC1352P/))
+    else if(deviceId.match(/CC(2652P|1352P)/))
     {
         cmdList.push("cmdRadioSetupPa");
         radioConfigArgs.highPA = true;
@@ -151,11 +151,10 @@ function getTxPowerConfigOptions()
     const cmdHandler = CmdHandler.get(RadioConfig.PHY_IEEE_15_4, "ieee154");
     const freq = cmdHandler.getFrequency();
 
+    // Regular PA options
     txPowerValueList = _.concat(txPowerValueList, RfDesign.getTxPowerOptions(freq, false));
-    if(deviceId.match(/CC1352P/))
-    {
-        txPowerValueList = _.concat(txPowerValueList, RfDesign.getTxPowerOptions(freq, true));
-    }
+    // High PA options (if available)
+    txPowerValueList = _.concat(txPowerValueList, RfDesign.getTxPowerOptions(freq, true));
 
     // Round all tx power values
     _.forEach(txPowerValueList, (option) =>

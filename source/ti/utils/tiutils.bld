@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,7 @@
 
 var Build = xdc.useModule('xdc.bld.BuildEnvironment');
 var Pkg = xdc.useModule('xdc.bld.PackageContents');
+var loc = environment['loc'] ? environment['loc'] : "";
 
 /*
  * Linux86 => -std=c99 for (at least sscanf() and strtof())
@@ -72,7 +73,7 @@ var ccOpts = {
     "ti.targets.arm.clang.M4F"        : "",  // TBD
     "iar.targets.arm.M4"              : "",
     "iar.targets.arm.M4F"             : "",
-    "gnu.targets.Linux86"             : " -m32 -Wall ",
+    "gnu.targets.Linux86_64"          : " -Wall ",
     "gnu.targets.arm.M4"              : " -std=c99 ",
     "gnu.targets.arm.M4F"             : " -std=c99 ",
     "gnu.targets.arm.GCArmv7AF"       : " -Wall "
@@ -82,7 +83,6 @@ var lnkOpts = {
 };
 
 var profile = "";
-var posixIncs = "";
 
 /* initialize local vars with those set in products.mak (via XDCARGS) */
 for (arg = 1; arg < arguments.length; arg++) {
@@ -92,12 +92,6 @@ for (arg = 1; arg < arguments.length; arg++) {
     /* if "known args come in, filter them... else they're targets */
     if (configParts[0].split("=")[0] == "PROFILE") {
         profile = configParts[0].split("=")[1];
-        continue;
-    }
-    else if (configParts[0].split("=")[0] == "TIPOSIX_REPO") {
-        posixIncs = configParts[0].split("=")[1];
-        posixIncs = " -I" + posixIncs + "/ti/posix";
-
         continue;
     }
     else if (configParts[0].split("=")[0] == "TARGETFS_v7AF") {
@@ -175,7 +169,9 @@ Pkg.attrs.compress = true;
 Pkg.attrs.archiver = "zip";
 
 /* Set release prefix to "../"*N + "/exports", N = num of levels in pkg name */
-Pkg.releasePrefix = ("." + Pkg.name).replace(/[^\.]+/g, "./") + "../exports/";
+if (loc == "dev") {
+    Pkg.releasePrefix = ("." + Pkg.name).replace(/[^\.]+/g, "./")+"../exports/";
+}
 
 /* Utility fxns used by various ti.utils pkgs */
 function getLibDirectory(suffix) {
@@ -226,8 +222,8 @@ function getLibDirectory(suffix) {
             libdir = "lib/gcc/v7AF";
             break;
 
-        case "86U":
-            libdir = "lib/gcc/86U";
+        case "86_64U":
+            libdir = "lib/gcc/86_64U";
             break;
 
         default:
@@ -236,35 +232,4 @@ function getLibDirectory(suffix) {
     }
 
     return (libdir);
-}
-
-function getPosixIncDirectory(suffix) {
-    var incdir = "";
-
-    switch (suffix) {
-        case "em4":
-        case "em4f":
-        case "m33":
-        case "m33f":
-        case "m4":
-        case "m4f":
-            incdir = "ccs";
-            break;
-
-        case "rm4":
-        case "rm4f":
-            incdir = "iar";
-            break;
-
-        case "m4g":
-        case "m4fg":
-            incdir = "gcc";
-            break;
-
-        default:
-            throw("Unhandled target suffix: '" + suffix + "'");
-            break;
-    }
-
-    return (incdir);
 }

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ssi.h
-*  Revised:        2017-05-23 12:08:52 +0200 (Tue, 23 May 2017)
-*  Revision:       49048
+*  Revised:        2020-07-14 12:55:48 +0200 (Tue, 14 Jul 2020)
+*  Revision:       57992
 *
 *  Description:    Defines and macros for the SSI.
 *

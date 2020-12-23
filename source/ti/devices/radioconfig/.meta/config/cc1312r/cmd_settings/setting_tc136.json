@@ -1,8 +1,8 @@
 {
     "setting": {
-        "Name": "100 kbps, 2-GFSK, 50 kHz deviation, 915 MHz",
-        "Description": "100 kbps, 2-GFSK, 50 kHz deviation WiSUN PHY.",
-        "Frequency": "915",
+        "Name": "100 kbps, 2-GFSK, 50 kHz deviation, 920.9 MHz, WiSUN mode #2b",
+        "Description": "100 kbps, 2-GFSK, 50 kHz deviation WiSUN mode #2b compatible PHY.",
+        "Frequency": "920.9",
         "Patch": {
             "Define": "RF_MODE_AUTO",
             "Cpe": "rf_patch_cpe_prop",
@@ -103,7 +103,7 @@
                     },
                     {
                         "_name": "formatConf.whitenMode",
-                        "$": "0"
+                        "$": "7"
                     },
                     {
                         "_name": "config.frontEndMode",
@@ -131,7 +131,7 @@
                     },
                     {
                         "_name": "centerFreq",
-                        "$": "915"
+                        "$": "920"
                     },
                     {
                         "_name": "intFreq",
@@ -196,11 +196,11 @@
                     },
                     {
                         "_name": "frequency",
-                        "$": "915"
+                        "$": "920"
                     },
                     {
                         "_name": "fractFreq",
-                        "$": "0"
+                        "$": "58983"
                     },
                     {
                         "_name": "synthConf.bTxMode",
@@ -216,8 +216,8 @@
         "TestFunc": {
             "ContTX": "testfunction_prop_cont_tx_WiSUN.json",
             "ContRX": "testfunction_prop_cont_rx_WiSUN.json",
-            "PacketTX": "testfunction_prop_packet_tx_WiSUN.json",
-            "PacketRX": "testfunction_prop_packet_rx_WiSUN.json"
+            "PacketTX": "testfunction_prop_packet_tx_genfsk_adv.json",
+            "PacketRX": "testfunction_prop_packet_rx_genfsk_adv.json"
         }
     }
 }

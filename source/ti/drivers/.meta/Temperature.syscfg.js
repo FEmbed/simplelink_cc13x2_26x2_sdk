@@ -59,10 +59,10 @@ by other modules such as the Power driver.
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_temperature_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_temperature_8h.html#ti_drivers_Temperature_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_temperature_8h.html#ti_drivers_Temperature_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#Temperature_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_temperature_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_temperature_8h.html#ti_drivers_Temperature_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_temperature_8h.html#ti_drivers_Temperature_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#Temperature_Configuration_Options "Configuration options reference"
 `,
     maxInstances        : 1,
     initPriority        : -1 /* lower numbers init earlier */

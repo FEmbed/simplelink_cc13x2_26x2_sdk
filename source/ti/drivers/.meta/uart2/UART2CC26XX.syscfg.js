@@ -39,6 +39,7 @@
 
 /* get Common /ti/drivers utility functions */
 let Common = system.getScript("/ti/drivers/Common.js");
+let logError = Common.logError;
 
 let intPriority = Common.newIntPri()[0];
 intPriority.name = "interruptPriority";
@@ -56,12 +57,37 @@ let devSpecific = {
             displayName : "Flow Control",
             default     : false,
             description : "Enable hardware flow control",
-            longDescription : `Hardware flow control between two devices is
-accomplished by connecting the UART Request-To-Send (RTS) pin to the
-Clear-To-Send (CTS) input on the receiving device, and connecting the
-RTS output of the receiving device to the UART CTS pin`
+            longDescription : "Hardware flow control between two devices "
+                + "is accomplished by connecting the UART Request-To-Send "
+                + "(RTS) pin to the Clear-To-Send (CTS) input on the "
+                + "receiving device, and connecting the RTS output of the "
+                + "receiving device to the UART CTS pin"
         },
         intPriority,
+
+        /* RX and TX ring buffer sizes */
+        {
+            name        : "rxRingBufferSize",
+            displayName : "RX Ring Buffer Size",
+            description : "Number of bytes in the RX ring buffer",
+            longDescription : "The RX ring buffer serves as an extension "
+                + "of the RX FIFO. If data is received when UART2_read() "
+                + "is not called, data will be stored in the RX ring "
+                + "buffer. The size can be changed to suit the "
+                + "application.",
+            default     : 32
+        },
+        {
+            name        : "txRingBufferSize",
+            displayName : "TX Ring Buffer Size",
+            description : "Number of bytes in the TX ring buffer",
+            longDescription : "The TX ring buffer serves as an extension "
+                + "of the TX FIFO. Data is written to the TX ring buffer "
+                + "when UART_write() is called. Data in the TX ring "
+                + "buffer is then copied by the DMA to the TX FIFO. The "
+                + "size can be changed to suit the application.",
+            default     : 32
+        },
 
         /* RX and TX Fifo level thresholds */
         {
@@ -97,8 +123,6 @@ RTS output of the receiving device to the UART CTS pin`
 
     /* PIN instances */
     moduleInstances: moduleInstances,
-
-    modules       : Common.autoForceModules(["DMA"]),
 
     onHardwareChanged: onHardwareChanged,
 
@@ -350,8 +374,24 @@ function moduleInstances(inst)
  */
 function validate(inst, validation, $super)
 {
+    let minRingBufferSize = 16;
+    let rxRingBufferSize = inst.rxRingBufferSize;
+    let txRingBufferSize = inst.txRingBufferSize;
+    let message;
+
     if ($super.validate) {
         $super.validate(inst, validation);
+    }
+
+    if (rxRingBufferSize < minRingBufferSize) {
+        message = 'RX ring buffer size must be at least ' +
+            minRingBufferSize + ' bytes';
+        logError(validation, inst, "rxRingBufferSize", message);
+    }
+    if (txRingBufferSize < minRingBufferSize) {
+        message = 'TX ring buffer size must be at least ' +
+            minRingBufferSize + ' bytes';
+        logError(validation, inst, "rxRingBufferSize", message);
     }
 }
 
@@ -360,6 +400,10 @@ function validate(inst, validation, $super)
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "UART2", null,
+        [{name: "UART2CC26X2"}], null);
+
     /* override base validate */
     devSpecific.validate = function (inst, validation) {
         return validate(inst, validation, base);

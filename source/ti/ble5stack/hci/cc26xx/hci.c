@@ -98,7 +98,7 @@ extern RF_Handle rfHandle;
 
 // Major Version (8 bits) . Minor Version (4 bits) . SubMinor Version (4 bits)
 #if defined( CC26X2 ) || defined(CC13X2) || defined(CC13X2P)
-#define HCI_REVISION                                 0x0213  // HCI Version BLE5 2.1.3
+#define HCI_REVISION                                 0x0214  // HCI Version BLE5 2.1.4
 #elif defined( CC26XX )
 #define HCI_REVISION                                 0x0111  // HCI Version BLE5 1.1.1
 #else // !CC26X2 && !CC13X2 && !CC26XX && !CC13XX

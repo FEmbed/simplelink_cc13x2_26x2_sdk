@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019, Texas Instruments Incorporated
+ * Copyright (c) 2017-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -287,13 +287,11 @@ static int_fast16_t AESCCM_startOperation(AESCCM_Handle handle,
         return AESCCM_STATUS_ERROR;
     }
 
-    /* If we are in AESCCM_RETURN_BEHAVIOR_POLLING, we do not want an interrupt to trigger.
-     * AESWriteToKeyStore() disables and then re-enables the CRYPTO IRQ in the NVIC so we
-     * need to disable it before kicking off the operation.
+    /* We need to disable interrupts here to prevent a race condition in
+     * AESWaitForIRQFlags when inputLength == 0. AESWriteToKeyStore() above
+     * has enabled the crypto interrupt.
      */
-    if (object->returnBehavior == AESCCM_RETURN_BEHAVIOR_POLLING) {
-        IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
-    }
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
 
     /* Power the AES sub-module of the crypto module */
     AESSelectAlgorithm(AES_ALGSEL_AES);
@@ -332,6 +330,11 @@ static int_fast16_t AESCCM_startOperation(AESCCM_Handle handle,
          */
         AESStartDMAOperation(operation->aad, operation->aadLength,  NULL, 0);
         AESWaitForIRQFlags(AES_DMA_IN_DONE | AES_DMA_BUS_ERR);
+    }
+
+    /* If we are in AESCCM_RETURN_BEHAVIOR_POLLING, we do not want an interrupt to trigger. */
+    if (object->returnBehavior != AESCCM_RETURN_BEHAVIOR_POLLING) {
+        IntEnable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     }
 
     AESStartDMAOperation(operation->input, operation->inputLength, operation->output, operation->inputLength);

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       osc.c
-*  Revised:        2020-03-06 15:23:28 +0100 (Fri, 06 Mar 2020)
-*  Revision:       56987
+*  Revised:        2020-06-03 22:07:15 +0200 (Wed, 03 Jun 2020)
+*  Revision:       57657
 *
 *  Description:    Driver for setting up the system Oscillators
 *
@@ -43,6 +43,7 @@
 #include "aon_batmon.h"
 #include "aon_rtc.h"
 #include "osc.h"
+#include "sys_ctrl.h"
 #include "setup_rom.h"
 
 //*****************************************************************************
@@ -68,6 +69,8 @@
     #define OSCHF_DebugGetCrystalAmplitude  NOROM_OSCHF_DebugGetCrystalAmplitude
     #undef  OSCHF_DebugGetExpectedAverageCrystalAmplitude
     #define OSCHF_DebugGetExpectedAverageCrystalAmplitude NOROM_OSCHF_DebugGetExpectedAverageCrystalAmplitude
+    #undef  OSCHF_DebugGetCrystalStartupTime
+    #define OSCHF_DebugGetCrystalStartupTime NOROM_OSCHF_DebugGetCrystalStartupTime
     #undef  OSC_HPOSCInitializeFrequencyOffsetParameters
     #define OSC_HPOSCInitializeFrequencyOffsetParameters NOROM_OSC_HPOSCInitializeFrequencyOffsetParameters
     #undef  OSC_HPOSC_Debug_InitFreqOffsetParams
@@ -587,7 +590,7 @@ OSC_HPOSCInitializeSingleInsertionFreqOffsParams( uint32_t measFieldAddress )
 int32_t
 OSC_HPOSCRelativeFrequencyOffsetGet( int32_t tempDegC )
 {
-   // Estimate HPOSC frequency offset, using temperature and curve fitting parameters
+    // Estimate HPOSC frequency offset, using temperature and curve fitting parameters
 
     // Now we can find the HPOSC freq offset, given as a signed variable d, expressed by:
     //
@@ -610,7 +613,7 @@ OSC_HPOSCRelativeFrequencyOffsetGet( int32_t tempDegC )
     d =  ((((int64_t)_hposcCoeffs[3]*t3 + (int64_t)_hposcCoeffs[2]*t2 + (int64_t)_hposcCoeffs[1]*t1) >> HPOSC_COEFF0_SHIFT) +
             (int64_t)_hposcCoeffs[0]) >> HPOSC_COEFF0_BITS;
 
-   return ( d );
+    return ( d );
 }
 
 //*****************************************************************************
@@ -747,4 +750,25 @@ OSCHF_DebugGetExpectedAverageCrystalAmplitude( void )
                                   DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_LTH_S ;
 
    return ((( highThreshold + lowThreshold ) * 15 ) >> 1 );
+}
+
+//*****************************************************************************
+//
+// Measure the crystal startup time - in number of LF clock edges
+//
+//*****************************************************************************
+uint32_t OSCHF_DebugGetCrystalStartupTime( void )
+{
+   uint32_t lfEdgesFound = 0 ;
+
+   // Start operation in sync with the LF clock
+   HWREG( AON_RTC_BASE + AON_RTC_O_SYNCLF );
+   OSCHF_TurnOnXosc();
+   while ( ! OSCHF_AttemptToSwitchToXosc() ) {
+      HWREG( AON_RTC_BASE + AON_RTC_O_SYNCLF );
+      lfEdgesFound ++ ;
+   }
+   OSCHF_SwitchToRcOscTurnOffXosc();
+
+   return ( lfEdgesFound );
 }

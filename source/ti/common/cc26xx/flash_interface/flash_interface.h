@@ -159,7 +159,7 @@ extern "C"
     #define INTFLASH_PAGE_SIZE              0x1000
     #define MAX_ONCHIP_FLASH_PAGES          32
     #define MAX_OFFCHIP_METADATA_PAGES      MAX_ONCHIP_FLASH_PAGES
-#elif defined(CC26X2) || defined(CC13X2) || defined(CC13X2P)
+#elif defined(DeviceFamily_CC26X2) || defined(DeviceFamily_CC13X2)
     #define FLASH_ADDRESS(page, offset)     (((page) << 13) + (offset))
     #define FLASH_PAGE(addr)                (addr >> 13)
     #define INTFLASH_PAGE_MASK              0xFFFFE000

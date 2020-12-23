@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Texas Instruments Incorporated
+ * Copyright (c) 2019-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -104,6 +104,17 @@ bool CryptoUtils_buffersMatchWordAligned(const uint32_t *buffer0,
                                          size_t bufferByteLength);
 
 /**
+ *  @brief Check whether the provided buffer only contains 0x00 bytes
+ *
+ *  @param  buffer              Buffer to search for non-zero bytes
+ *  @param  bufferByteLength    Length of @c buffer in bytes
+ *
+ *  @retval true                The buffer contained only bytes with value 0x00
+ *  @retval false               The buffer contained at least on non-zero byte
+ */
+bool CryptoUtils_isBufferAllZeros(const void *buffer, size_t bufferByteLength);
+
+/**
  *  @brief Reverses the byte order in a buffer of a given length
  *
  *  The left-most byte will become the right-most byte and vice versa.
@@ -112,6 +123,26 @@ bool CryptoUtils_buffersMatchWordAligned(const uint32_t *buffer0,
  *  @param  bufferByteLength    Length in bytes of @c buffer.
  */
 void CryptoUtils_reverseBufferBytewise(void * buffer, size_t bufferByteLength);
+
+/**
+ *  @brief Copies and pads an array of words.
+ *
+ *  The \c source array is copied into the \c destination
+ *  array. Writes are done word-wise. If \c sourceLength is not a multiple of 4,
+ *  any remaining bytes up to the next word boundary are padded with 0.
+ *
+ *  The length of the destination array must be a multiple of 4, rounded up to the
+ *  padded \c sourceLength if required.
+ *
+ *  @param source       Source array
+ *
+ *  @param destination  Destination array
+ *
+ *  @param sourceLength Length of the source array (multiple of 4)
+ */
+void CryptoUtils_copyPad(const void *source,
+                         void *destination,
+                         size_t sourceLength);
 
 /**
  *  @brief Reverses, copies, and pads an array of words.

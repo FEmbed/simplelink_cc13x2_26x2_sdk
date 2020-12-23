@@ -75,8 +75,13 @@ const PhyInfo = {
 };
 
 if (Common.HAS_PROP) {
+    PhyInfo.prop1 = {
+        displayName: "Proprietary (169 MHz)",
+        protocol: Common.PHY_PROP,
+        settings: []
+    };
     PhyInfo.prop4 = {
-        displayName: "Proprietary (431 - 527 MHz)",
+        displayName: "Proprietary (420 - 527 MHz)",
         protocol: Common.PHY_PROP,
         settings: []
     };
@@ -97,50 +102,42 @@ if (Common.HAS_24G_PROP) {
 
 // Add PHY settings depending on device name
 if (hasProp) {
-    // Pre-load to make sure all configurables in sub-modules are generated
-    Common.getScript("settings/prop");
+    const cfgs = DeviceInfo.getConfiguration(Common.PHY_PROP).configs;
 
-    const propPhyList = DeviceInfo.getSettingMap(Common.PHY_PROP);
-    _.each(propPhyList, (phy) => {
-        const cmdHandler = CmdHandler.get(Common.PHY_PROP, phy.name);
-        const freqBand = cmdHandler.getFrequencyBand();
-        if (freqBand === 868) {
-            PhyInfo.prop8.settings.push(phy);
+    // PHY types are in positions 1 to 4 in the config array
+    for (let i = 1; i <= 4; i++) {
+        const cfg = cfgs[i];
+        if (cfg.name === "phyType868" && "prop8" in PhyInfo) {
+            PhyInfo.prop8.settings = cfg.options;
         }
-        else if (freqBand === 433) {
-            PhyInfo.prop4.settings.push(phy);
+        if (cfg.name === "phyType433" && "prop4" in PhyInfo) {
+            PhyInfo.prop4.settings = cfg.options;
         }
-        else {
-            PhyInfo.prop2.settings.push(phy);
+        if (cfg.name === "phyType169" && "prop1" in PhyInfo) {
+            PhyInfo.prop1.settings = cfg.options;
         }
-    });
+        if (cfg.name === "phyType2400" && "prop2" in PhyInfo) {
+            PhyInfo.prop2.settings = cfg.options;
+        }
+    }
 }
 
 if (hasBle) {
-    // Pre-load to make sure all configurables in sub-modules are generated
-    Common.getScript("settings/ble");
-
-    const blePhyList = DeviceInfo.getSettingMap(Common.PHY_BLE);
-    _.each(blePhyList, (phy) => {
-        PhyInfo.ble.settings.push(phy);
-    });
+    const cfgs = DeviceInfo.getConfiguration(Common.PHY_BLE).configs;
+    PhyInfo.ble.settings = cfgs[0].options;
 }
 
 if (hasIeee) {
-    // Pre-load to make sure all configurables in sub-modules are generated
-    system.getScript("settings/ieee_15_4");
-
-    const ieeePhyList = DeviceInfo.getSettingMap(Common.PHY_IEEE_15_4);
-    _.each(ieeePhyList, (phy) => {
-        PhyInfo.ieee.settings.push(phy);
-    });
+    const cfgs = DeviceInfo.getConfiguration(Common.PHY_IEEE_15_4).configs;
+    PhyInfo.ieee.settings = cfgs[0].options;
 }
 
 // Create configurables with checkbox options list
 const config = [];
 
 _.each(PhyInfo, (pi, key) => {
-    const opts = getPhyOptions(pi);
+    const opts = pi.settings;
+
     if (opts.length > 0) {
         config.push({
             name: key,
@@ -148,62 +145,11 @@ _.each(PhyInfo, (pi, key) => {
             description: "Select PHY settings to be included in the generated code",
             placeholder: "No " + pi.displayName + " PHY selected",
             minSelections: 0,
-            options: opts,
+            options: pi.settings,
             default: []
         });
     }
 });
-
-/*
- *  ======== getPhyOptions ========
- *  Creates an array of protocol (PHY group) with options of check-boxes
- *
- *  @param phyList - list of PHY
- */
-function getPhyOptions(phyList) {
-    const conf = [];
-    const rfOpt = getRfOptions(phyList);
-
-    // Each settings within the group
-    _.each(rfOpt, (opt) => {
-        conf.push({
-            name: opt.name,
-            displayName: opt.displayName,
-            description: opt.description
-        });
-    });
-    return conf;
-}
-
-/*
- *  ======== getRfOptions ========
- *  Retrieves the board/devices rfSettings from the SmartRF studio configuration database.
- *
- *  @param phyList - list of PHY
- *
- *  @returns Array - an array containing one or more dictionaries with the
- *                   following keys: displayName, name, description (tooltip)
- *
- */
-function getRfOptions(phyList) {
-    const phyGroup = phyList.protocol;
-    // Construct the options array
-    const options = [];
-
-    _.each(phyList.settings, (phy) => {
-        const cmdHandler = CmdHandler.get(phyGroup, phy.name);
-        const displayName = cmdHandler.getSettingLongName();
-        const description = cmdHandler.getSettingDescription();
-        const opt = {
-            name: phy.name,
-            displayName: displayName,
-            description: description
-        };
-        options.push(opt);
-    });
-
-    return options;
-}
 
 /*
  *  ======== addRfSettingDependency ========
@@ -231,6 +177,10 @@ function addRfSettingDependency(phyGroup, phy, displayName) {
         else if (freqBand === 433) {
             radioConfigArgs.freqBand = "433";
             radioConfigArgs.phyType433 = phy;
+        }
+        else if (freqBand === 169) {
+            radioConfigArgs.freqBand = "169";
+            radioConfigArgs.phyType169 = phy;
         }
         else if (freqBand === 2400) {
             radioConfigArgs.freqBand = "2400";
@@ -279,7 +229,7 @@ function moduleInstances(inst) {
         _.each(pi.settings, (phy) => {
             // Add module if selected
             if (selected.includes(phy.name)) {
-                dependencyModule.push(addRfSettingDependency(pg, phy.name, phy.description));
+                dependencyModule.push(addRfSettingDependency(pg, phy.name, phy.displayName));
             }
         });
     });

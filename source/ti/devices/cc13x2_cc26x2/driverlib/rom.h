@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       rom.h
-*  Revised:        2020-03-03 13:22:52 +0100 (Tue, 03 Mar 2020)
-*  Revision:       56913
+*  Revised:        2020-06-19 11:29:58 +0200 (Fri, 19 Jun 2020)
+*  Revision:       57794
 *
 *  Description:    Prototypes for the ROM utility functions.
 *
@@ -332,14 +332,6 @@ typedef struct
 
 
 // FLASH FUNCTIONS
-#define ROM_FlashPowerModeSet \
-    ((void (*)(uint32_t ui32PowerMode, uint32_t ui32BankGracePeriod, uint32_t ui32PumpGracePeriod)) \
-    ROM_API_FLASH_TABLE[0])
-
-#define ROM_FlashPowerModeGet \
-    ((uint32_t (*)(void)) \
-    ROM_API_FLASH_TABLE[1])
-
 #define ROM_FlashProtectionSet \
     ((void (*)(uint32_t ui32SectorAddress, uint32_t ui32ProtectMode)) \
     ROM_API_FLASH_TABLE[2])
@@ -726,7 +718,7 @@ typedef struct
     ((void (*)(uint32_t refSource, uint32_t trigger)) \
     ROM_API_AUX_ADC_TABLE[3])
 
-#define ROM_AUXADCEnableSync \
+#define ROM_AUXADCEnableSyncNoBugWorkaround \
     ((void (*)(uint32_t refSource, uint32_t sampleTime, uint32_t trigger)) \
     ROM_API_AUX_ADC_TABLE[4])
 

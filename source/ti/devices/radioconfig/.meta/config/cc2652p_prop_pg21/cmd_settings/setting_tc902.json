@@ -144,10 +144,7 @@
                 ],
                 "OverrideField": {
                     "_name": "pRegOverride",
-                    "Block": [
-                        "override_prop_common.json",
-                        "override_tc902.json"
-                    ]
+                    "Block": "override_tc902.json"
                 }
             },
             {

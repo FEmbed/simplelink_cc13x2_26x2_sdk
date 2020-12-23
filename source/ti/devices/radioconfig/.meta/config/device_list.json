@@ -1,6 +1,6 @@
 {
     "devicelist": {
-        "version": "2.18.0",
+        "version": "2.19.0",
         "DeviceGroup": [
             {
                 "Name": "Sub-1 GHz",
@@ -143,6 +143,14 @@
                     {
                         "DeviceName": {
                             "_family": "Agama",
+                            "$": "CC2652PS"
+                        },
+                        "Brief": "2.4 GHz, High PA (SIP)",
+                        "DeviceType": "Wireless MCU"
+                    },
+                    {
+                        "DeviceName": {
+                            "_family": "Agama",
                             "$": "CC2652RB"
                         },
                         "Brief": "2.4 GHz (BAW)",
@@ -154,6 +162,14 @@
                             "$": "CC2652R"
                         },
                         "Brief": "2.4 GHz",
+                        "DeviceType": "Wireless MCU"
+                    },
+                    {
+                        "DeviceName": {
+                            "_family": "Agama",
+                            "$": "CC2652RS"
+                        },
+                        "Brief": "2.4 GHz (SIP)",
                         "DeviceType": "Wireless MCU"
                     },
                     {

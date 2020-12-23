@@ -2,7 +2,7 @@
 
  @file  rom_image_linker.cmd
 
- @brief Linker configuration file for ROM image linker. This command will 
+ @brief Linker configuration file for ROM image linker. This command will
         put all functions in ROM area
 
  Group: WCS LPC
@@ -45,9 +45,9 @@
  
  *****************************************************************************/
 
-/* 
+/*
 ******************************************************************************
-    FH module ROM functions 
+    FH module ROM functions
 ******************************************************************************
 */
 /* fh_api.c */
@@ -199,318 +199,318 @@
 --undef_sym=FHUTIL_elapsedTime
 
 
-/* 
+/*
 ******************************************************************************
-    HMAC module ROM functions 
+    HMAC module ROM functions
 ******************************************************************************
 */
 
 /* mac_beacon_coord.c */
---undef_sym=macBeaconCoordReset                           
---undef_sym=MAC_InitBeaconCoord                           
---undef_sym=macBeaconSetPrepareTime                       
---undef_sym=macBeaconCheckStartTime                       
---undef_sym=macApiBeaconStartReq                          
---undef_sym=macBeaconPeriodCallback                       
---undef_sym=macBeaconTxCallback                           
+--undef_sym=macBeaconCoordReset
+--undef_sym=MAC_InitBeaconCoord
+--undef_sym=macBeaconSetPrepareTime
+--undef_sym=macBeaconCheckStartTime
+--undef_sym=macApiBeaconStartReq
+--undef_sym=macBeaconPeriodCallback
+--undef_sym=macBeaconTxCallback
 //--undef_sym=macEBeaconTxCallback
 //--undef_sym=macEBeaconPrepareCallback
---undef_sym=macBeaconPrepareCallback                      
---undef_sym=macStartBeaconPrepareCallback                 
---undef_sym=macBeaconStartContinue                        
---undef_sym=macBeaconBattLifeCallback                     
---undef_sym=macTxBeaconCompleteCallback                   
---undef_sym=macBeaconSetupBroadcast                       
---undef_sym=macOutgoingNonSlottedTx                       
---undef_sym=macBeaconSchedRequested                       
---undef_sym=macBeaconClearIndirect                        
-  
-/* mac_beacon_device.c */                                              
---undef_sym=macBroadcastPendCallback                      
---undef_sym=macBeaconStopTrack                            
---undef_sym=macIncomingNonSlottedTx                       
---undef_sym=macBeaconSyncLoss                             
---undef_sym=macSyncTimeoutCallback                        
---undef_sym=macTrackTimeoutCallback                       
---undef_sym=macTrackStartCallback                         
---undef_sym=macTrackPeriodCallback                        
---undef_sym=macRxBeaconCritical                           
---undef_sym=MAC_InitBeaconDevice                          
---undef_sym=macCheckPendAddr                              
---undef_sym=macAutoPoll                                   
---undef_sym=macApiSyncReq                                 
---undef_sym=macBeaconStartFrameResponseTimer              
---undef_sym=macStartBroadcastPendTimer                    
-  
-/* mac_beacon.c */                                              
---undef_sym=macBeaconReset                                
---undef_sym=macBeaconInit                                 
---undef_sym=macBeaconSetSched                             
---undef_sym=macBeaconCheckSched                           
---undef_sym=macBeaconRequeue                              
---undef_sym=macBeaconCheckTxTime                          
---undef_sym=macBeaconSetupCap                             
-                                                                                        
-/* mac_coord.c */                                               
---undef_sym=macCoordReset                                 
---undef_sym=macBuildAssociateRsp                          
---undef_sym=macBuildRealign                               
---undef_sym=macPendAddrLen                                
---undef_sym=macBuildPendAddr                              
+--undef_sym=macBeaconPrepareCallback
+--undef_sym=macStartBeaconPrepareCallback
+--undef_sym=macBeaconStartContinue
+--undef_sym=macBeaconBattLifeCallback
+--undef_sym=macTxBeaconCompleteCallback
+--undef_sym=macBeaconSetupBroadcast
+--undef_sym=macOutgoingNonSlottedTx
+--undef_sym=macBeaconSchedRequested
+--undef_sym=macBeaconClearIndirect
+
+/* mac_beacon_device.c */
+--undef_sym=macBroadcastPendCallback
+--undef_sym=macBeaconStopTrack
+--undef_sym=macIncomingNonSlottedTx
+--undef_sym=macBeaconSyncLoss
+--undef_sym=macSyncTimeoutCallback
+--undef_sym=macTrackTimeoutCallback
+--undef_sym=macTrackStartCallback
+--undef_sym=macTrackPeriodCallback
+--undef_sym=macRxBeaconCritical
+--undef_sym=MAC_InitBeaconDevice
+--undef_sym=macCheckPendAddr
+--undef_sym=macAutoPoll
+--undef_sym=macApiSyncReq
+--undef_sym=macBeaconStartFrameResponseTimer
+--undef_sym=macStartBroadcastPendTimer
+
+/* mac_beacon.c */
+--undef_sym=macBeaconReset
+--undef_sym=macBeaconInit
+--undef_sym=macBeaconSetSched
+--undef_sym=macBeaconCheckSched
+--undef_sym=macBeaconRequeue
+--undef_sym=macBeaconCheckTxTime
+--undef_sym=macBeaconSetupCap
+
+/* mac_coord.c */
+--undef_sym=macCoordReset
+--undef_sym=macBuildAssociateRsp
+--undef_sym=macBuildRealign
+--undef_sym=macPendAddrLen
+--undef_sym=macBuildPendAddr
 //--undef_sym=macBuildEnhancedBeacon
---undef_sym=macBuildBeacon                                
---undef_sym=macIndirectMark                               
---undef_sym=macIndirectSend                               
---undef_sym=macIndirectExpire                             
---undef_sym=macIndirectTxFrame                            
---undef_sym=macIndirectRequeueFrame                       
---undef_sym=macRxAssociateReq                             
---undef_sym=macApiAssociateRsp                            
---undef_sym=macRxOrphan                                   
---undef_sym=macApiOrphanRsp                               
---undef_sym=macApiPurgeReq                                
---undef_sym=macApiStartReq                                
---undef_sym=macStartBegin                                 
---undef_sym=macStartSetParams                             
---undef_sym=macStartContinue                              
---undef_sym=macStartComplete                              
---undef_sym=macRxBeaconReq                                
+--undef_sym=macBuildBeacon
+--undef_sym=macIndirectMark
+--undef_sym=macIndirectSend
+--undef_sym=macIndirectExpire
+--undef_sym=macIndirectTxFrame
+--undef_sym=macIndirectRequeueFrame
+--undef_sym=macRxAssociateReq
+--undef_sym=macApiAssociateRsp
+--undef_sym=macRxOrphan
+--undef_sym=macApiOrphanRsp
+--undef_sym=macApiPurgeReq
+--undef_sym=macApiStartReq
+--undef_sym=macStartBegin
+--undef_sym=macStartSetParams
+--undef_sym=macStartContinue
+--undef_sym=macStartComplete
+--undef_sym=macRxBeaconReq
 //--undef_sym=macProcessEBeaconFilterIe
 //--undef_sym=macRxEnhancedBeaconReq
---undef_sym=macRxDataReq                                  
---undef_sym=macRxPanConflict                              
---undef_sym=MAC_InitCoord                                 
---undef_sym=MAC_MlmeAssociateRsp                          
---undef_sym=MAC_MlmeOrphanRsp                             
---undef_sym=MAC_McpsPurgeReq                              
---undef_sym=MAC_MlmeStartReq                              
-  
-/* mac_data.c */                                               
---undef_sym=macDataTxDelayCallback                        
---undef_sym=macDataReset                                  
---undef_sym=macAllocTxBuffer                              
---undef_sym=macFrameDurationSubG                          
---undef_sym=macFrameDurationIeee                          
---undef_sym=macFrameDuration                              
---undef_sym=macRxCheckPendingCallback                     
---undef_sym=macCheckIndPacket                             
---undef_sym=macRxCheckMACPendingCallback                  
---undef_sym=macDataRxMemAlloc                             
---undef_sym=macDataRxMemFree                              
---undef_sym=macRxCompleteCallback                         
---undef_sym=macDataTxTimeAvailable                        
---undef_sym=macBuildDataFrame                             
---undef_sym=macCheckSched                                 
---undef_sym=macSetSched                                   
---undef_sym=macDataTxComplete                             
---undef_sym=macTxCompleteCallback                         
---undef_sym=macDataTxSend                                 
---undef_sym=macDataTxEnqueue                              
---undef_sym=macDataSend                                   
---undef_sym=macApiDataReq                                 
---undef_sym=macDataRxInd                                  
---undef_sym=MAC_McpsDataReq                               
---undef_sym=MAC_McpsDataAlloc                             
---undef_sym=macAutoPendMaintainSrcMatchTable              
---undef_sym=macAutoPendAddSrcMatchTableEntry              
+--undef_sym=macRxDataReq
+--undef_sym=macRxPanConflict
+--undef_sym=MAC_InitCoord
+--undef_sym=MAC_MlmeAssociateRsp
+--undef_sym=MAC_MlmeOrphanRsp
+--undef_sym=MAC_McpsPurgeReq
+--undef_sym=MAC_MlmeStartReq
 
-/* mac_device.c */                                             
---undef_sym=macDeviceReset                                
---undef_sym=macAssociateCnf                               
---undef_sym=macPollCnf                                    
---undef_sym=macBuildAssociateReq                          
---undef_sym=macStartResponseTimer                         
---undef_sym=macStartFrameResponseTimer                    
---undef_sym=macApiAssociateReq                            
---undef_sym=macAssocDataReq                               
---undef_sym=macAssocDataReqComplete                       
---undef_sym=macRxAssocRsp                                 
---undef_sym=macAssocFrameResponseTimeout                  
---undef_sym=macAssocFailed                                
---undef_sym=macAssocRxDisassoc                            
---undef_sym=macAssocDataRxInd                             
---undef_sym=macApiPollReq                                 
---undef_sym=macPollDataReqComplete                        
---undef_sym=macPollDataRxInd                              
---undef_sym=macPollFrameResponseTimeout                   
---undef_sym=macPollRxDisassoc                             
---undef_sym=macPollRxAssocRsp                             
---undef_sym=macRxCoordRealign                             
---undef_sym=macPanConflictComplete                        
---undef_sym=MAC_InitDevice                                
---undef_sym=MAC_MlmeAssociateReq                          
---undef_sym=MAC_MlmePollReq                               
-                                                                                        
-/* mac_ie_build.c */                                              
---undef_sym=macBuildHeaderIes                             
---undef_sym=macBuildPayloadCoexistIe                      
---undef_sym=macBuildPayloadIes                            
+/* mac_data.c */
+--undef_sym=macDataTxDelayCallback
+--undef_sym=macDataReset
+--undef_sym=macAllocTxBuffer
+--undef_sym=macFrameDurationSubG
+--undef_sym=macFrameDurationIeee
+--undef_sym=macFrameDuration
+--undef_sym=macRxCheckPendingCallback
+--undef_sym=macCheckIndPacket
+--undef_sym=macRxCheckMACPendingCallback
+--undef_sym=macDataRxMemAlloc
+--undef_sym=macDataRxMemFree
+--undef_sym=macRxCompleteCallback
+--undef_sym=macDataTxTimeAvailable
+--undef_sym=macBuildDataFrame
+--undef_sym=macCheckSched
+--undef_sym=macSetSched
+--undef_sym=macDataTxComplete
+--undef_sym=macTxCompleteCallback
+--undef_sym=macDataTxSend
+--undef_sym=macDataTxEnqueue
+--undef_sym=macDataSend
+--undef_sym=macApiDataReq
+--undef_sym=macDataRxInd
+--undef_sym=MAC_McpsDataReq
+--undef_sym=MAC_McpsDataAlloc
+--undef_sym=macAutoPendMaintainSrcMatchTable
+--undef_sym=macAutoPendAddSrcMatchTableEntry
 
-/* mac_ie_parse.c */                                             
---undef_sym=macUpdateHeaderIEPtr                          
---undef_sym=macUpdatePayloadIEPtr                         
---undef_sym=macParseHeaderIes                             
---undef_sym=macParsePayloadIes                            
---undef_sym=macIeFreeList                                 
---undef_sym=macIeCoexistIePresent                         
---undef_sym=macMlmeSubIePresent                           
+/* mac_device.c */
+--undef_sym=macDeviceReset
+--undef_sym=macAssociateCnf
+--undef_sym=macPollCnf
+--undef_sym=macBuildAssociateReq
+--undef_sym=macStartResponseTimer
+--undef_sym=macStartFrameResponseTimer
+--undef_sym=macApiAssociateReq
+--undef_sym=macAssocDataReq
+--undef_sym=macAssocDataReqComplete
+--undef_sym=macRxAssocRsp
+--undef_sym=macAssocFrameResponseTimeout
+--undef_sym=macAssocFailed
+--undef_sym=macAssocRxDisassoc
+--undef_sym=macAssocDataRxInd
+--undef_sym=macApiPollReq
+--undef_sym=macPollDataReqComplete
+--undef_sym=macPollDataRxInd
+--undef_sym=macPollFrameResponseTimeout
+--undef_sym=macPollRxDisassoc
+--undef_sym=macPollRxAssocRsp
+--undef_sym=macRxCoordRealign
+--undef_sym=macPanConflictComplete
+--undef_sym=MAC_InitDevice
+--undef_sym=MAC_MlmeAssociateReq
+--undef_sym=MAC_MlmePollReq
 
-/* mac_main.c */                                               
---undef_sym=macMainReset                                  
---undef_sym=macSetEvent                                   
---undef_sym=macSetEvent16                                 
---undef_sym=macCbackForEvent                              
---undef_sym=macStateIdle                                  
---undef_sym=macStateIdleOrPolling                         
---undef_sym=macStateScanning                              
---undef_sym=macExecute                                    
---undef_sym=macSendMsg                                    
---undef_sym=macSendDataMsg                                
+/* mac_ie_build.c */
+--undef_sym=macBuildHeaderIes
+--undef_sym=macBuildPayloadCoexistIe
+--undef_sym=macBuildPayloadIes
+
+/* mac_ie_parse.c */
+--undef_sym=macUpdateHeaderIEPtr
+--undef_sym=macUpdatePayloadIEPtr
+--undef_sym=macParseHeaderIes
+--undef_sym=macParsePayloadIes
+--undef_sym=macIeFreeList
+--undef_sym=macIeCoexistIePresent
+--undef_sym=macMlmeSubIePresent
+
+/* mac_main.c */
+--undef_sym=macMainReset
+--undef_sym=macSetEvent
+--undef_sym=macSetEvent16
+--undef_sym=macCbackForEvent
+--undef_sym=macStateIdle
+--undef_sym=macStateIdleOrPolling
+--undef_sym=macStateScanning
+--undef_sym=macExecute
+--undef_sym=macSendMsg
+--undef_sym=macSendDataMsg
 --undef_sym=macMainSetTaskId
---undef_sym=macMainReserve                                
---undef_sym=mac_msg_deallocate                            
-         
-/* mac_mgmt.c */                                     
---undef_sym=macMgmtReset                                  
---undef_sym=macGetCoordAddress                            
---undef_sym=macGetMyAddrMode                              
---undef_sym=macDestAddrCmp                                
---undef_sym=macDestSAddrCmp                               
---undef_sym=macCoordAddrCmp                               
---undef_sym=macCoordDestAddrCmp                           
---undef_sym=macBuildHeader                                
---undef_sym=macBuildCommonReq                             
+--undef_sym=macMainReserve
+--undef_sym=mac_msg_deallocate
+
+/* mac_mgmt.c */
+--undef_sym=macMgmtReset
+--undef_sym=macGetCoordAddress
+--undef_sym=macGetMyAddrMode
+--undef_sym=macDestAddrCmp
+--undef_sym=macDestSAddrCmp
+--undef_sym=macCoordAddrCmp
+--undef_sym=macCoordDestAddrCmp
+--undef_sym=macBuildHeader
+--undef_sym=macBuildCommonReq
 //--undef_sym=macBuildEnhanceBeaconReq
 //--undef_sym=macBuildCoexistEBeaconReq
---undef_sym=macBuildDisassociateReq                       
+--undef_sym=macBuildDisassociateReq
 //--undef_sym=macBuildEBeaconNotifyInd
---undef_sym=macBuildBeaconNotifyInd                       
---undef_sym=macSecCpy                                     
---undef_sym=macNoAction                                   
---undef_sym=macTxCsmaDelay                                
---undef_sym=macBcTimerHandler                             
---undef_sym=macApiUnsupported                             
---undef_sym=macDefaultAction                              
---undef_sym=macApiBadState                                
---undef_sym=macApiPending                                 
---undef_sym=macCommStatusInd                              
---undef_sym=macApiDisassociateReq                         
---undef_sym=macDisassocComplete                           
---undef_sym=macRxDisassoc                                 
---undef_sym=macRxBeacon                                   
---undef_sym=macConflictSyncLossInd                        
---undef_sym=MAC_MlmeDisassociateReq                       
---undef_sym=macUpdateCsmPhyParam                          
---undef_sym=macIsCsmOperational                           
---undef_sym=MAC_MlmeResetReq                              
---undef_sym=MAC_ResumeReq                                 
---undef_sym=MAC_YieldReq                                  
---undef_sym=MAC_MlmeSyncReq                               
---undef_sym=macSetDefaultsByPhyID                         
---undef_sym=macSetDefaultsByRE                            
---undef_sym=MAC_Init                                      
---undef_sym=MAC_InitFH                                    
---undef_sym=MAC_MlmeFHGetReqSize                          
---undef_sym=MAC_MlmeFHGetReq                              
---undef_sym=MAC_MlmeFHSetReq                              
---undef_sym=MAC_StartFH                                   
---undef_sym=MAC_EnableFH                                  
---undef_sym=MAC_MlmeWSAsyncReq                            
---undef_sym=macWSAsyncCnf                                 
---undef_sym=macBuildWSAsyncMsg                            
---undef_sym=macBuildWSAsyncReq                            
---undef_sym=macApiWSAsyncReq                              
---undef_sym=macGetCSMPhy                                  
---undef_sym=MAC_RandomByte                                
+--undef_sym=macBuildBeaconNotifyInd
+--undef_sym=macSecCpy
+--undef_sym=macNoAction
+--undef_sym=macTxCsmaDelay
+--undef_sym=macBcTimerHandler
+--undef_sym=macApiUnsupported
+--undef_sym=macDefaultAction
+--undef_sym=macApiBadState
+--undef_sym=macApiPending
+--undef_sym=macCommStatusInd
+--undef_sym=macApiDisassociateReq
+--undef_sym=macDisassocComplete
+--undef_sym=macRxDisassoc
+--undef_sym=macRxBeacon
+--undef_sym=macConflictSyncLossInd
+--undef_sym=MAC_MlmeDisassociateReq
+--undef_sym=macUpdateCsmPhyParam
+--undef_sym=macIsCsmOperational
+--undef_sym=MAC_MlmeResetReq
+--undef_sym=MAC_ResumeReq
+--undef_sym=MAC_YieldReq
+--undef_sym=MAC_MlmeSyncReq
+--undef_sym=macSetDefaultsByPhyID
+--undef_sym=macSetDefaultsByRE
+--undef_sym=MAC_Init
+--undef_sym=MAC_InitFH
+--undef_sym=MAC_MlmeFHGetReqSize
+--undef_sym=MAC_MlmeFHGetReq
+--undef_sym=MAC_MlmeFHSetReq
+--undef_sym=MAC_StartFH
+--undef_sym=MAC_EnableFH
+--undef_sym=MAC_MlmeWSAsyncReq
+--undef_sym=macWSAsyncCnf
+--undef_sym=macBuildWSAsyncMsg
+--undef_sym=macBuildWSAsyncReq
+--undef_sym=macApiWSAsyncReq
+--undef_sym=macGetCSMPhy
+--undef_sym=MAC_RandomByte
 //--undef_sym=macCheckPhyLRMMode
 //--undef_sym=macCheckPhyFSKMode
-           
-/* mac_pib.c */                                  
+
+/* mac_pib.c */
 //--undef_sym=MAC_MlmeSetActivePib
---undef_sym=macPibReset                                   
-//--undef_sym=macPibIndex                                   
---undef_sym=MAC_MlmeGetReq                                
---undef_sym=MAC_MlmeGetReqSize                            
---undef_sym=MAC_MlmeSetReq                                
---undef_sym=MAC_GetPHYParamReq                            
---undef_sym=MAC_SetPHYParamReq                            
---undef_sym=macMRFSKGetPhyDesc                            
---undef_sym=macIEEEGetPhyDesc                             
+--undef_sym=macPibReset
+//--undef_sym=macPibIndex
+--undef_sym=MAC_MlmeGetReq
+--undef_sym=MAC_MlmeGetReqSize
+--undef_sym=MAC_MlmeSetReq
+--undef_sym=MAC_GetPHYParamReq
+--undef_sym=MAC_SetPHYParamReq
+--undef_sym=macMRFSKGetPhyDesc
+--undef_sym=macIEEEGetPhyDesc
 
-/* mac_pwr.c */                                            
-//--undef_sym=macPwrReset                                   
-//--undef_sym=macApiPwrOnReq                                
-//--undef_sym=MAC_PwrOffReq                                 
-//--undef_sym=MAC_PwrOnReq                                  
-//--undef_sym=MAC_PwrMode                                   
-//--undef_sym=macPwrVote                                    
+/* mac_pwr.c */
+//--undef_sym=macPwrReset
+//--undef_sym=macApiPwrOnReq
+//--undef_sym=MAC_PwrOffReq
+//--undef_sym=MAC_PwrOnReq
+//--undef_sym=MAC_PwrMode
+//--undef_sym=macPwrVote
 
-/* mac_scan.c */                                             
---undef_sym=macScanCnfInit                                
---undef_sym=macApiScanReq                                 
---undef_sym=macScanNextChan                               
---undef_sym=macScanStartTimer                             
---undef_sym=macScanRxBeacon                               
---undef_sym=macScanRxCoordRealign                         
---undef_sym=macScanComplete                               
---undef_sym=macScanFailedInProgress                       
---undef_sym=MAC_MlmeScanReq                               
+/* mac_scan.c */
+--undef_sym=macScanCnfInit
+--undef_sym=macApiScanReq
+--undef_sym=macScanNextChan
+--undef_sym=macScanStartTimer
+--undef_sym=macScanRxBeacon
+--undef_sym=macScanRxCoordRealign
+--undef_sym=macScanComplete
+--undef_sym=macScanFailedInProgress
+--undef_sym=MAC_MlmeScanReq
 
-/* mac_security_pib.c */                                            
+/* mac_security_pib.c */
 //--undef_sym=MAC_MlmeSetActiveSecurityPib
---undef_sym=macSecurityPibReset                           
---undef_sym=macSecurityPibIndex                           
---undef_sym=MAC_MlmeGetSecurityReq                        
---undef_sym=MAC_MlmeGetPointerSecurityReq                 
---undef_sym=MAC_MlmeGetSecurityReqSize                    
---undef_sym=MAC_MlmeSetSecurityReq                        
+--undef_sym=macSecurityPibReset
+--undef_sym=macSecurityPibIndex
+--undef_sym=MAC_MlmeGetSecurityReq
+--undef_sym=MAC_MlmeGetPointerSecurityReq
+--undef_sym=MAC_MlmeGetSecurityReqSize
+--undef_sym=MAC_MlmeSetSecurityReq
 
-/* mac_security.c */                                             
---undef_sym=macKeyDescriptorLookup                        
---undef_sym=macIncomingSecurityLevelChecking              
---undef_sym=macDeviceDescriptorLookup                     
---undef_sym=macBlacklistChecking                          
---undef_sym=macIncomingFrameSecurityMaterialRetrieval     
---undef_sym=macIncomingKeyUsagePolicyChecking             
---undef_sym=macCcmStarInverseTransform                    
---undef_sym=macIncomingFrameSecurity                      
---undef_sym=macOutgoingFrameKeyDescRetrieval              
---undef_sym=macOutgoingFrameSecurity                      
---undef_sym=macCcmStarTransform                           
---undef_sym=macUpdatePanId                                
---undef_sym=macGetEUIIndex                                
---undef_sym=macGetEUI                                     
+/* mac_security.c */
+--undef_sym=macKeyDescriptorLookup
+--undef_sym=macIncomingSecurityLevelChecking
+--undef_sym=macDeviceDescriptorLookup
+--undef_sym=macBlacklistChecking
+--undef_sym=macIncomingFrameSecurityMaterialRetrieval
+--undef_sym=macIncomingKeyUsagePolicyChecking
+--undef_sym=macCcmStarInverseTransform
+--undef_sym=macIncomingFrameSecurity
+--undef_sym=macOutgoingFrameKeyDescRetrieval
+--undef_sym=macOutgoingFrameSecurity
+--undef_sym=macCcmStarTransform
+--undef_sym=macUpdatePanId
+--undef_sym=macGetEUIIndex
+--undef_sym=macGetEUI
 
-/* mac_timer.c */                                            
-// --undef_sym=macTimerInit                                  
-// --undef_sym=macTimerUpdateSymbolTimer                     
-// --undef_sym=macTimerGetNextTimer                          
-// --undef_sym=macSymbolTimerTriggerCallback                 
-// --undef_sym=macTimerRecalcUnaligned                       
-// --undef_sym=macSymbolTimerRolloverCallback                
-// --undef_sym=macTimerCheckUnAlignedQ                       
-// --undef_sym=macTimerAddTimer                              
-// --undef_sym=macTimerAligned                               
-// --undef_sym=macTimer                                      
-// --undef_sym=macTimerRemoveTimer                           
-// --undef_sym=macTimerCancel                                
-// --undef_sym=macTimerUpdActive                             
-// --undef_sym=macTimerGetTime                               
-// --undef_sym=macTimerStart                                 
-// --undef_sym=macTimerRealign                               
-// --undef_sym=macTimerSyncRollover                          
-// --undef_sym=macTimerSetRollover                           
-// --undef_sym=MAC_PwrNextTimeout                            
+/* mac_timer.c */
+// --undef_sym=macTimerInit
+// --undef_sym=macTimerUpdateSymbolTimer
+// --undef_sym=macTimerGetNextTimer
+// --undef_sym=macSymbolTimerTriggerCallback
+// --undef_sym=macTimerRecalcUnaligned
+// --undef_sym=macSymbolTimerRolloverCallback
+// --undef_sym=macTimerCheckUnAlignedQ
+// --undef_sym=macTimerAddTimer
+// --undef_sym=macTimerAligned
+// --undef_sym=macTimer
+// --undef_sym=macTimerRemoveTimer
+// --undef_sym=macTimerCancel
+// --undef_sym=macTimerUpdActive
+// --undef_sym=macTimerGetTime
+// --undef_sym=macTimerStart
+// --undef_sym=macTimerRealign
+// --undef_sym=macTimerSyncRollover
+// --undef_sym=macTimerSetRollover
+// --undef_sym=MAC_PwrNextTimeout
 
-/* macwrapper.c */                                             
---undef_sym=macWrapper8ByteUnused                         
---undef_sym=macWrapperAddDevice                           
---undef_sym=macWrapperDeleteDevice                        
---undef_sym=macWrapperDeleteKeyAndAssociatedDevices       
---undef_sym=macWrapperDeleteAllDevices                    
---undef_sym=macWrapperGetDefaultSourceKey                 
+/* macwrapper.c */
+--undef_sym=macWrapper8ByteUnused
+--undef_sym=macWrapperAddDevice
+--undef_sym=macWrapperDeleteDevice
+--undef_sym=macWrapperDeleteKeyAndAssociatedDevices
+--undef_sym=macWrapperDeleteAllDevices
+--undef_sym=macWrapperGetDefaultSourceKey
 --undef_sym=macWrapperAddKeyInitFCtr
 
-/* macstack.c */ 
+/* macstack.c */
 //--undef_sym=MAC_CbackEvent
 --undef_sym=TIMAC_ROM_FW_VERSION_NUMBER

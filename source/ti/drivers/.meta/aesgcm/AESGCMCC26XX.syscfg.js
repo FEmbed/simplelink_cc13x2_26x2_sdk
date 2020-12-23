@@ -66,6 +66,10 @@ let devSpecific = {
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "AESGCM", null,
+        [{name: "AESGCMCC26XX"}], null);
+
     /* merge and overwrite base module attributes */
     return (Object.assign({}, base, devSpecific));
 }

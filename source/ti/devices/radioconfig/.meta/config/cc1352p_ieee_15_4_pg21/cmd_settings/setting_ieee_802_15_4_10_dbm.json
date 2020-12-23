@@ -1,7 +1,7 @@
 {
     "setting": {
         "Name": "IEEE 802.15.4 O-QPSK DSSS PHY (250 kbps) at 2450 MHz band (10 dBm)",
-        "Description": "IEEE 802.15.4 O-QPSK DSSS PHY (250 kbps) at 2450 MHz band for 10 dBm",
+        "Description": "IEEE 802.15.4 O-QPSK DSSS PHY (250 kbps) at 2450 MHz band for 10 dBm.",
         "Frequency": "2405",
         "Patch": {
             "Define": "RF_MODE_AUTO",

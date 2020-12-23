@@ -673,9 +673,6 @@ int_fast16_t AESCCM_oneStepEncrypt(AESCCM_Handle handle, AESCCM_Operation *opera
 int_fast16_t AESCCM_oneStepDecrypt(AESCCM_Handle handle, AESCCM_Operation *operationStruct);
 
 /*!
- *  @deprecated This function will be deprecated in the 3Q20 SDK release. The
- *  asynchronicity of the function can not be handled by all accelerators.
- *
  *  @brief Cancels an ongoing AESCCM operation.
  *
  *  Asynchronously cancels an AESCCM operation. Only available when using

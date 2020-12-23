@@ -42,6 +42,7 @@ const radioConfigParams = {
     rfMode: "RF_modeBle",
     txPower: "RF_BLE_txPowerTable",
     txPowerSize: "RF_BLE_TX_POWER_TABLE_SIZE",
+    paExport: "combined",
     overrides: "pOverrides_ble",
     stackOverride: "ti/ble5stack/icall/inc/ble_overrides.h",
     stackOverrideMacro: "BLE_STACK_OVERRIDES",
@@ -49,7 +50,7 @@ const radioConfigParams = {
 };
 
 const rfDesignParams = {
-    pa20: "none",
+    pa20: "fb24g",
     fbSub1g: "none"
 };
 

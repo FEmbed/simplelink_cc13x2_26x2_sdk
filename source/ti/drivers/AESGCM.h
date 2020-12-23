@@ -149,8 +149,8 @@
  * operation.input             = plaintext;
  * operation.output            = ciphertext;
  * operation.inputLength       = sizeof(plaintext);
- * operation.nonce             = nonce;
- * operation.nonceLength       = sizeof(nonce);
+ * operation.iv                = iv;
+ * operation.ivLength          = sizeof(iv);
  * operation.mac               = mac;
  * operation.macLength         = sizeof(mac);
  *
@@ -653,9 +653,6 @@ int_fast16_t AESGCM_oneStepEncrypt(AESGCM_Handle handle, AESGCM_Operation *opera
 int_fast16_t AESGCM_oneStepDecrypt(AESGCM_Handle handle, AESGCM_Operation *operationStruct);
 
 /*!
- *  @deprecated This function will be deprecated in the 3Q20 SDK release. The
- *  asynchronicity of the function can not be handled by all accelerators.
- *
  *  @brief Cancels an ongoing AESGCM operation.
  *
  *  Asynchronously cancels an AESGCM operation. Only available when using

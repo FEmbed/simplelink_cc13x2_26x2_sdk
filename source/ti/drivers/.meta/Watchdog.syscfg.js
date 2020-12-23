@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -103,15 +103,15 @@ Parameters such as reset behavior and the callback function can be
 * [Usage Synopsis][3]
 * [Examples][4]
 * [Configuration][5]
-[1]: /tidrivers/doxygen/html/_watchdog_8h.html#details "C API reference"
+[1]: /drivers/doxygen/html/_watchdog_8h.html#details "C API reference"
 [2]:
-/tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_example_callback
+/drivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_example_callback
 "Example: Configure the watchdog"
-[3]: /tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_Synopsis
+[3]: /drivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_Synopsis
 "Basic C usage summary"
-[4]: /tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_Examples
+[4]: /drivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_Examples
 "C usage examples"
-[5]: /tidrivers/syscfg/html/ConfigDoc.html#Watchdog_Configuration_Options "Configuration options reference"
+[5]: /drivers/syscfg/html/ConfigDoc.html#Watchdog_Configuration_Options "Configuration options reference"
 `,
     modules             : Common.autoForceModules(["Board", "Power"]),
     config              : Common.addNameConfig(config, "/ti/drivers/Watchdog", "CONFIG_WATCHDOG_"),

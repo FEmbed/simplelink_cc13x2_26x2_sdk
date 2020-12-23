@@ -37,6 +37,9 @@
 
 "use strict";
 
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js");
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base GPIO configuration
@@ -135,6 +138,10 @@ function extend(base)
     devSpecific.pinmuxRequirements = function (inst) {
         return pinmuxRequirements(inst, base);
     };
+
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "GPIO", null,
+        [{name: "GPIOCC26XX"}], null);
 
     /* merge and overwrite base module attributes */
     return (Object.assign({}, base, devSpecific));

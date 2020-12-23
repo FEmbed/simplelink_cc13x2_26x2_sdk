@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019, Texas Instruments Incorporated
+ * Copyright (c) 2016-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -156,7 +156,7 @@
  *  @code
  *  // ADCBuf callback function
  *  void adcBufCallbackFxn(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
- *                         void *buffer, uint32_t channel);
+ *                         void *buffer, uint32_t channel, int_fast16_t status);
  *
  *  main()
  *  {
@@ -185,7 +185,7 @@
  *  }
  *
  *  void adcBufCallbackFxn(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
- *      void *buffer, uint32_t channel)
+ *      void *buffer, uint32_t channel, int_fast16_t status)
  *  {
  *      // Adjust raw ADC values and convert them to microvolts
  *      ADCBuf_adjustRawValues(handle, buffer, ADCBUFFERSIZE,
@@ -382,6 +382,8 @@ typedef struct
  *
  *  @param[out]  completedChannel    ADCBuf channel the samples were
  *  performed on.
+ *
+ *  @param[out]  status    Status of the ADCBuf driver during an interrupt.
  *
  *  @sa ADCBuf_convert()
  *  @sa ADCBuf_Conversion

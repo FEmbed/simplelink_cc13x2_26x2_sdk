@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -987,6 +987,13 @@ void SPICC26XXDMA_transferCancel(SPI_Handle handle) {
 
     /* Check if there is an active transaction */
     if(object->currentTransaction == NULL) {
+
+        /*
+         * Disable the SPI peripheral in case the peripherals finite state
+         * machine is in a bad state. Calling SPI_transfer() will re-enable
+         * the peripheral.
+         */
+        SSIDisable(hwAttrs->baseAddr);
         HwiP_restore(key);
 
         return;

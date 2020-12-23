@@ -109,11 +109,13 @@ function viewInitRecord(argstr)
 {
 //  Monitor.println("LoggerText: viewInitRecord, argstr=" + argstr);
 
+    var addr, count, i, hdr, text, rec;
+
     /* extract arguments from arg string */
     var args = argstr.split(",");
     var index = Number(args[0]) - 1;
 
-    var count = Program.fetchVariable("LoggerText_count");
+    count = Program.fetchVariable("LoggerText_count");
     var config = Program.fetchVariable("LoggerText_config");
     var table = new Array();
 
@@ -121,7 +123,7 @@ function viewInitRecord(argstr)
 
     /* read requested instance from target memory */
     var tsInst = Program.lookupType("LoggerText_Instance");
-    var addr = Program.lookupSymbolValue("LoggerText_config") +
+    addr = Program.lookupSymbolValue("LoggerText_config") +
         (index * tsInst.size);
     var inst = Program.fetchFromAddr(addr, "LoggerText_Instance");
 
@@ -134,12 +136,12 @@ function viewInitRecord(argstr)
     var recSize = tsHeader.size + inst.textLen;
 
     if (inst.bufType == 102) { /* fixed */
-        for (var i = 0; i < inst.serial; i++) {
-            var addr = inst.store + (i * recSize);
-            var hdr = Program.fetchFromAddr(addr, "LoggerText_Header");
-            var text = Program.fetchString(addr + tsHeader.size, false);
+        for (i = 0; i < inst.serial; i++) {
+            addr = inst.store + (i * recSize);
+            hdr = Program.fetchFromAddr(addr, "LoggerText_Header");
+            text = Program.fetchString(addr + tsHeader.size, false);
 
-            var rec = new RecordView();
+            rec = new RecordView();
             rec.Serial = hdr.serial;
             rec.Timestamp = ((4294967296 * hdr.ts_hi) + hdr.ts_lo);
             rec.Text = text;
@@ -147,8 +149,6 @@ function viewInitRecord(argstr)
         }
     }
     else { /* circular */
-        var addr, count;
-  
         if (inst.serial < inst.numEntries) {
             addr = inst.store;
             count = inst.serial;
@@ -159,11 +159,11 @@ function viewInitRecord(argstr)
             count = inst.numEntries - 1;
         }
 
-        for (var i = 0; i < count; i++) {
-            var hdr = Program.fetchFromAddr(addr, "LoggerText_Header");
-            var text = Program.fetchString(addr + tsHeader.size, false);
-  
-            var rec = new RecordView();
+        for (i = 0; i < count; i++) {
+            hdr = Program.fetchFromAddr(addr, "LoggerText_Header");
+            text = Program.fetchString(addr + tsHeader.size, false);
+
+            rec = new RecordView();
             rec.Serial = hdr.serial;
             rec.Timestamp = ((4294967296 * hdr.ts_hi) + hdr.ts_lo);
             rec.Text = text;

@@ -103,7 +103,7 @@ const config = {
         {
             name: "sensorTestRampDataSize",
             displayName: "Sensor Test Ramp Data Size",
-            default: 0,
+            default: 20,
             hidden: true,
             description: Docs.sensorTestRampDataSize.description,
             longDescription: Docs.sensorTestRampDataSize.longDescription

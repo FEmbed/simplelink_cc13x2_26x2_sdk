@@ -57,13 +57,6 @@ encryption. For more information, refer to the \
 [Secure Commissioning](/ti154stack/html/ti154stack/secure-commissioning.html) \
 section of the TI15.4-Stack User's Guide.
 \n\
-***Additional Setup Required***:
-\n\
-The proper stack library needs to be linked \
-with the selected _Security Level_. By default, maclib_secure.a is linked in \
-the project. If security is disabled, you should link to maclib_nosecure.a \
-library version.
-\n\
 For more information about building an image with security disabled, see the \
 [Configuring Stack](//ti154stack/html/ti154stack/\
 configuring-stack.html#configuring-stack) section of the TI 15.4-Stack User's \

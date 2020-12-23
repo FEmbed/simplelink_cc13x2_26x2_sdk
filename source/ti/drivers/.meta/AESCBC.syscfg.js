@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,7 @@ let base = {
     displayName         : "AESCBC",
     description         : "AES (Advanced Encryption Standard) Cipher"
         + " Block Chaining Driver",
+    alwaysShowLongDescription : true,
     longDescription     : `
 The [__AESCBC driver__][1] encrypts messages of any practical
 length that have a length evenly divisibly by the block size.
@@ -75,10 +76,10 @@ Unlike ECB, it guarantees confidentiality of the entire message.
 * [Examples][3]
 * [Configuration Options][4]
 
-[1]: /tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html#ti_drivers_AESCBC_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html#ti_drivers_AESCBC_Examples "C usage examples"
-[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCBC_Configuration_Options "Configuration options reference"
+[1]: /drivers/doxygen/html/_a_e_s_c_b_c_8h.html#details "C API reference"
+[2]: /drivers/doxygen/html/_a_e_s_c_b_c_8h.html#ti_drivers_AESCBC_Synopsis "Basic C usage summary"
+[3]: /drivers/doxygen/html/_a_e_s_c_b_c_8h.html#ti_drivers_AESCBC_Examples "C usage examples"
+[4]: /drivers/syscfg/html/ConfigDoc.html#AESCBC_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
     defaultInstanceName : "CONFIG_AESCBC_",

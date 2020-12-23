@@ -62,7 +62,7 @@
  *****************************************************************************/
 
 /*! Adjustment for the timers */
-#define TIMER_MS_ADJUSTMENT     100
+#define UtilTimer_MS_ADJUSTMENT     100
 
 /* RTOS queue for profile/app messages. */
 typedef struct _queueRec_
@@ -80,7 +80,7 @@ typedef struct _queueRec_
 
  Public function defined in mac_util.h
  */
-Clock_Handle Timer_construct(Clock_Struct *pClock, Clock_FuncPtr clockCB,
+Clock_Handle UtilTimer_construct(Clock_Struct *pClock, Clock_FuncPtr clockCB,
                                  uint32_t clockDuration, uint32_t clockPeriod,
                                  uint8_t startFlag,
                                  UArg arg)
@@ -116,7 +116,7 @@ Clock_Handle Timer_construct(Clock_Struct *pClock, Clock_FuncPtr clockCB,
 
  Public function defined in mac_util.h
  */
-void Timer_start(Clock_Struct *pClock)
+void UtilTimer_start(Clock_Struct *pClock)
 {
     Clock_Handle handle = Clock_handle(pClock);
 
@@ -129,7 +129,7 @@ void Timer_start(Clock_Struct *pClock)
 
  Public function defined in mac_util.h
  */
-bool Timer_isActive(Clock_Struct *pClock)
+bool UtilTimer_isActive(Clock_Struct *pClock)
 {
     Clock_Handle handle = Clock_handle(pClock);
 
@@ -142,7 +142,7 @@ bool Timer_isActive(Clock_Struct *pClock)
 
  Public function defined in mac_util.h
  */
-void Timer_stop(Clock_Struct *pClock)
+void UtilTimer_stop(Clock_Struct *pClock)
 {
     Clock_Handle handle = Clock_handle(pClock);
 
@@ -155,9 +155,9 @@ void Timer_stop(Clock_Struct *pClock)
  *
  * @param   timeOut - Timeout value in milliseconds
  */
-void Timer_setTimeout(Clock_Handle handle, uint32_t timeout)
+void UtilTimer_setTimeout(Clock_Handle handle, uint32_t timeout)
 {
-    Clock_setTimeout(handle, (timeout * TIMER_MS_ADJUSTMENT));
+    Clock_setTimeout(handle, (timeout * UtilTimer_MS_ADJUSTMENT));
 }
 
 /*!
@@ -167,13 +167,13 @@ void Timer_setTimeout(Clock_Handle handle, uint32_t timeout)
  *
  * @return   timeOut - Timeout value in milliseconds
  */
-uint32_t Timer_getTimeout(Clock_Handle handle)
+uint32_t UtilTimer_getTimeout(Clock_Handle handle)
 {
     uint32_t timeout;
 
     timeout = Clock_getTimeout(handle);
 
-    return (timeout / TIMER_MS_ADJUSTMENT);
+    return (timeout / UtilTimer_MS_ADJUSTMENT);
 }
 
 /*!
@@ -184,7 +184,7 @@ uint32_t Timer_getTimeout(Clock_Handle handle)
  * @param   arg - clock callback function argument
  *
  */
-void Timer_setFunc(Clock_Handle handle, Clock_FuncPtr fxn, UArg arg)
+void UtilTimer_setFunc(Clock_Handle handle, Clock_FuncPtr fxn, UArg arg)
 {
     Clock_setFunc(handle, fxn, arg);
 }

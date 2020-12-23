@@ -38,6 +38,9 @@
 #include <ti/display/Display.h>
 #include <ti/display/DisplayHost.h>
 
+#include <ti/drivers/dpl/HwiP.h>
+#include <ti/drivers/dpl/SemaphoreP.h>
+#include <ti/drivers/dpl/SwiP.h>
 #include <ti/drivers/dpl/SystemP.h>
 
 #include <string.h>
@@ -78,137 +81,123 @@ const Display_FxnTable DisplayHost_fxnTable = {
     DisplayHost_getType,
 };
 
+/* Semaphore to synchronize writes to display buffer */
+static SemaphoreP_Handle  writeSem;
+
 /* ----------------------------------------------------------------------------
  *                                          Functions
  * ----------------------------------------------------------------------------
  */
 
-/*!
- * @fn          DisplayHost_init
- *
- * @brief       Does nothing.
- *
- * @return      void
- */
-void DisplayHost_init(Display_Handle handle)
-{
-}
-
- /*!
- * @fn          DisplayHost_open
- *
- * @brief       Do nothing.
- *
- * @param       hDisplay - pointer to Display_Config struct
- * @param       params - display parameters
- *
- * @return      Pointer to Display_Config struct
- */
-Display_Handle DisplayHost_open(Display_Handle handle,
-                               Display_Params *params)
-{
-    return handle;
-}
-
-
-/*!
- * @fn          DisplayHost_clear
- *
- * @brief       Does nothing.
- *
- * @param       hDisplay - pointer to Display_Config struct
- *
- * @return      void
+/*
+ *  ======== DisplayHost_clear ========
  */
 void DisplayHost_clear(Display_Handle handle)
 {
 }
 
-
-/*!
- * @fn          DisplayHost_clearLines
- *
- * @brief       Does nothing.
- *
- * @param       hDisplay - pointer to Display_Config struct
- * @param       lineFrom - line index (0 .. )
- * @param       lineTo - line index (0 .. )
- *
- * @return      void
+/*
+ *  ======== DisplayHost_clearLines ========
  */
 void DisplayHost_clearLines(Display_Handle handle, uint8_t fromLine,
-                           uint8_t toLine)
+                            uint8_t toLine)
 {
 }
 
-
-/*!
- * @fn          DisplayHost_vprintf
- *
- *
- * @param       hDisplay - pointer to Display_Config struct
- * @param       line - line index (0..)
- * @param       column - column index (0..)
- * @param       fmt - format string
- * @param       aN - optional format arguments
- *
- * @return      void
- */
-void DisplayHost_vprintf(Display_Handle handle, uint8_t line,
-                         uint8_t column, const char *fmt, va_list va)
-{
-    DisplayHost_HWAttrs *hwAttrs = (DisplayHost_HWAttrs *)handle->hwAttrs;
-    int     strSize;
-    char   *buf = hwAttrs->strBuf;
-
-    SystemP_vsnprintf(buf, hwAttrs->strBufLen - 1,
-            fmt, va);
-
-    strSize = strlen(hwAttrs->strBuf);
-    hwAttrs->strBuf[strSize++] = '\n';
-
-    FWRITE(buf, strSize, 1, stdout);
-}
-
-
-/*!
- * @fn          DisplayHost_close
- *
- * @brief       Does nothing
- *
- * @param       hDisplay - pointer to Display_Config struct
- *
- * @return      void
+/*
+ *  ======== DisplayHost_close ========
  */
 void DisplayHost_close(Display_Handle handle)
 {
 }
 
-/*!
- * @fn          DisplayHost_control
- *
- * @brief       Function for setting control parameters of the Display driver
- *              after it has been opened.
- *
- * @param       hDisplay - pointer to Display_Config struct
- * @param       cmd - command to execute
- * @param       arg - argument to the command
- *
- * @return      ::DISPLAY_STATUS_UNDEFINEDCMD because no commands are supported
+/*
+ *  ======== DisplayHost_control ========
  */
 int DisplayHost_control(Display_Handle handle, unsigned int cmd, void *arg)
 {
-    return DISPLAY_STATUS_UNDEFINEDCMD;
+    return (DISPLAY_STATUS_UNDEFINEDCMD);
 }
 
-/*!
- * @fn          DisplayHost_getType
- *
- * @brief       Returns type of transport
- *
- * @return      Display type
+/*
+ *  ======== DisplayHost_getType ========
  */
 unsigned int DisplayHost_getType(void)
 {
-    return Display_Type_HOST;
+    return (Display_Type_HOST);
+}
+
+/*
+ *  ======== DisplayHost_init ========
+ */
+void DisplayHost_init(Display_Handle handle)
+{
+    SemaphoreP_Handle sem;
+    unsigned int      key;
+
+    /* Speculatively create a binary semaphore for thread safety */
+    sem = SemaphoreP_createBinary(1);
+
+    key = HwiP_disable();
+
+    if (writeSem == NULL) {
+        /* use the binary sem created above */
+        writeSem = sem;
+        HwiP_restore(key);
+    }
+    else {
+        /* open already called */
+        HwiP_restore(key);
+        /* delete unused Semaphore */
+        if (sem) {
+            SemaphoreP_delete(sem);
+        }
+    }
+}
+
+/*
+ *  ======== DisplayHost_open ========
+ */
+Display_Handle DisplayHost_open(Display_Handle handle, Display_Params *params)
+{
+    if (writeSem == NULL) {
+        DisplayHost_init(handle);
+        if (writeSem == NULL) {
+            return (NULL);
+        }
+    }
+
+    return (handle);
+}
+
+/*
+ *  ======== DisplayHost_vprintf ========
+ */
+void DisplayHost_vprintf(Display_Handle handle, uint8_t line,
+                         uint8_t column, const char *fmt, va_list va)
+{
+    DisplayHost_HWAttrs *hwAttrs = (DisplayHost_HWAttrs *)handle->hwAttrs;
+    int                  strSize;
+    char                *buf = hwAttrs->strBuf;
+    uint32_t             timeout = SemaphoreP_WAIT_FOREVER;
+
+    /* Set timeout to 0 if we're in a Hwi, Swi, or main(). */
+    if (HwiP_inISR() || SwiP_inISR() || (HwiP_interruptsEnabled() == false)) {
+        timeout = 0;
+    }
+
+    /*
+     *  Don't bother checking result of SemaphoreP_pend() for timeout 0.
+     *  If the semaphore is not available, just go ahead and write.
+     */
+    SemaphoreP_pend(writeSem, timeout);
+
+    SystemP_vsnprintf(buf, hwAttrs->strBufLen - 1, fmt, va);
+
+    strSize = strlen(hwAttrs->strBuf);
+    hwAttrs->strBuf[strSize++] = '\n';
+
+    FWRITE(buf, strSize, 1, stdout);
+
+    SemaphoreP_post(writeSem);
 }

@@ -39,7 +39,7 @@
 "use strict";
 
 // Module version
-const RADIO_CONFIG_VERSION = "1.6";
+const RADIO_CONFIG_VERSION = "1.7";
 
 // Common utility functions
 const Common = system.getScript("/ti/devices/radioconfig/radioconfig_common.js");
@@ -54,9 +54,11 @@ const DevNameMap = {
     CC1352P1F3RGZ: "cc1352p",
     CC1312R1F3RGZ: "cc1312r",
     CC2652R1FRGZ: "cc2652r",
+    CC2652R1FSIP: "cc2652rs",
     CC2642R1FRGZ: "cc2642r",
     CC2652RB: "cc2652rb",
-    CC2652PRGZ: "cc2652p"
+    CC2652PRGZ: "cc2652p",
+    CC2652P1FSIP: "cc2652ps"
 };
 
 // SmartRF Studio compatible device name
@@ -67,7 +69,7 @@ if (!DeviceName) {
 }
 
 // True if High PA device
-const HighPaDevice = DeviceName === "cc1352p" || DeviceName === "cc2652p";
+const HighPaDevice = DeviceName === "cc1352p" || DeviceName.includes("cc2652p");
 
 // True if wBMS support
 const wbmsSupport = DeviceName === "cc2642r";
@@ -94,493 +96,81 @@ const DevInfo = {
 // Load the device configuration database
 const DevConfig = getDeviceConfig();
 
-// Mapping PHY setting names to SmartRF Studio setting file names
-let SettingsMapProp = [];
-
-// Proprietary settings for 2.4 GHz band
-if (Common.HAS_24G_PROP) {
-    SettingsMapProp = [
-        {
-            name: "2gfsk100kbps",
-            description: "100 kbps, 2-GFSK, 50 kHz deviation",
-            file: "setting_tc900.json"
-        },
-        {
-            name: "2gfsk250kbps",
-            description: "250 kbps, 2-GFSK, 125 kHz deviation",
-            file: "setting_tc901.json"
-        },
-        {
-            name: "2msk250kbps",
-            description: "250 kbps MSK, 62.5 kHz deviation",
-            file: "setting_tc902.json"
-        },
-        {
-            name: "custom2400",
-            description: "Custom PHY Setting",
-            file: "setting_tc900_custom.json"
-        }
-    ];
-}
-
-// Proprietary settings for SUB 1GHz band
-if (DeviceName === "cc1352r" || DeviceName === "cc1312r") {
-    const settingsMapPropSub1G = [
-        // 868 MHz
-        {
-            name: "2gfsk50kbps",
-            description: "50 kbps, 2-GFSK",
-            file: "setting_tc106.json"
-        },
-        {
-            name: "2gfsk1mbps868",
-            description: "1 Mbps, 2-GFSK, 350 kHz deviation (868 MHz)",
-            file: "setting_tc782.json"
-        },
-        {
-            name: "2gfsk1mbps915",
-            description: "1 Mbps, 2-GFSK, 350 kHz deviation (915 MHz)",
-            file: "setting_tc783.json"
-        },
-        {
-            name: "2gfsk50kbps154g",
-            description: "50 kbps, 2-GFSK, 15.4g",
-            file: "setting_tc106_154g.json"
-        },
-        {
-            name: "2gfsk200kbps154g",
-            description: "200 kbps, 2-GFSK, 15.4g",
-            file: "setting_tc146_154g.json"
-        },
-        {
-            name: "slr5kbps2gfsk",
-            description: "5 kbps, SimpleLink Long Range",
-            file: "setting_tc480.json"
-        },
-        {
-            name: "slr2500bps2gfsk",
-            description: "2.5 kbps, SimpleLink Long Range",
-            file: "setting_tc481.json"
-        },
-        {
-            name: "ook48kbps",
-            description: "4.8 kbps OOK (868 MHz)",
-            file: "setting_tc597.json"
-        },
-        {
-            name: "ook48kbps915",
-            description: "4.8 kbps OOK (915 MHz)",
-            file: "setting_tc598.json"
-        },
-        {
-            name: "2gfsk50kbps915wsun",
-            description: "50 kbps, 2-GFSK, 12.5 KHz dev., WiSUN PHY (915 MHz)",
-            file: "setting_tc119.json"
-        },
-        {
-            name: "2gfsk50kbps868wsun",
-            description: "50 kbps, 2-GFSK, 12.5 KHz dev., WiSUN PHY (868 MHz)",
-            file: "setting_tc120.json"
-        },
-        {
-            name: "2gfsk100kbps50dev915wsun",
-            description: "100 kbps, 2-GFSK, 50 KHz dev., WiSUN PHY (915 MHz)",
-            file: "setting_tc136.json"
-        },
-        {
-            name: "2gfsk100kbps50dev868wsun",
-            description: "100 kbps, 2-GFSK, 50 Khz dev., WiSUN PHY (868 MHz)",
-            file: "setting_tc137.json"
-        },
-        {
-            name: "2gfsk100kbps25dev915wsun",
-            description: "100 kbps, 2-GFSK, 25 KHz dev., WiSUN PHY, (915 MHz)",
-            file: "setting_tc140.json"
-        },
-        {
-            name: "2gfsk100kbps25dev868wsun",
-            description: "100 kbps, 2-GFSK, 25 Khz dev., WiSUN PHY, (868 MHz)",
-            file: "setting_tc141.json"
-        },
-        {
-            name: "2gfsk200kbps100dev915wsun",
-            description: "200 kbps, 2-GFSK, 100 KHz dev., WiSUN PHY, (915 MHz)",
-            file: "setting_tc150.json"
-        },
-        {
-            name: "2gfsk200kbps100dev868wsun",
-            description: "200 kbps, 2-GFSK, 100 Khz dev., WiSUN PHY, (868 MHz)",
-            file: "setting_tc151.json"
-        },
-        {
-            name: "2gfsk48kbpstcxo",
-            description: "9.6 kbps, 2-GFSK, 2.4 kHz deviation (TCXO)",
-            file: "setting_tc594.json"
-        },
-        {
-            name: "wbdsss480ksps240kbps",
-            description: "WBDSSS 480 ksps, 240 kbps",
-            file: "setting_tc380.json"
-        },
-        {
-            name: "wbdsss480ksps120kbps",
-            description: "WBDSSS 480 ksps, 120 kbps",
-            file: "setting_tc381.json"
-        },
-        {
-            name: "wbdsss480ksps60kbps",
-            description: "WBDSSS 480 ksps, 60 kbps",
-            file: "setting_tc382.json"
-        },
-        {
-            name: "wbdsss480ksps30kbps",
-            description: "WBDSSS 480 ksps, 30 kbps",
-            file: "setting_tc383.json"
-        },
-        {
-            name: "custom868",
-            description: "Custom PHY Setting",
-            file: "setting_tc106_custom.json"
-        },
-        // 433 MHz
-        {
-            name: "2gfsk50kbps433mhz",
-            description: "50 kbps, 2-GFSK",
-            file: "setting_tc112.json"
-        },
-        {
-            name: "2gfsk50kbps433mhz154g",
-            description: "50 kbps, 2-GFSK, 15.4g",
-            file: "setting_tc112_154g.json"
-        },
-        {
-            name: "2gfsk200kpbs433mhz",
-            description: "200 kbps, 2-GFSK, 50 kHz deviation",
-            file: "setting_tc148.json"
-        },
-        {
-            name: "slr5kbps433mhz",
-            description: "5 kbps, SimpleLink Long Range",
-            file: "setting_tc440.json"
-        },
-        {
-            name: "slr2500bps433mhz",
-            description: "2.5 kbps, SimpleLink Long Range",
-            file: "setting_tc441.json"
-        },
-        {
-            name: "2gfsk48kpbs426mhz",
-            description: "4.8 kbps, 2-GFSK, 2 kHz deviation",
-            file: "setting_tc596.json"
-        },
-        {
-            name: "ook48kbps433mhz",
-            description: "4.8 kbps OOK",
-            file: "setting_tc599.json"
-        },
-        {
-            name: "custom433",
-            description: "Custom PHY Setting",
-            file: "setting_tc112_custom.json"
-        }
-    ];
-
-    if (DeviceName === "cc1312r") {
-        SettingsMapProp = settingsMapPropSub1G;
-    }
-    else {
-        // CC1352R
-        SettingsMapProp = SettingsMapProp.concat(settingsMapPropSub1G);
-    }
-}
-else if (DeviceName === "cc1352p") {
-    const settingsMapPropSub1G = [
-        // 868 MHz
-        {
-            name: "2gfsk50kbps",
-            description: "50 kbps, 2-GFSK",
-            file: "setting_tc706.json"
-        },
-        {
-            name: "2gfsk1mbps868",
-            description: "1 Mbps, 2-GFSK, 350 kHz deviation (868 MHz)",
-            file: "setting_tc784.json"
-        },
-        {
-            name: "2gfsk1mbps915",
-            description: "1 Mbps, 2-GFSK, 350 kHz deviation (915 MHz)",
-            file: "setting_tc785.json"
-        },
-        {
-            name: "2gfsk50kbps154g",
-            description: "50 kbps, 2-GFSK, 15.4g",
-            file: "setting_tc706_154g.json"
-        },
-        {
-            name: "2gfsk200kbps154g",
-            description: "200 kbps, 2-GFSK, 15.4g, High PA",
-            file: "setting_tc746_154g.json"
-        },
-        {
-            name: "slr5kbps2gfsk",
-            description: "5 kbps, SimpleLink Long Range",
-            file: "setting_tc880.json"
-        },
-        {
-            name: "slr2500bps2gfsk",
-            description: "2.5 kbps, SimpleLink Long Range",
-            file: "setting_tc881.json"
-        },
-        {
-            name: "ook48kbps",
-            description: "4.8 kbps OOK",
-            file: "setting_tc597.json"
-        },
-        {
-            name: "ook48kbps915",
-            description: "4.8 kbps OOK (915 MHz)",
-            file: "setting_tc598.json"
-        },
-        {
-            name: "2gfsk50kbps915wsun",
-            description: "50 kbps, 2-GFSK, 12.5 KHz dev., WiSUN PHY (915 MHz)",
-            file: "setting_tc719.json"
-        },
-        {
-            name: "2gfsk50kbps868wsun",
-            description: "50 kbps, 2-GFSK, 12.5 KHz dev., WiSUN PHY (868 MHz)",
-            file: "setting_tc720.json"
-        },
-        {
-            name: "2gfsk100kbps50dev915wsun",
-            description: "100 kbps, 2-GFSK, 50 KHz dev., WiSUN PHY (915 MHz)",
-            file: "setting_tc736.json"
-        },
-        {
-            name: "2gfsk100kbps50dev868wsun",
-            description: "100 kbps, 2-GFSK, 50 Khz dev., WiSUN PHY (868 MHz)",
-            file: "setting_tc737.json"
-        },
-        {
-            name: "2gfsk100kbps25dev915wsun",
-            description: "100 kbps, 2-GFSK, 25 KHz dev., WiSUN PHY, (915 MHz)",
-            file: "setting_tc740.json"
-        },
-        {
-            name: "2gfsk100kbps25dev868wsun",
-            description: "100 kbps, 2-GFSK, 25 Khz dev., WiSUN PHY, (868 MHz)",
-            file: "setting_tc741.json"
-        },
-        {
-            name: "2gfsk200kbps100dev915wsun",
-            description: "200 kbps, 2-GFSK, 100 KHz dev., WiSUN PHY, (915 MHz)",
-            file: "setting_tc750.json"
-        },
-        {
-            name: "2gfsk200kbps100dev868wsun",
-            description: "200 kbps, 2-GFSK, 100 Khz dev., WiSUN PHY, (868 MHz)",
-            file: "setting_tc751.json"
-        },
-        {
-            name: "wbdsss480ksps240kbps",
-            description: "WBDSSS 480 ksps, 240 kbps",
-            file: "setting_tc380.json"
-        },
-        {
-            name: "wbdsss480ksps120kbps",
-            description: "WBDSSS 480 ksps, 120 kbps",
-            file: "setting_tc381.json"
-        },
-        {
-            name: "wbdsss480ksps60kbps",
-            description: "WBDSSS 480 ksps, 60 kbps",
-            file: "setting_tc382.json"
-        },
-        {
-            name: "wbdsss480ksps30kbps",
-            description: "WBDSSS 480 ksps, 30 kbps",
-            file: "setting_tc383.json"
-        },
-        {
-            name: "custom868",
-            description: "Custom PHY Setting",
-            file: "setting_tc706_custom.json"
-        },
-        // 433 MHz
-        {
-            name: "2gfsk50kbps433mhz",
-            description: "50 kbps, 2-GFSK",
-            file: "setting_tc112.json"
-        },
-        {
-            name: "2gfsk50kbps154g433mhz",
-            description: "50 kbps, 2-GFSK, 15.4g",
-            file: "setting_tc112_154g.json"
-        },
-        {
-            name: "2gfsk200kpbs433mhz",
-            description: "200 kbps, 2-GFSK, 50 kHz deviation",
-            file: "setting_tc148.json"
-        },
-        {
-            name: "slr5kbps2gfsk433mhz",
-            description: "5 kbps, SimpleLink Long Range",
-            file: "setting_tc440.json"
-        },
-        {
-            name: "slr2500bps2gfsk433mhz",
-            description: "2.5 kbps, SimpleLink Long Range",
-            file: "setting_tc441.json"
-        },
-        {
-            name: "2gfsk48kpbs429mhz",
-            description: "4.8 kbps, 2-GFSK, 2 kHz deviation",
-            file: "setting_tc596.json"
-        },
-        {
-            name: "ook48kbps433mhz",
-            description: "4.8 kbps OOK",
-            file: "setting_tc599.json"
-        },
-        {
-            name: "custom433",
-            description: "Custom PHY Setting",
-            file: "setting_tc112_custom.json"
-        }
-    ];
-    SettingsMapProp = SettingsMapProp.concat(settingsMapPropSub1G);
-}
-
-let SettingsMapBLE = [
-    {
-        name: "bt5le1m",
-        description: "Bluetooth 5, 1 Mbps",
-        file: "setting_bt5_le_1m.json"
-    },
-    {
-        name: "bt5le1madvnc",
-        description: "Bluetooth 5, 1 Mbps, BT4 compatible",
-        file: "setting_bt5_le_1m_adv_nc.json"
-    },
-    {
-        name: "bt5le2m",
-        description: "Bluetooth 5, 2 Mbps",
-        file: "setting_bt5_le_2m.json"
-    },
-    {
-        name: "bt5lecodeds2",
-        description: "Bluetooth 5, 500 kbps",
-        file: "setting_bt5_le_coded_s2.json"
-    },
-    {
-        name: "bt5lecodeds8",
-        description: "Bluetooth 5, 125 kbps",
-        file: "setting_bt5_le_coded_s8.json"
-    }
-];
-
-if (wbmsSupport) {
-    const settingsWBMS = [
-        {
-            name: "wbms2m",
-            description: "wBMS, 2 Mbps",
-            file: "setting_wbms_2m.json"
-        }
-    ];
-    SettingsMapBLE = SettingsMapBLE.concat(settingsWBMS);
-}
-
-if (HighPaDevice) {
-    const settings10dbm = [
-        {
-            name: "bt5le1mp10",
-            description: "Bluetooth 5, 1 Mbps, 10 dBm",
-            file: "setting_bt5_le_1m_10_dbm.json"
-        },
-        {
-            name: "bt5le1madvncp10",
-            description: "Bluetooth 5, 1 Mbps, BT4 compatible, 10 dBm",
-            file: "setting_bt5_le_1m_adv_nc_10_dbm.json"
-        },
-        {
-            name: "bt5le2mp10",
-            description: "Bluetooth 5, 2 Mbps, 10 dBm",
-            file: "setting_bt5_le_2m_10_dbm.json"
-        }
-    ];
-    SettingsMapBLE = SettingsMapBLE.concat(settings10dbm);
-}
-
-const SettingsMap154 = [
-    {
-        name: "ieee154",
-        description: "IEEE 802.15.4, 250 kbps",
-        file: "setting_ieee_802_15_4.json"
-    }
-];
-
-if (HighPaDevice) {
-    const setting10dbm = {
-        name: "ieee154p10",
-        description: "IEEE 802.15.4, 250 kbps, 10 dBm",
-        file: "setting_ieee_802_15_4_10_dbm.json"
-    };
-    SettingsMap154.push(setting10dbm);
-}
-
 // Exported from this module
 exports = {
     addPhyGroup: addPhyGroup,
     getVersionInfo: getVersionInfo,
-    getSettingMap: function(phy) {
-        if (phy === Common.PHY_IEEE_15_4) {
-            return SettingsMap154;
-        }
-        else if (phy === Common.PHY_BLE) {
-            return SettingsMapBLE;
-        }
-        else if (phy === Common.PHY_PROP) {
-            return SettingsMapProp;
-        }
-        throw Error("Unknown protocol: ", phy);
-    },
-    getDeviceName: function() {
-        return DeviceName;
-    },
-    getParamPath: function(phy) {
-        return DevInfo.phyGroup[phy].paramPath;
-    },
-    getSettingPath: function(phy) {
-        return getFilePathPhy("categories.json", phy);
-    },
-    getRfCommandDef: function(phy) {
-        return getFullPathPhy("rf_command_definitions.json", phy);
-    },
-    getTargetPath: function(phy) {
-        return getFilePathPhy("targets.json", phy);
-    },
-    getTargetIndex: function(phy) {
-        return getFullPathPhy("targets.json", phy);
-    },
-    getPaSettingsPath: function() {
-        return getFilePath("pasettings.json");
-    },
-    getFrontEndFile: function(phy) {
-        return getFullPathPhy("frontend_settings.json", phy);
-    },
-    getCmdMapping: function(phy) {
-        return getFullPathPhy("param_cmd_mapping.json", phy);
-    },
-    getSyscfgParams: function(phy) {
-        return DevInfo.phyGroup[phy].paramPath + "param_syscfg.json";
-    },
-    hasHighPaSupport: function() {
-        return DevInfo.highPaSupport;
-    },
-    getOverridePath: function(phy) {
-        return getFilePathPhy("dummy_file_overrides.json", phy);
-    }
+    getConfiguration: (phy) => DevInfo.phyGroup[phy].config,
+    getSettingMap: (phy) => DevInfo.phyGroup[phy].settings,
+    getDeviceName: () => DeviceName,
+    getParamPath: (phy) => DevInfo.phyGroup[phy].paramPath,
+    getSettingPath: (phy) => getFilePathPhy("categories.json", phy),
+    getRfCommandDef: (phy) => getFullPathPhy("rf_command_definitions.json", phy),
+    getTargetPath: (phy) => getFilePathPhy("targets.json", phy),
+    getTargetIndex: (phy) => getFullPathPhy("targets.json", phy),
+    getPaSettingsPath: () => getFilePath("pasettings.json"),
+    getFrontEndFile: (phy) => getFullPathPhy("frontend_settings.json", phy),
+    getCmdMapping: (phy) => getFullPathPhy("param_cmd_mapping.json", phy),
+    hasHighPaSupport: () => DevInfo.highPaSupport,
+    getOverridePath: (phy) => getFilePathPhy("dummy_file_overrides.json", phy)
 };
+
+/*!
+ *  ======== getConfiguration ========
+ *  Load configuration data of a PHY group
+ *
+ *  @param phy - ble, prop or ieee_154
+ */
+function loadConfiguration(phy) {
+    const fileName = DevInfo.phyGroup[phy].paramPath + "param_syscfg.json";
+    const devCfg = system.getScript(fileName);
+    if (wbmsSupport) {
+        devCfg.configs[0].options.push(
+            {
+                name: "wbms2m",
+                description: "wBMS, 2 Mbps"
+            }
+        );
+    }
+    return devCfg;
+}
+
+/*!
+ *  ======== createSettingMap ========
+ *  Create list of PHY settings for a PHY group
+ *
+ *  @param phy - ble, prop or ieee_154
+ */
+function createSettingMap(phy) {
+    const data = DevInfo.phyGroup[phy].config;
+    const paKey = HighPaDevice ? "highPA" : "standard";
+
+    if (phy === Common.PHY_IEEE_15_4) {
+        return data.phys.ieee[paKey];
+    }
+    else if (phy === Common.PHY_BLE) {
+        if (wbmsSupport) {
+            const settingsWBMS = {
+                name: "wbms2m",
+                description: "wBMS, 2 Mbps",
+                file: "setting_wbms_2m.json"
+            };
+            data.phys.ble.standard.push(settingsWBMS);
+        }
+        return HighPaDevice ? data.phys.ble.highPA : data.phys.ble.standard;
+    }
+    else if (phy === Common.PHY_PROP) {
+        let settingMap = [];
+        if (Common.isSub1gDevice()) {
+            settingMap = data.phys.prop868[paKey].concat(data.phys.prop433[paKey]).concat(data.phys.prop169[paKey]);
+        }
+        if (Common.HAS_24G_PROP) {
+            settingMap = settingMap.concat(data.phys.prop2400.standard);
+        }
+        return settingMap;
+    }
+    throw Error("Unknown protocol: ", phy);
+}
 
 /*!
  *  ======== getVersionInfo ========
@@ -683,7 +273,13 @@ function getFilePathPhy(file, phy) {
 function addPhyGroup(phy) {
     const phyPath = getFilePathPhy("rf_command_definitions.json", phy);
     const phyDir = phyPath.slice(0, -1);
-    const paramPath = getFilePathPhy("param_definition.json", phy);
+    let paramPath;
+    if (DeviceName === "cc2652p" && phy === Common.PHY_PROP) {
+        paramPath = getFilePathPhy("categories.json", phy) + "../";
+    }
+    else {
+        paramPath = getFilePathPhy("param_definition.json", phy);
+    }
 
     const phyInfo = {
         phy: phy,
@@ -693,4 +289,6 @@ function addPhyGroup(phy) {
     };
     DevInfo.phyGroup[phy] = phyInfo;
     DevInfo.phy = phy;
+    phyInfo.config = loadConfiguration(phy);
+    phyInfo.settings = createSettingMap(phy);
 }

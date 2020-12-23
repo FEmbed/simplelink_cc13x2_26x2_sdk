@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,13 +45,19 @@ intPriority.name = "interruptPriority";
 intPriority.displayName = "Interrupt Priority";
 intPriority.description = "Public key acceleration module interrupt priority.";
 
+let trngIntPriority = Common.newIntPri()[0];
+trngIntPriority.name = "trngInterruptPriority";
+trngIntPriority.displayName = "TRNG Interrupt Priority";
+trngIntPriority.description = "TRNG interrupt priority used to generate the PMSN.";
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base ECDSA configuration
  */
 let devSpecific = {
     config: [
-        intPriority
+        intPriority,
+        trngIntPriority
     ],
 
     templates : {
@@ -66,6 +72,10 @@ let devSpecific = {
  */
 function extend(base)
 {
+    /* display which driver implementation can be used */
+    base = Common.addImplementationConfig(base, "ECDSA", null,
+        [{name: "ECDSACC26X2"}], null);
+
     /* merge and overwrite base module attributes */
     return (Object.assign({}, base, devSpecific));
 }

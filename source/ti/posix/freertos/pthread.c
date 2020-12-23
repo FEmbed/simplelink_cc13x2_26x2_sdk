@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2020 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -313,7 +313,11 @@ int pthread_cancel(pthread_t pthread)
     thread->cancelPending = 1;
 
     if (thread->cancelState == PTHREAD_CANCEL_ENABLE) {
+        /* suspend given thread to stop it from running */
         vTaskSuspend(thread->freeRTOSTask);
+
+        /* Re-enable the scheduler to allow cleanup functions to block. */
+        xTaskResumeAll();
 
         /* Pop and execute the cleanup handlers */
         while (thread->cleanupList != NULL) {
@@ -337,9 +341,10 @@ int pthread_cancel(pthread_t pthread)
             xSemaphoreGive(thread->joinSem);
         }
     }
-
-    /* Re-enable the scheduler */
-    xTaskResumeAll();
+    else {
+        /* Re-enable the scheduler */
+        xTaskResumeAll();
+    }
 
     return (0);
 }

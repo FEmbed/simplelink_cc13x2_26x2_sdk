@@ -293,7 +293,7 @@ function modules(inst)
     dependencyModule.push({
         name: "multiStack",
         displayName: "Multi-Stack Validation",
-        moduleName: "/ti/easylink/multi_stack_validate",
+        moduleName: "/ti/common/multi_stack_validate",
         hidden: true
     });
 

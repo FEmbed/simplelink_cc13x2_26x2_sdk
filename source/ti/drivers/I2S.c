@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Texas Instruments Incorporated
+ * Copyright (c) 2015-2020, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@ const I2S_Params I2S_defaultParams = {
   .SD0Channels           = I2S_CHANNELS_STEREO,               /* Channels activated on SD0 */
   .SD1Channels           = I2S_CHANNELS_STEREO,               /* Channels activated on SD1 */
   .phaseType             = I2S_PHASE_TYPE_DUAL,               /* Phase type */
-  .startUpDelay          = 0,                                 /* Start up delay */
+  .startUpDelay          = 2,                                 /* Start up delay in number of WS periods */
   .MCLKDivider           = 40,                                /* MCLK divider */
   .readCallback          = NULL,                              /* Read callback */
   .writeCallback         = NULL,                              /* Write callback */

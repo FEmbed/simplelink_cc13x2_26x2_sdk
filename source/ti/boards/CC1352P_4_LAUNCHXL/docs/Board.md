@@ -34,8 +34,8 @@ The following BoosterPack(s) are used with some driver examples.
 
   * The SD card's default SPI slave select pin is not compatible with this
       LaunchPad's header pin layout. Use one of the following modification(s)
-      to the BOOSTXL-SHARP128 to enable SD card usage with the __sdraw__
-      example.
+      to the BOOSTXL-SHARP128 to enable SD card usage with the __sdraw__,
+      __fatsd__, and __fatsdraw__ examples.
 
     * Use a jumper wire to connect __`SD_CS`__ and __`SD_CS*`__.
     * Unsolder resistor __`R16`__ and re-solder it on __`R17`__. __`SD_CS*`__
