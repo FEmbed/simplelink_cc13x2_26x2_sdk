@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  This file conforms to the DTD xdc/bld/build.dtd -->
+<package name="ti.rpc" version="1, 0, 0" producerId="undefined">
+    <units>
+    </units>
+    <sources>
+        <srcFile name="package/package_ti.rpc.c"/>
+    </sources>
+    <configscripts>
+    </configscripts>
+    <makefiles>
+        <srcFile name="package.mak" src="package.bld"/>
+        <srcFile name="package/package.xdc.dep" src="package.xdc"/>
+        <srcFile name="package/package.cfg.dep" src="package.xdc"/>
+        <srcFile name="lib/gcc/m4f/rpc_debug.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/gcc/m4f/rpc_debug/package/package_ti.rpc.om4fg.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/gcc/m4f/rpc_release.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/gcc/m4f/rpc_release/package/package_ti.rpc.om4fg.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/iar/m4f/rpc_debug.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/iar/m4f/rpc_debug/package/package_ti.rpc.orm4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/iar/m4f/rpc_release.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/iar/m4f/rpc_release/package/package_ti.rpc.orm4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/iar/m4f/rpc_debug_full.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/iar/m4f/rpc_debug_full/package/package_ti.rpc.orm4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/iar/m4f/rpc_release_full.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/iar/m4f/rpc_release_full/package/package_ti.rpc.orm4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ticlang/m4f/rpc_debug.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/rpc_debug/package/package_ti.rpc.om4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ticlang/m4f/rpc_release.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/rpc_release/package/package_ti.rpc.om4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ticlang/m4f/rpc_coverage.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ticlang/m4f/rpc_coverage/package/package_ti.rpc.om4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ccs/m4f/rpc_debug.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ccs/m4f/rpc_debug/package/package_ti.rpc.oem4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ccs/m4f/rpc_release.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ccs/m4f/rpc_release/package/package_ti.rpc.oem4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ccs/m4f/rpc_profile.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ccs/m4f/rpc_profile/package/package_ti.rpc.oem4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="lib/ccs/m4f/rpc_coverage.a.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/ccs/m4f/rpc_coverage/package/package_ti.rpc.oem4f.dep" src="package/package_ti.rpc.c"/>
+        <srcFile name="package/rel/ti_rpc,m4f.tar.dep" src="package/rel/ti_rpc,m4f.xdc.inc"/>
+        <srcFile name="package/rel/ti_rpc.tar.dep" src="package/rel/ti_rpc.xdc.inc"/>
+    </makefiles>
+    <targets>
+        <target name="gnu.targets.arm.M4F"
+            version="gnu.targets.arm.M4F{1,0,9.2,1"
+            rawVersion="9.2.1"
+            platform="ti.platforms.tiva:TM4C1294NCPDT"
+            isa="v7M4"
+            suffix="m4fg"
+            rootDir="/scratch/xlibrary/.conan/data/arm-none-eabi-gcc/9.2019.q4.major-0/library-msp/ga/package/44fcf6b9a7fb86b2586303e3db40189d3b511830"
+            os="undefined"
+            rts="gnu.targets.arm.rtsv7M">
+            <model endian="little"
+                codeModel="thumb2"
+                dataModel="undefined"/>
+        </target>
+        <target name="iar.targets.arm.M4F"
+            version="iar.targets.arm.M4F{1,0,8.50,1"
+            rawVersion="8.50.1.245"
+            platform="ti.platforms.tiva:TM4C1294NCPDT:1"
+            isa="v7M4"
+            suffix="rm4f"
+            rootDir="/scratch/xlibrary/.conan/data/iarcodegen/8.50.1.245-0/library-msp/ga/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9"
+            os="undefined"
+            rts="iar.targets.arm.rts">
+            <model endian="little"
+                codeModel="thumb2"
+                dataModel="undefined"/>
+        </target>
+        <target name="ti.targets.arm.clang.M4F"
+            version="ti.targets.arm.clang.M4F{1,0,1.0,0"
+            rawVersion="TI Arm Clang Compiler 1.0.0+STSTarget: arm-ti-none-eabi
+Thread model: posix
+InstalledDir: /scratch/xlibrary/.conan/data/tiarmllvm/1.0.0.STS-0/library-msp/ga/package/be241241e9d4718e5bab4eb33935bbb69606bb0c/bin
+"
+            platform="ti.platforms.cortexM:MTL1_VSOC:1"
+            isa="v7M4"
+            suffix="m4f"
+            rootDir="/scratch/xlibrary/.conan/data/tiarmllvm/1.0.0.STS-0/library-msp/ga/package/be241241e9d4718e5bab4eb33935bbb69606bb0c"
+            os="undefined"
+            rts="ti.targets.arm.rtsarm">
+            <model endian="little"
+                codeModel="thumb2"
+                dataModel="undefined"/>
+        </target>
+        <target name="ti.targets.arm.elf.M4F"
+            version="ti.targets.arm.elf.M4F{1,0,20.2,1"
+            rawVersion="20.2.1"
+            platform="ti.platforms.tiva:TM4C1294NCPDT:1"
+            isa="v7M4"
+            suffix="em4f"
+            rootDir="/scratch/xlibrary/.conan/data/ticodegen/20.2.1.LTS-0/library-msp/ga/package/be241241e9d4718e5bab4eb33935bbb69606bb0c"
+            os="undefined"
+            rts="ti.targets.arm.rtsarm">
+            <model endian="little"
+                codeModel="thumb2"
+                dataModel="undefined"/>
+        </target>
+    </targets>
+    <libraries>
+    <library name="lib/gcc/m4f/rpc_debug"
+        pname="lib/gcc/m4f/rpc_debug.a"
+        profile="debug"
+        target="gnu.targets.arm.M4F"/>
+    <library name="lib/gcc/m4f/rpc_release"
+        pname="lib/gcc/m4f/rpc_release.a"
+        profile="release"
+        target="gnu.targets.arm.M4F"/>
+    <library name="lib/iar/m4f/rpc_debug"
+        pname="lib/iar/m4f/rpc_debug.a"
+        profile="debug"
+        target="iar.targets.arm.M4F"/>
+    <library name="lib/iar/m4f/rpc_release"
+        pname="lib/iar/m4f/rpc_release.a"
+        profile="release"
+        target="iar.targets.arm.M4F"/>
+    <library name="lib/iar/m4f/rpc_debug_full"
+        pname="lib/iar/m4f/rpc_debug_full.a"
+        profile="debug_full"
+        target="iar.targets.arm.M4F"/>
+    <library name="lib/iar/m4f/rpc_release_full"
+        pname="lib/iar/m4f/rpc_release_full.a"
+        profile="release_full"
+        target="iar.targets.arm.M4F"/>
+    <library name="lib/ticlang/m4f/rpc_debug"
+        pname="lib/ticlang/m4f/rpc_debug.a"
+        profile="debug"
+        target="ti.targets.arm.clang.M4F"/>
+    <library name="lib/ticlang/m4f/rpc_release"
+        pname="lib/ticlang/m4f/rpc_release.a"
+        profile="release"
+        target="ti.targets.arm.clang.M4F"/>
+    <library name="lib/ticlang/m4f/rpc_coverage"
+        pname="lib/ticlang/m4f/rpc_coverage.a"
+        profile="coverage"
+        target="ti.targets.arm.clang.M4F"/>
+    <library name="lib/ccs/m4f/rpc_debug"
+        pname="lib/ccs/m4f/rpc_debug.a"
+        profile="debug"
+        target="ti.targets.arm.elf.M4F"/>
+    <library name="lib/ccs/m4f/rpc_release"
+        pname="lib/ccs/m4f/rpc_release.a"
+        profile="release"
+        target="ti.targets.arm.elf.M4F"/>
+    <library name="lib/ccs/m4f/rpc_profile"
+        pname="lib/ccs/m4f/rpc_profile.a"
+        profile="profile"
+        target="ti.targets.arm.elf.M4F"/>
+    <library name="lib/ccs/m4f/rpc_coverage"
+        pname="lib/ccs/m4f/rpc_coverage.a"
+        profile="coverage"
+        target="ti.targets.arm.elf.M4F"/>
+    </libraries>
+    <configurations>
+    </configurations>
+    <executables>
+    </executables>
+    <tests>
+    </tests>
+    <releases relDir="package/rel/">
+    <release name="ti_rpc,m4f"
+        pname="ti_rpc,m4f.tar"
+        label="undefined"
+    >
+        <file name="package/package.bld.xml"/>
+        <file name="package/build.cfg"/>
+        <file name="package.bld"/>
+        <file name="package/package.xdc.inc"/>
+        <file name=".meta/Config.c.xdt"/>
+        <file name=".meta/Config.h.xdt"/>
+        <file name=".meta/ERPC.Config.c.xdt"/>
+        <file name=".meta/ERPC.cpp.xdt"/>
+        <file name=".meta/ERPC.h.xdt"/>
+        <file name=".meta/ERPC.syscfg.js"/>
+        <file name=".meta/GetLibs.syscfg.js"/>
+        <file name=".meta/Interface.syscfg.js"/>
+        <file name=".meta/Makefile.erpc.xdt"/>
+        <file name=".meta/SecMsg.Config.c.xdt"/>
+        <file name=".meta/SecMsg.Config.h.xdt"/>
+        <file name=".meta/SecMsg.syscfg.js"/>
+        <file name=".meta/erpc.js.xdt"/>
+        <file name=".meta/model.gv.xdt"/>
+        <file name=".meta/rpc.gv.xdt"/>
+        <file name=".meta/rpc.component.js"/>
+        <file name="package/package.cfg.xdc.inc"/>
+        <file name="lib/gcc/m4f/rpc_debug.a"/>
+        <file name="package/package_ti.rpc.c"/>
+        <file name="lib/gcc/m4f/rpc_release.a"/>
+        <file name="lib/iar/m4f/rpc_debug.a"/>
+        <file name="lib/iar/m4f/rpc_release.a"/>
+        <file name="lib/iar/m4f/rpc_debug_full.a"/>
+        <file name="lib/iar/m4f/rpc_release_full.a"/>
+        <file name="lib/ticlang/m4f/rpc_debug.a"/>
+        <file name="lib/ticlang/m4f/rpc_release.a"/>
+        <file name="lib/ticlang/m4f/rpc_coverage.a"/>
+        <file name="lib/ccs/m4f/rpc_debug.a"/>
+        <file name="lib/ccs/m4f/rpc_release.a"/>
+        <file name="lib/ccs/m4f/rpc_profile.a"/>
+        <file name="lib/ccs/m4f/rpc_coverage.a"/>
+    </release>
+    <release name="ti_rpc"
+        pname="ti_rpc.tar"
+        label="default"
+    >
+        <file name="package/package.bld.xml"/>
+        <file name="package/build.cfg"/>
+        <file name="package/package.xdc.inc"/>
+        <file name=".meta/Config.c.xdt"/>
+        <file name=".meta/Config.h.xdt"/>
+        <file name=".meta/ERPC.Config.c.xdt"/>
+        <file name=".meta/ERPC.cpp.xdt"/>
+        <file name=".meta/ERPC.h.xdt"/>
+        <file name=".meta/ERPC.syscfg.js"/>
+        <file name=".meta/GetLibs.syscfg.js"/>
+        <file name=".meta/Interface.syscfg.js"/>
+        <file name=".meta/Makefile.erpc.xdt"/>
+        <file name=".meta/SecMsg.Config.c.xdt"/>
+        <file name=".meta/SecMsg.Config.h.xdt"/>
+        <file name=".meta/SecMsg.syscfg.js"/>
+        <file name=".meta/erpc.js.xdt"/>
+        <file name=".meta/model.gv.xdt"/>
+        <file name=".meta/rpc.gv.xdt"/>
+        <file name=".meta/rpc.component.js"/>
+        <file name="package/package.cfg.xdc.inc"/>
+        <file name="lib/gcc/m4f/rpc_debug.a"/>
+        <file name="lib/gcc/m4f/rpc_release.a"/>
+        <file name="lib/iar/m4f/rpc_debug.a"/>
+        <file name="lib/iar/m4f/rpc_release.a"/>
+        <file name="lib/iar/m4f/rpc_debug_full.a"/>
+        <file name="lib/iar/m4f/rpc_release_full.a"/>
+        <file name="lib/ticlang/m4f/rpc_debug.a"/>
+        <file name="lib/ticlang/m4f/rpc_release.a"/>
+        <file name="lib/ticlang/m4f/rpc_coverage.a"/>
+        <file name="lib/ccs/m4f/rpc_debug.a"/>
+        <file name="lib/ccs/m4f/rpc_release.a"/>
+        <file name="lib/ccs/m4f/rpc_profile.a"/>
+        <file name="lib/ccs/m4f/rpc_coverage.a"/>
+    </release>
+    </releases>
+    <repositories>
+    </repositories>
+</package>

@@ -1,0 +1,114 @@
+{
+    "testfunction": {
+        "Command": [
+            {
+                "_name": "CMD_FS",
+                "Field": {
+                    "_name": "synthConf.bTxMode",
+                    "$": "0"
+                }
+            },
+            {
+                "_name": "CMD_IEEE_RX",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_IEEE_RX"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "rxConfig",
+                        "$": "0x30"
+                    },
+                    {
+                        "_name": "frameFiltOpt",
+                        "$": "0x300"
+                    },
+                    {
+                        "_name": "frameTypes",
+                        "$": "0xFF"
+                    },
+                    {
+                        "_name": "ccaOpt",
+                        "$": "0x18"
+                    },
+                    {
+                        "_name": "ccaRssiThr",
+                        "$": "100"
+                    },
+                    {
+                        "_name": "numExtEntries",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "numShortEntries",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pExtEntryList",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pShortEntryList",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "localExtAddr",
+                        "$": "0x12345678"
+                    },
+                    {
+                        "_name": "localShortAddr",
+                        "$": "0xABBA"
+                    },
+                    {
+                        "_name": "endTrigger",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "endTime",
+                        "$": "0"
+                    }
+                ]
+            }
+        ]
+    }
+}

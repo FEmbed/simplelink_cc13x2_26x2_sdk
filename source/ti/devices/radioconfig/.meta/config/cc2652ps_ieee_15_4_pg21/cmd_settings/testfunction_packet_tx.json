@@ -1,0 +1,71 @@
+{
+    "testfunction": {
+        "Command": [
+            {
+                "_name": "CMD_FS",
+                "Field": {
+                    "_name": "synthConf.bTxMode",
+                    "$": "1"
+                }
+            },
+            {
+                "_name": "CMD_IEEE_TX",
+                "_function": "SendPacket",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_IEEE_TX"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "txOpt",
+                        "$": "0x00"
+                    },
+                    {
+                        "_name": "payloadLen",
+                        "$": "0x1e"
+                    },
+                    {
+                        "_name": "timeStamp",
+                        "$": "0x00000000"
+                    }
+                ]
+            }
+        ]
+    }
+}

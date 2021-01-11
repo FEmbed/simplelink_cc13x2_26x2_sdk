@@ -1,0 +1,232 @@
+%%{
+/*
+ * Copyright (c) 2020 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ *  ======== Makefile.erpc.xdt ========
+ */
+%%}
+%%{
+    let ERPC = system.modules["/ti/rpc/ERPC"];
+    let Interface = system.modules["/ti/rpc/Interface"];
+
+    function findInterfaceInstances(inst)
+    {
+        let ifs = new Array();
+
+        for (let i = 0; i < Interface.$instances.length; i++) {
+            if (Interface.$instances[i].$ownedBy == inst) {
+                ifs.push(Interface.$instances[i]);
+            }
+        }
+
+        return (ifs);
+    }
+
+    /* create array of IDL descriptors */
+    let idlDescAry = new Array();
+
+    for (let i = 0; i < ERPC.$instances.length; i++) {
+        let inst = ERPC.$instances[i];
+        idlDescAry.push({
+            name: inst.idl,
+            role: inst.role
+        });
+    }
+
+    /* find all Interface instances for each idl object */
+    for (let i = 0; i < ERPC.$instances.length; i++) {
+        let inst = ERPC.$instances[i];
+        let desc = idlDescAry[i];
+        desc.ifs = new Array();
+
+        if (inst.$ownedBy) {
+            desc.ifs = findInterfaceInstances(inst.$ownedBy);
+        }
+        else if (inst.$sharedBy) {
+            for (let j = 0; j < inst.$sharedBy.length; j++) {
+                let p = inst.$sharedBy[j];
+                desc.ifs = desc.ifs.concat(findInterfaceInstances(p));
+            }
+        }
+    }
+
+    /* compute unique sorted array of group */
+    for (let i = 0; i < idlDescAry.length; i++) {
+        let desc = idlDescAry[i];
+
+        desc.groups = new Array();
+        for (let j = 0; j < desc.ifs.length; j++) {
+            desc.groups.push({
+                tag: desc.ifs[j].tag,
+                isCbk: desc.ifs[j].isCbk
+            });
+        }
+
+        desc.groups = desc.groups.sort(
+            function(a, b) {
+                if (a.tag < b.tag) return (-1);
+                else if (a.tag > b.tag) return (1);
+                else return (0);
+            }).filter(
+            function(elem, index, ary) {
+                return (index == ary.length - 1 ||
+                    ary[index + 1].tag != elem.tag);
+            });
+    }
+
+    /* compute source filenames */
+    for (let i = 0; i < idlDescAry.length; i++) {
+        let desc = idlDescAry[i];
+
+        desc.files = new Array();
+        for (let j = 0; j < desc.groups.length; j++) {
+            if (desc.role == "client") {
+                if (desc.groups[j].isCbk) {
+                    desc.files.push(
+                        [desc.name, desc.groups[j].tag, "server"].join("_")
+                    );
+                }
+                else {
+                    desc.files.push(
+                        [desc.name, desc.groups[j].tag, "client"].join("_")
+                    );
+                }
+            }
+            else { /* role == server */
+                if (desc.groups[j].isCbk) {
+                    desc.files.push(
+                        [desc.name, desc.groups[j].tag, "client"].join("_")
+                    );
+                }
+                else {
+                    desc.files.push(
+                        [desc.name, desc.groups[j].tag, "server"].join("_")
+                    );
+                }
+            }
+        }
+    }
+
+    /* determine object file suffix to match CCS behavior */
+    let objSuffix;
+    let GenLibs = system.getScript("/ti/utils/build/GenLibs.syscfg.js");
+    let toolchain = GenLibs.getToolchainDir();
+
+    switch (toolchain) {
+        case "ccs":
+        case "iar":
+            objSuffix = "obj";
+            break;
+        case "gcc":
+        case "ticlang":
+            objSuffix = "o";
+            break;
+        default:
+            objSuffix = "unknown";
+            break;
+    }
+%%}
+#
+#  ======== Makefile.erpc ========
+#
+#  DO NOT EDIT - This file is generated by the SysConfig tool.
+#
+#  The following variables must be defined on the command line:
+#
+#  CCS_INSTALL_ROOT
+#  SDK_INSTALL_DIR
+#
+#  The following variable is provided by the CCS Build System:
+#
+#  CG_TOOL_ROOT
+#
+
+NODE = $(CCS_INSTALL_ROOT)/tools/node/node
+ERPC_ROOT = $(SDK_INSTALL_DIR)/source/third_party/erpc
+ERPCGEN = $(ERPC_ROOT)/bin/erpcgen
+DOT = $(SDK_INSTALL_DIR)/source/third_party/graphviz/release/bin/dot
+
+% for (let i = 0; i < idlDescAry.length; i++) {
+% for (let j = 0; j < idlDescAry[i].files.length; j++) {
+$(strip $(EXE_OUTPUTS)): syscfg/rpc/`idlDescAry[i].files[j]`.`objSuffix`
+% }
+% }
+
+ORDERED_OBJS := \
+% for (let i = 0; i < idlDescAry.length; i++) {
+% for (let j = 0; j < idlDescAry[i].files.length; j++) {
+% /* CCS pattern rule uses different output directory */
+% switch (toolchain) {
+%   case "ccs":
+"syscfg/`idlDescAry[i].files[j]`.`objSuffix`" \
+%   break;
+%   case "gcc":
+%   case "ticlang":
+"syscfg/rpc/`idlDescAry[i].files[j]`.`objSuffix`" \
+%   break;
+% }
+% }
+% }
+$(ORDERED_OBJS)
+
+syscfg/ti_rpc_erpc.`objSuffix`: gen_rpc
+
+% for (let i = 0; i < idlDescAry.length; i++) {
+% for (let j = 0; j < idlDescAry[i].files.length; j++) {
+syscfg/rpc/`idlDescAry[i].files[j]`.cpp: gen_rpc
+% }
+% }
+
+ifneq (,$(wildcard $(dir $(DOT))))
+gen_rpc: graphviz
+endif
+gen_rpc: gen_idl
+gen_rpc:
+	@echo "#"
+	@echo "EmbeddedRPC generating stub and skel files"
+% for (let i = 0; i < ERPC.$instances.length; i++) {
+% let inst = ERPC.$instances[i];
+	$(ERPCGEN) -I$(SDK_INSTALL_DIR)/source -g c -o syscfg/rpc syscfg/rpc/`inst.idl`.erpc
+% }
+
+gen_idl:
+	@echo "#"
+	@echo "Generating IDL files"
+	$(NODE) syscfg/rpc/erpc.js
+
+graphviz:
+	@echo "#"
+	@echo "Generating Graphviz files"
+	$(DOT) -Tsvg -O syscfg/rpc/rpc.gv
+	$(DOT) -Tsvg -O syscfg/rpc/model.gv
+

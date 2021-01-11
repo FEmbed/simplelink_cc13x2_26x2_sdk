@@ -1,0 +1,21 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Reconfigure pilot tone length for high output power PA",
+                "$": "0x5320,0x0690"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Compensate for modified pilot tone length",
+                "$": "0x07E502A3"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Set AGC mangnitude target to 0x1B. ",
+                "$": "0x609C,0x001B"
+            }
+        ]
+    }
+}

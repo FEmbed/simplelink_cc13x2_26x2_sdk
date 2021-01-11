@@ -1,0 +1,36 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set RTIM offset to default for standard PA",
+                "$": "0x00008783"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set synth mux to default value for standard PA",
+                "$": "0x050206C3"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Set TXRX pin to 0 in RX and high impedance in idle\/TX. ",
+                "$": "0x60A8,0x0401"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set DTX gain -5% for 1 Mbps",
+                "$": "0x00E787E3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set DTX gain -2.5% for 2 Mbps",
+                "$": "0x00F487F3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Set enhanced TX shape",
+                "$": "0x000D8C73"
+            }
+        ]
+    }
+}

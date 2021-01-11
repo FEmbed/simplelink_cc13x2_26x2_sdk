@@ -1,0 +1,3151 @@
+{
+    "IoPinDefinition": {
+        "IoPin": [
+            {
+                "_name": "DIO5",
+                "SoftwareName": "05_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG5",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000020",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG5",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000020",
+                                        "Value": "0x00000020"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000020",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG5",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000020",
+                                        "Value": "0x00000020"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000020",
+                                        "Value": "0x00000020"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x0000002F"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x00000030"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x00000031"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x00000032"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x00000035"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x00000037"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_name": "IOCFG0",
+                                    "Mask": "0x0000003F",
+                                    "Value": "0x0000002E"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO6",
+                "_inherits": "DIO5",
+                "SoftwareName": "06_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG6",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000040",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG6",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000040",
+                                        "Value": "0x00000040"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000040",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG6",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000040",
+                                        "Value": "0x00000040"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000040",
+                                        "Value": "0x00000040"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG6"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO7",
+                "_inherits": "DIO5",
+                "SoftwareName": "07_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG7",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000080",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG7",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000080",
+                                        "Value": "0x00000080"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000080",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG7",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000080",
+                                        "Value": "0x00000080"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000080",
+                                        "Value": "0x00000080"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG7"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO8",
+                "_inherits": "DIO5",
+                "SoftwareName": "08_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG8",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000100",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG8",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000100",
+                                        "Value": "0x00000100"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000100",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG8",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000100",
+                                        "Value": "0x00000100"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000100",
+                                        "Value": "0x00000100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG8"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO9",
+                "_inherits": "DIO5",
+                "SoftwareName": "09_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG9",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000200",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG9",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000200",
+                                        "Value": "0x00000200"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000200",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG9",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000200",
+                                        "Value": "0x00000200"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000200",
+                                        "Value": "0x00000200"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG9"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO10",
+                "_inherits": "DIO5",
+                "SoftwareName": "10_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG10",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000400",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG10",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000400",
+                                        "Value": "0x00000400"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000400",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG10",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000400",
+                                        "Value": "0x00000400"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000400",
+                                        "Value": "0x00000400"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG10"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO11",
+                "_inherits": "DIO5",
+                "SoftwareName": "11_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG11",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000800",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG11",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000800",
+                                        "Value": "0x00000800"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000800",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG11",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00000800",
+                                        "Value": "0x00000800"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00000800",
+                                        "Value": "0x00000800"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG11"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO12",
+                "_inherits": "DIO5",
+                "SoftwareName": "12_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG12",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00001000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG12",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00001000",
+                                        "Value": "0x00001000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00001000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG12",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00001000",
+                                        "Value": "0x00001000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00001000",
+                                        "Value": "0x00001000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG12"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO13",
+                "_inherits": "DIO5",
+                "SoftwareName": "13_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG13",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00002000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG13",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00002000",
+                                        "Value": "0x00002000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00002000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG13",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00002000",
+                                        "Value": "0x00002000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00002000",
+                                        "Value": "0x00002000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG13"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO14",
+                "_inherits": "DIO5",
+                "SoftwareName": "14_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG14",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00004000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG14",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00004000",
+                                        "Value": "0x00004000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00004000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG14",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00004000",
+                                        "Value": "0x00004000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00004000",
+                                        "Value": "0x00004000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG14"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO15",
+                "_inherits": "DIO5",
+                "SoftwareName": "15_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG15",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00008000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG15",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00008000",
+                                        "Value": "0x00008000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00008000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG15",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00008000",
+                                        "Value": "0x00008000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00008000",
+                                        "Value": "0x00008000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG15"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO16",
+                "_inherits": "DIO5",
+                "SoftwareName": "16_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG16",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00010000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG16",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00010000",
+                                        "Value": "0x00010000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00010000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG16",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00010000",
+                                        "Value": "0x00010000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00010000",
+                                        "Value": "0x00010000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG16"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO17",
+                "_inherits": "DIO5",
+                "SoftwareName": "17_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG17",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00020000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG17",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00020000",
+                                        "Value": "0x00020000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00020000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG17",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00020000",
+                                        "Value": "0x00020000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00020000",
+                                        "Value": "0x00020000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG17"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO18",
+                "_inherits": "DIO5",
+                "SoftwareName": "18_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG18",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00040000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG18",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00040000",
+                                        "Value": "0x00040000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00040000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG18",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00040000",
+                                        "Value": "0x00040000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00040000",
+                                        "Value": "0x00040000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG18"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO19",
+                "_inherits": "DIO5",
+                "SoftwareName": "19_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG19",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00080000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG19",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00080000",
+                                        "Value": "0x00080000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00080000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG19",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00080000",
+                                        "Value": "0x00080000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00080000",
+                                        "Value": "0x00080000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG19"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO20",
+                "_inherits": "DIO5",
+                "SoftwareName": "20_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG20",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00100000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG20",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00100000",
+                                        "Value": "0x00100000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00100000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG20",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00100000",
+                                        "Value": "0x00100000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00100000",
+                                        "Value": "0x00100000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG20"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO21",
+                "_inherits": "DIO5",
+                "SoftwareName": "21_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG21",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00200000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG21",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00200000",
+                                        "Value": "0x00200000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00200000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG21",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00200000",
+                                        "Value": "0x00200000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00200000",
+                                        "Value": "0x00200000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG21"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO22",
+                "_inherits": "DIO5",
+                "SoftwareName": "22_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG22",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00400000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG22",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00400000",
+                                        "Value": "0x00400000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00400000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG22",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00400000",
+                                        "Value": "0x00400000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00400000",
+                                        "Value": "0x00400000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG22"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO23",
+                "_inherits": "DIO5",
+                "SoftwareName": "23_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG23",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00800000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG23",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00800000",
+                                        "Value": "0x00800000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00800000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG23",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x00800000",
+                                        "Value": "0x00800000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x00800000",
+                                        "Value": "0x00800000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG23"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO24",
+                "_inherits": "DIO5",
+                "SoftwareName": "24_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG24",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x01000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG24",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x01000000",
+                                        "Value": "0x01000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x01000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG24",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x01000000",
+                                        "Value": "0x01000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x01000000",
+                                        "Value": "0x01000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG24"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO25",
+                "_inherits": "DIO5",
+                "SoftwareName": "25_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG25",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x02000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG25",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x02000000",
+                                        "Value": "0x02000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x02000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG25",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x02000000",
+                                        "Value": "0x02000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x02000000",
+                                        "Value": "0x02000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG25"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO26",
+                "_inherits": "DIO5",
+                "SoftwareName": "26_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG26",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x04000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG26",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x04000000",
+                                        "Value": "0x04000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x04000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG26",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x04000000",
+                                        "Value": "0x04000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x04000000",
+                                        "Value": "0x04000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG26"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO27",
+                "_inherits": "DIO5",
+                "SoftwareName": "27_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG27",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x08000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG27",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x08000000",
+                                        "Value": "0x08000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x08000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG27",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x08000000",
+                                        "Value": "0x08000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x08000000",
+                                        "Value": "0x08000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG27"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO28",
+                "_inherits": "DIO5",
+                "SoftwareName": "28_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG28",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x10000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG28",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x10000000",
+                                        "Value": "0x10000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x10000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG28",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x10000000",
+                                        "Value": "0x10000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x10000000",
+                                        "Value": "0x10000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG28"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO29",
+                "_inherits": "DIO5",
+                "SoftwareName": "29_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG29",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x20000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG29",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x20000000",
+                                        "Value": "0x20000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x20000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG29",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x20000000",
+                                        "Value": "0x20000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x20000000",
+                                        "Value": "0x20000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG29"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO30",
+                "_inherits": "DIO5",
+                "SoftwareName": "30_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG30",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x40000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG30",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x40000000",
+                                        "Value": "0x40000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x40000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG30",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x40000000",
+                                        "Value": "0x40000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x40000000",
+                                        "Value": "0x40000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG30"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "DIO31",
+                "_inherits": "DIO5",
+                "SoftwareName": "31_DIO",
+                "ControlFunction": [
+                    {
+                        "_name": "Input\/Output",
+                        "_type": "GPIO",
+                        "Signal": [
+                            {
+                                "_name": "Input tristate (Default)",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG31",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x80000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output low",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG31",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x80000000",
+                                        "Value": "0x80000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x80000000",
+                                        "Value": "0x00000000"
+                                    }
+                                ]
+                            },
+                            {
+                                "_name": "Output high",
+                                "Register": [
+                                    {
+                                        "_name": "IOCFG31",
+                                        "Mask": "0x0000003F",
+                                        "Value": "0x00000000"
+                                    },
+                                    {
+                                        "_name": "DOE31_0",
+                                        "Mask": "0x80000000",
+                                        "Value": "0x80000000"
+                                    },
+                                    {
+                                        "_name": "DOUT31_0",
+                                        "Mask": "0x80000000",
+                                        "Value": "0x80000000"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "_name": "Radio",
+                        "_type": "RADIO",
+                        "Signal": [
+                            {
+                                "_name": "LNA enable (RF Core Data Out 0)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            },
+                            {
+                                "_name": "PA enable (RF Core Data Out 1)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            },
+                            {
+                                "_name": "TX Start (RF Core Data Out 2)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            },
+                            {
+                                "_name": "Synth Calibration Running (RF Core Data Out 3)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x35)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x37)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            },
+                            {
+                                "_name": "Reserved (0x2E)",
+                                "Register": {
+                                    "_translateName": "IOCFG0:IOCFG31"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

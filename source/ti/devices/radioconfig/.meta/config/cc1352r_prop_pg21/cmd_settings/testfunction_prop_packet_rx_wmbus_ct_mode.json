@@ -1,0 +1,153 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_PROP_RX",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_PROP_RX"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bFsOff",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bRepeatOk",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bRepeatNok",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bUseCrc",
+                    "$": "1"
+                },
+                {
+                    "_name": "pktConf.bVarLen",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.bChkAddress",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.endType",
+                    "$": "0"
+                },
+                {
+                    "_name": "pktConf.filterOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bAutoFlushIgnored",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bAutoFlushCrcErr",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bIncludeHdr",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bIncludeCrc",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bAppendRssi",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bAppendTimestamp",
+                    "$": "0"
+                },
+                {
+                    "_name": "rxConf.bAppendStatus",
+                    "$": "0"
+                },
+                {
+                    "_name": "syncWord",
+                    "$": "0x543D"
+                },
+                {
+                    "_name": "maxPktLen",
+                    "$": "64"
+                },
+                {
+                    "_name": "address0",
+                    "$": "0"
+                },
+                {
+                    "_name": "address1",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.triggerType",
+                    "$": "1"
+                },
+                {
+                    "_name": "endTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "pQueue",
+                    "$": "0"
+                },
+                {
+                    "_name": "pOutput",
+                    "$": "0"
+                }
+            ]
+        }
+    }
+}

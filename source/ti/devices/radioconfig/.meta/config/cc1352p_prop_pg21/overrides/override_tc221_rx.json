@@ -1,0 +1,66 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set filter overrides",
+                "$": "0x40024029"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "IIR EN, 2nd order, IIR_FILT_BW=1",
+                "$": "0x38000000"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Set IIR clk div",
+                "$": "0x01608402"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 150 kHz (K2)",
+                "$": "0x424C0583"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 150 kHz (K2)",
+                "$": "0x000205A3"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 150 kHz (K3, LSB)",
+                "$": "0x98630603"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set loop bandwidth after lock to 150 kHz (K3, MSB)",
+                "$": "0x00030623"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Synth: Set FREF = 8 (48 MHz\/6) MHz",
+                "$": "0x000684A3"
+            },
+            {
+                "_type": "ADI_HALFREG_OVERRIDE",
+                "_comment": "Rx: Set anti-aliasing filter bandwidth to 0xD (in ADI0, set IFAMPCTL3[7:4]=0xD)",
+                "$": "0,61,0xF,0xD"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Rx: Set RSSI offset to adjust reported RSSI by -2 dB (default: -2), trimmed for external bias and differential configuration",
+                "$": "0x000E88A3"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC reference level to 0x1B (default: 0x2E)",
+                "$": "0x609C,0x001B"
+            },
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Rx: Set AGC max gain to -6 dB",
+                "$": "0x6098,0x34D1"
+            }
+        ]
+    }
+}

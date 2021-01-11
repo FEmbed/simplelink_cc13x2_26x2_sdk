@@ -1,0 +1,9 @@
+{
+    "overridebuffer": {
+        "Element32b": {
+            "_type": "MCE_RFE_OVERRIDE",
+            "_comment": "PHY: Use MCE ROM, RFE RAM",
+            "$": "0,3,2,1,0,2"
+        }
+    }
+}

@@ -1,0 +1,187 @@
+{
+    "setting": {
+        "Name": "IEEE 802.15.4 O-QPSK DSSS PHY (250 kbps) at 2450 MHz band (10 dBm)",
+        "Description": "IEEE 802.15.4 O-QPSK DSSS PHY (250 kbps) at 2450 MHz band for 10 dBm.",
+        "Frequency": "2405",
+        "Patch": {
+            "Define": "RF_MODE_AUTO",
+            "Cpe": "rf_patch_cpe_ieee_802_15_4",
+            "Mce": [],
+            "Rfe": []
+        },
+        "Command": [
+            {
+                "_name": "CMD_RADIO_SETUP_PA",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_RADIO_SETUP"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "mode",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "loDivider",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.frontEndMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.biasMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.analogCfgMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.bNoFsPowerUp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "txPower",
+                        "$": "0xFFFF"
+                    },
+                    {
+                        "_name": "pRegOverride",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverrideTxStd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pRegOverrideTx20",
+                        "$": "0"
+                    }
+                ],
+                "OverrideField": [
+                    {
+                        "_name": "pRegOverride",
+                        "Block": "override_ieee_802_15_4_10_dbm.json"
+                    },
+                    {
+                        "_name": "pRegOverrideTxStd",
+                        "Block": [
+                            "override_txstd_placeholder.json",
+                            "override_txstd_settings.json"
+                        ]
+                    },
+                    {
+                        "_name": "pRegOverrideTx20",
+                        "Block": [
+                            "override_tx20_placeholder.json",
+                            "override_tx20_settings.json"
+                        ]
+                    }
+                ]
+            },
+            {
+                "_name": "CMD_FS",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_FS"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "frequency",
+                        "$": "2405"
+                    },
+                    {
+                        "_name": "fractFreq",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.bTxMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.refFreq",
+                        "$": "0"
+                    }
+                ]
+            }
+        ],
+        "TestFunc": {
+            "ContTX": "testfunction_cont_tx.json",
+            "ContRX": "testfunction_cont_rx.json",
+            "PacketTX": "testfunction_packet_tx.json",
+            "PacketRX": "testfunction_packet_rx.json"
+        }
+    }
+}

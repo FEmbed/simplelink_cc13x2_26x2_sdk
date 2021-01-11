@@ -1,0 +1,103 @@
+%%{
+/*
+ * Copyright (c) 2020 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ *  ======== rpc.gv.xdt ========
+ */
+%%}
+%%{
+    let ERPC = system.modules["/ti/rpc/ERPC"];
+    let Interface = system.modules["/ti/rpc/Interface"];
+
+    function findInterfaceInstances(inst)
+    {
+        let ifs = new Array();
+
+        for (let i = 0; i < Interface.$instances.length; i++) {
+            if (Interface.$instances[i].$ownedBy == inst) {
+                ifs.push(Interface.$instances[i]);
+            }
+        }
+
+        return (ifs);
+    }
+
+    function nodeName(inst)
+    {
+        let name;
+
+        if (typeof inst == "string" ) {
+            name = inst.replace(/\//g, "_").replace(/^_/g, "");
+        }
+        else if ("$name" in inst) {
+            name = inst.$name.replace(/\//g, "_");
+            name = name.replace(/^_/g, "");
+        }
+        else {
+            name = "unknown";
+        }
+
+        return (name);
+    }
+%%}
+digraph RPC
+{
+% for (let i = 0; i < ERPC.$instances.length; i++) {
+% let inst = ERPC.$instances[i];
+%
+% let transport = null;
+% if (inst.transport == "uart") {
+    `nodeName(inst)` -> `nodeName(inst.uart)`
+% } else {
+% // TODO - implement PCL navigation
+    `nodeName(inst)` -> PCL
+% }
+%
+% if (inst.$ownedBy) {
+    `nodeName(inst.$ownedBy)` -> `nodeName(inst)`
+% let ifs = findInterfaceInstances(inst.$ownedBy);
+% for (let j = 0; j < ifs.length; j++) {
+    `nodeName(inst.$ownedBy)` -> `nodeName(ifs[j])`
+% }
+% } else if (inst.$sharedBy) {
+% for (let j = 0; j < inst.$sharedBy.length; j++) {
+% let p = inst.$sharedBy[j];
+    `nodeName(p)` -> `nodeName(inst)`
+% let ifs = findInterfaceInstances(p);
+% for (let k = 0; k < ifs.length; k++) {
+    `nodeName(p)` -> `nodeName(ifs[k])`
+% }
+% }
+% }
+% } // foreach ERPC.$instances
+}

@@ -1,0 +1,222 @@
+{
+    "setting": {
+        "Name": "Custom (100 kbps, 2-GFSK, 50 kHz deviation)",
+        "Description": "100 kbps, 2-GFSK, 50 kHz deviation.(Release Candidate)",
+        "Frequency": "2440",
+        "Patch": {
+            "Define": "RF_MODE_PROPRIETARY_2_4",
+            "Cpe": "rf_patch_cpe_prop",
+            "Mce": [],
+            "Rfe": []
+        },
+        "Command": [
+            {
+                "_name": "CMD_PROP_RADIO_DIV_SETUP",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_PROP_RADIO_DIV_SETUP"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "modulation.modType",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "modulation.deviation",
+                        "$": "200"
+                    },
+                    {
+                        "_name": "symbolRate.preScale",
+                        "$": "15"
+                    },
+                    {
+                        "_name": "symbolRate.rateWord",
+                        "$": "65536"
+                    },
+                    {
+                        "_name": "symbolRate.decimMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "rxBw",
+                        "$": "89"
+                    },
+                    {
+                        "_name": "preamConf.nPreamBytes",
+                        "$": "4"
+                    },
+                    {
+                        "_name": "preamConf.preamMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.nSwBits",
+                        "$": "32"
+                    },
+                    {
+                        "_name": "formatConf.bBitReversal",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.bMsbFirst",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "formatConf.fecMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "formatConf.whitenMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.frontEndMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.biasMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.analogCfgMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "config.bNoFsPowerUp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "txPower",
+                        "$": "0x7217"
+                    },
+                    {
+                        "_name": "pRegOverride",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "centerFreq",
+                        "$": "2440"
+                    },
+                    {
+                        "_name": "intFreq",
+                        "$": "0x800"
+                    },
+                    {
+                        "_name": "loDivider",
+                        "$": "0"
+                    }
+                ],
+                "OverrideField": {
+                    "_name": "pRegOverride",
+                    "Block": [
+                        "override_prop_common.json",
+                        "override_tc900.json"
+                    ]
+                }
+            },
+            {
+                "_name": "CMD_FS",
+                "Field": [
+                    {
+                        "_name": "commandNo",
+                        "$": "CMD_FS"
+                    },
+                    {
+                        "_name": "status",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "pNextOp",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTime",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerType",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.bEnaCmd",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.triggerNo",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "startTrigger.pastTrig",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "condition.rule",
+                        "$": "1"
+                    },
+                    {
+                        "_name": "condition.nSkip",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "frequency",
+                        "$": "2440"
+                    },
+                    {
+                        "_name": "fractFreq",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.bTxMode",
+                        "$": "0"
+                    },
+                    {
+                        "_name": "synthConf.refFreq",
+                        "$": "0"
+                    }
+                ]
+            }
+        ],
+        "TestFunc": {
+            "ContTX": "testfunction_prop_cont_tx_genfsk.json",
+            "ContRX": "testfunction_prop_cont_rx_genfsk.json",
+            "PacketTX": "testfunction_prop_packet_tx_genfsk.json",
+            "PacketRX": "testfunction_prop_packet_rx_genfsk.json"
+        }
+    }
+}

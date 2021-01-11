@@ -1,0 +1,16 @@
+{
+    "overridebuffer": {
+        "Element32b": [
+            {
+                "_type": "HW_REG_OVERRIDE",
+                "_comment": "Bluetooth 5: Set pilot tone length to 20 us",
+                "$": "0x5320,0x03C0"
+            },
+            {
+                "_type": "ELEMENT",
+                "_comment": "Bluetooth 5: Compensate syncTimeadjust",
+                "$": "0x015302A3"
+            }
+        ]
+    }
+}

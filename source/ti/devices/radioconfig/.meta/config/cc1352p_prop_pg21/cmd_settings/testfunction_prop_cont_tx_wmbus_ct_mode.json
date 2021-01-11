@@ -1,0 +1,89 @@
+{
+    "testfunction": {
+        "Command": {
+            "_name": "CMD_TX_TEST",
+            "Field": [
+                {
+                    "_name": "commandNo",
+                    "$": "CMD_TX_TEST"
+                },
+                {
+                    "_name": "status",
+                    "$": "0"
+                },
+                {
+                    "_name": "pNextOp",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTime",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerType",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "startTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "condition.rule",
+                    "$": "1"
+                },
+                {
+                    "_name": "condition.nSkip",
+                    "$": "0"
+                },
+                {
+                    "_name": "config.bUseCw",
+                    "$": "0"
+                },
+                {
+                    "_name": "config.bFsOff",
+                    "$": "1"
+                },
+                {
+                    "_name": "config.whitenMode",
+                    "$": "2"
+                },
+                {
+                    "_name": "txWord",
+                    "$": "0xABCD"
+                },
+                {
+                    "_name": "endTrigger.triggerType",
+                    "$": "1"
+                },
+                {
+                    "_name": "endTrigger.bEnaCmd",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.triggerNo",
+                    "$": "0"
+                },
+                {
+                    "_name": "endTrigger.pastTrig",
+                    "$": "0"
+                },
+                {
+                    "_name": "syncWord",
+                    "$": "0x543D"
+                },
+                {
+                    "_name": "endTime",
+                    "$": "0"
+                }
+            ]
+        }
+    }
+}

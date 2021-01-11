@@ -1,0 +1,204 @@
+/*
+ * Copyright (c) 2019-2020 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ *  ======== package.bld ========
+ *  Build this package and generate release artifacts
+ */
+
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+var Pkg = xdc.useModule('xdc.bld.PackageContents');
+var Lib = xdc.useModule('xdc.bld.Library');
+var localCfg = xdc.loadCapsule("libmap.xs");
+
+Pkg.attrs.exportAll = true;
+Pkg.generatedFiles.$add("lib/");
+
+/* device specific libraries produced by this package */
+var dlibs = new Array();
+var dtag = "";
+
+/* device mtxx, sysbios */
+if (false) {
+dtag = localCfg.mapLookup("MTL1", localCfg.devMap);
+
+dlibs.push({
+    name: "rpc_" + dtag,
+    targets: [
+//      "gnu.targets.arm.M33F",
+        "ti.targets.arm.clang.M33",
+        "ti.targets.arm.clang.M33F"
+    ],
+    sources: [
+        "SecMsg.c"
+    ],
+    others: [
+        "SecMsg.h",
+        "package.bld"
+    ],
+    rtag: "mtxx"
+});
+}
+
+/* generic m4f, sysbios */
+dtag = localCfg.mapLookup(null, localCfg.devMap);
+dtag = (dtag == "" ? "" : "_" + dtag);
+
+dlibs.push({
+    name: "rpc" + dtag,
+    targets: [
+        "gnu.targets.arm.M4F",
+        "iar.targets.arm.M4F",
+        "ti.targets.arm.clang.M4F",
+        "ti.targets.arm.elf.M4F"
+    ],
+    sources: [
+    ],
+    others: [
+        "package.bld"
+    ],
+    rtag: "m4f"
+});
+
+/* SysConfig files */
+var scfiles = [
+    ".meta/Config.c.xdt",
+    ".meta/Config.h.xdt",
+    ".meta/ERPC.Config.c.xdt",
+    ".meta/ERPC.cpp.xdt",
+    ".meta/ERPC.h.xdt",
+    ".meta/ERPC.syscfg.js",
+    ".meta/GetLibs.syscfg.js",
+    ".meta/Interface.syscfg.js",
+    ".meta/Makefile.erpc.xdt",
+    ".meta/SecMsg.Config.c.xdt",
+    ".meta/SecMsg.Config.h.xdt",
+    ".meta/SecMsg.syscfg.js",
+    ".meta/erpc.js.xdt",
+    ".meta/model.gv.xdt",
+    ".meta/rpc.gv.xdt",
+    ".meta/rpc.component.js"
+];
+Pkg.otherFiles = scfiles;
+
+/* releases produced by this package */
+var releases = new Array();
+
+for (var l = 0; l < dlibs.length; l++) {
+    var rtag = dlibs[l].rtag;
+    var name = Pkg.name.replace(/\./g, '_') + "," + rtag;
+    if (!(rtag in releases)) {
+        releases[rtag] = Pkg.addRelease(name);
+        releases[rtag].attrs.exportAll = false;
+        releases[rtag].attrs.exportCfg = true;
+        releases[rtag].attrs.exportDoc = true;
+        releases[rtag].attrs.exportSrc = true;
+        releases[rtag].otherFiles = dlibs[l].others;
+    }
+}
+
+/* build all library permutations */
+for (var l = 0; l < dlibs.length; l++) {
+    for (var t = 0; t < dlibs[l].targets.length; t++) {
+        build(dlibs[l], dlibs[l].targets[t]);
+    }
+}
+
+/*
+ *  ======== build ========
+ */
+function build(dlib, targName)
+{
+    print("dlib.name=" + dlib.name + ", target=" + targName);
+    var target = null;
+    var cgt = "";
+    var btag = "";
+
+    /* find the given target */
+    for (var i = 0; i < Build.targets.length; i++) {
+        if (targName == Build.targets[i].$name) {
+            target = Build.targets[i];
+            break;
+        }
+    }
+
+    if (target == null) {
+        return; /* skip library if target not in build array */
+    }
+
+    /* extract vendor from target name */
+    var vendor = ((target.$name.match(/^ti\.targets\..*\.clang\./)) ?
+        [ "", "ticlang"] : target.$name.match(/^(\w+)\.targets/));
+
+    /* compute the vendor tag name (e.g. ti --> ccs) */
+    switch (vendor != null ? vendor[1] : "") {
+        case "gnu":     cgt = "gcc";     break;
+        case "iar":     cgt = "iar";     break;
+        case "ti":      cgt = "ccs";     break;
+        case "ticlang": cgt = "ticlang"; break;
+        default:
+            throw new Error("unsupported target: " + target.$name);
+    }
+
+    /* compute the build tag (e.g. em4f --> m4f) */
+    switch (target.suffix) {
+        case "em0":   btag = "m0";   break;
+        case "em4f":  btag = "m4f";  break;
+        case "m4f":   btag = "m4f";  break;
+        case "m33":   btag = "m33";  break;
+        case "m33f":  btag = "m33f"; break;
+        case "m33fg": btag = "m33f"; break;
+        case "m4fg":  btag = "m4f";  break;
+        case "rm4f":  btag = "m4f";  break;
+        default:
+            throw new Error("unsupported suffix: " + target.suffix);
+    }
+
+    for (var profile in target.profiles) {
+        var name = ["lib", cgt, btag, dlib.name+"_"+profile].join("/");
+
+        /* library attributes */
+        var attrs = new Lib.Attrs();
+        if ("defs" in dlib) {
+            attrs.defs = dlib.defs.join(" ");
+        }
+        attrs.profile = profile;        /* must set profile explicitly */
+        attrs.suffix = ".a";            /* suppress .a<suffix> extension */
+        attrs.releases = [ releases[dlib.rtag] ];
+
+        /* create library instance */
+        var lib = Pkg.addLibrary(name, target, attrs);
+
+        /* add source files */
+        lib.addObjects(dlib.sources);
+    }
+}
